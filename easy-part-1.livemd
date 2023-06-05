@@ -10,6 +10,57 @@ require Integer
 import ExUnit.Assertions
 ```
 
+## Resistor Color
+
+https://exercism.org/tracks/elixir/exercises/resistor-color
+
+```elixir
+defmodule ResistorColor do
+  @type color ::
+          :black | :brown | :red | :orange | :yellow | :green | :blue | :violet | :grey | :white
+
+  @doc """
+  Return the value of a color band.
+
+  ## Examples
+
+      iex> ResistorColor.code(:blue)
+      6
+
+  """
+  @spec code(color()) :: integer()
+  def code(:black), do: 0
+  def code(:brown), do: 1
+  def code(:red), do: 2
+  def code(:orange), do: 3
+  def code(:yellow), do: 4
+  def code(:green), do: 5
+  def code(:blue), do: 6
+  def code(:violet), do: 7
+  def code(:grey), do: 8
+  def code(:white), do: 9
+end
+```
+
+## Resistor Color: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/resistor-color/test/resistor_color_test.exs
+
+```elixir
+assert ResistorColor.code(:black) == 0
+assert ResistorColor.code(:brown) == 1
+assert ResistorColor.code(:red) == 2
+assert ResistorColor.code(:orange) == 3
+assert ResistorColor.code(:yellow) == 4
+assert ResistorColor.code(:green) == 5
+assert ResistorColor.code(:blue) == 6
+assert ResistorColor.code(:violet) == 7
+assert ResistorColor.code(:grey) == 8
+assert ResistorColor.code(:white) == 9
+
+:passed
+```
+
 ## All Your Base (TCO)
 
 https://exercism.org/tracks/elixir/exercises/all-your-base
