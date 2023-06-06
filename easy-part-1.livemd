@@ -61,6 +61,54 @@ assert ResistorColor.code(:white) == 9
 :passed
 ```
 
+## Two Fer
+
+https://exercism.org/tracks/elixir/exercises/two-fer
+
+```elixir
+defmodule TwoFer do
+  @doc """
+  Two-fer or 2-fer is short for two for one. One for you and one for me.
+
+  ## Examples
+
+      iex> TwoFer.two_fer()
+      "One for you, one for me."
+
+      iex> TwoFer.two_fer("John")
+      "One for John, one for me."
+
+  """
+  @spec two_fer(String.t()) :: String.t()
+  def two_fer(name \\ "you") when is_binary(name),
+    do: "One for #{name}, one for me."
+end
+```
+
+## Two Fer: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/two-fer/test/two_fer_test.exs
+
+```elixir
+assert TwoFer.two_fer() == "One for you, one for me."
+assert TwoFer.two_fer("Alice") == "One for Alice, one for me."
+assert TwoFer.two_fer("Bob") == "One for Bob, one for me."
+
+assert_raise FunctionClauseError, fn ->
+  TwoFer.two_fer(10)
+end
+
+assert_raise FunctionClauseError, fn ->
+  TwoFer.two_fer(:bob)
+end
+
+assert_raise FunctionClauseError, fn ->
+  refute TwoFer.two_fer('Jon Snow')
+end
+
+:passed
+```
+
 ## All Your Base (TCO)
 
 https://exercism.org/tracks/elixir/exercises/all-your-base
