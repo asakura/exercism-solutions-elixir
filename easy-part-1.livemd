@@ -403,3 +403,85 @@ end
 
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
+
+## Anagram
+
+https://exercism.org/tracks/elixir/exercises/anagram
+
+```elixir
+defmodule Anagram do
+  @doc """
+  Returns all candidates that are anagrams of, but not equal to, 'base'.
+
+  ## Examples
+
+      iex> Anagram.match("solemn", ~w(lemons cherry melons))
+      ~w(lemons melons)
+
+  """
+  @spec match(String.t(), [String.t()]) :: [String.t()]
+  def match(base, candidates) do
+    for candidate <- candidates,
+        anagram?(String.downcase(base), String.downcase(candidate)),
+        into: [],
+        do: candidate
+  end
+
+  defp anagram?(word, word), do: false
+  defp anagram?(word_a, word_b), do: sorted(word_a) == sorted(word_b)
+
+  defp sorted(word), do: to_charlist(word) |> Enum.sort()
+end
+```
+
+## Anagram: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/anagram/test/anagram_test.exs
+
+```elixir
+assert Anagram.match("diaper", ~w(hello world zombies pants)) == []
+
+assert Anagram.match(
+         "solemn",
+         ~w(lemons cherry melons)
+       ) == ~w(lemons melons)
+
+assert Anagram.match("good", ~w(dog goody)) == []
+
+assert Anagram.match(
+         "listen",
+         ~w(enlists google inlets banana)
+       ) == ~w(inlets)
+
+assert Anagram.match(
+         "allergy",
+         ~w(gallery ballerina regally clergy largely leading)
+       ) ==
+         ~w(gallery regally largely)
+
+assert Anagram.match("nose", ~w(Eons ONES)) == ~w(Eons ONES)
+assert Anagram.match("mass", ~w(last)) == []
+
+assert Anagram.match(
+         "orchestra",
+         ~w(cashregister Carthorse radishes)
+       ) ==
+         ~w(Carthorse)
+
+assert Anagram.match(
+         "Orchestra",
+         ~w(cashregister carthorse radishes)
+       ) == ~w(carthorse)
+
+assert Anagram.match("orchestra", ~w(cashregister Carthorse radishes)) ==
+         ~w(Carthorse)
+
+assert Anagram.match("go", ~w(go Go GO)) == []
+assert Anagram.match("tapper", ~w(patter)) == []
+assert Anagram.match("BANANA", ~w(BANANA)) == []
+assert Anagram.match("BANANA", ~w(Banana)) == []
+assert Anagram.match("BANANA", ~w(banana)) == []
+assert Anagram.match("LISTEN", ~w(Silent LISTEN)) == ~w(Silent)
+
+:passed
+```
