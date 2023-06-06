@@ -161,6 +161,52 @@ assert Accumulate.accumulate(chars, fun) == expected
 :passed
 ```
 
+## Acronym
+
+https://exercism.org/tracks/elixir/exercises/acronym
+
+```elixir
+defmodule Acronym do
+  @doc """
+  Generate an acronym from a string.
+
+  ## Examples
+
+    iex> Acronym.abbreviate("This is a string")
+    "TIAS"
+
+  """
+  @spec abbreviate(String.t()) :: String.t()
+  def abbreviate(string) do
+    String.split(string, ~r/\p{Z}|-|_/, trim: true)
+    |> Enum.map_join("", &String.at(&1, 0))
+    |> String.upcase()
+  end
+end
+```
+
+## Acronym: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/acronym/test/acronym_test.exs
+
+```elixir
+assert Acronym.abbreviate("Portable Networks Graphic") === "PNG"
+assert Acronym.abbreviate("Ruby on Rails") === "ROR"
+assert Acronym.abbreviate("First in, First out") === "FIFO"
+assert Acronym.abbreviate("GNU Image Manipulation Program") === "GIMP"
+assert Acronym.abbreviate("Complementary Metal-Oxide semiconductor") === "CMOS"
+
+assert Acronym.abbreviate(
+         "Rolling On The Floor Laughing So Hard That My Dogs Came Over And Licked Me"
+       ) === "ROTFLSHTMDCOALM"
+
+assert Acronym.abbreviate("Something - I made up from thin air") === "SIMUFTA"
+assert Acronym.abbreviate("Halley's Comet") === "HC"
+assert Acronym.abbreviate("The Road _Not_ Taken") === "TRNT"
+
+:passed
+```
+
 ## All Your Base (TCO)
 
 https://exercism.org/tracks/elixir/exercises/all-your-base
