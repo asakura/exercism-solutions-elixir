@@ -109,6 +109,58 @@ end
 :passed
 ```
 
+## Accumulate
+
+https://exercism.org/tracks/elixir/exercises/accumulate
+
+```elixir
+defmodule Accumulate do
+  @doc """
+  Given a list and a function, apply the function to each list item and
+  replace it with the function's return value.
+
+  Returns a list.
+
+  ## Examples
+
+      iex> Accumulate.accumulate([], fn(x) -> x * 2 end)
+      []
+
+      iex> Accumulate.accumulate([1, 2, 3], fn(x) -> x * 2 end)
+      [2, 4, 6]
+
+  """
+  @spec accumulate(list(), (any() -> any())) :: list()
+  def accumulate([], _fun), do: []
+  def accumulate([item | tail], fun), do: [fun.(item) | accumulate(tail, fun)]
+end
+```
+
+## Accumulate: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/accumulate/test/accumulate_test.exs
+
+```elixir
+assert Accumulate.accumulate([], fn n -> n * n end) == []
+assert Accumulate.accumulate([1, 2, 3], fn n -> n * n end) == [1, 4, 9]
+
+fun = fn w -> String.upcase(w) end
+assert Accumulate.accumulate(["hello", "world"], fun) == ["HELLO", "WORLD"]
+
+fun = fn w -> String.reverse(w) end
+words = ~w(the quick brown fox etc)
+expected = ["eht", "kciuq", "nworb", "xof", "cte"]
+assert Accumulate.accumulate(words, fun) == expected
+
+chars = ~w(a b c)
+nums = ~w(1 2 3)
+fun = fn c -> Accumulate.accumulate(nums, &(c <> &1)) end
+expected = [["a1", "a2", "a3"], ["b1", "b2", "b3"], ["c1", "c2", "c3"]]
+assert Accumulate.accumulate(chars, fun) == expected
+
+:passed
+```
+
 ## All Your Base (TCO)
 
 https://exercism.org/tracks/elixir/exercises/all-your-base
