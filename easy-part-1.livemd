@@ -520,6 +520,52 @@ defmodule ArmstrongNumber.ListComprehension do
 end
 ```
 
+## Armstrong Numbers (Optimized integer exponentiation)
+
+```elixir
+defmodule ArmstrongNumber.ListComprehensionOIE do
+  import Bitwise
+
+  @doc """
+  Checks if a given number is an Armstrong number.
+
+  ## Examples
+
+      iex> ArmstrongNumber.ListComprehensionOIE.valid?(9474)
+      true
+
+      iex> ArmstrongNumber.ListComprehensionOIE.valid?(9475)
+      false
+
+  """
+  @spec valid?(integer()) :: boolean()
+  def valid?(0), do: true
+
+  def valid?(number) do
+    digits = Integer.digits(number)
+    exponent = Enum.count(digits)
+
+    number ==
+      for digit <- digits, reduce: 0 do
+        acc -> acc + pow(digit, exponent)
+      end
+  end
+
+  # Optimized integer exponentiation
+  # https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+  defp pow(base, exponent), do: pow(base, exponent, 1)
+  defp pow(_base, 0, result), do: result
+  defp pow(base, 1, result), do: result * base
+  defp pow(2, exponent, result), do: result <<< exponent
+
+  defp pow(base, exponent, result) when rem(exponent, 2) == 0,
+    do: pow(base * base, exponent >>> 1, result)
+
+  defp pow(base, exponent, result),
+    do: pow(base * base, exponent >>> 1, result * base)
+end
+```
+
 ## Armstrong Numbers (Enum.reduce/3)
 
 ```elixir
