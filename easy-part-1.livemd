@@ -520,6 +520,37 @@ defmodule ArmstrongNumber.ListComprehension do
 end
 ```
 
+## Armstrong Numbers (Enum.reduce/3)
+
+```elixir
+defmodule ArmstrongNumber.EnumReduce do
+  @doc """
+  Checks if a given number is an Armstrong number.
+
+  ## Examples
+
+      iex> ArmstrongNumber.EnumReduce.valid?(9474)
+      true
+
+      iex> ArmstrongNumber.EnumReduce.valid?(9475)
+      false
+
+  """
+  @spec valid?(integer()) :: boolean()
+  def valid?(0), do: true
+
+  def valid?(number) do
+    digits = Integer.digits(number)
+    exponent = Enum.count(digits)
+
+    number ==
+      Enum.reduce(digits, 0, fn digit, acc ->
+        acc + Integer.pow(digit, exponent)
+      end)
+  end
+end
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
