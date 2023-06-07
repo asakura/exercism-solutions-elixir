@@ -643,6 +643,39 @@ defmodule ArmstrongNumber.EnumReduceOIE do
 end
 ```
 
+## Armstrong Numbers (Naive, Enum.reduce/3)
+
+```elixir
+defmodule ArmstrongNumber.NaiveEnumReduce do
+  @doc """
+  Checks if a given number is an Armstrong number.
+
+  ## Examples
+
+      iex> ArmstrongNumber.NaiveEnumReduce.valid?(9474)
+      true
+
+      iex> ArmstrongNumber.NaiveEnumReduce.valid?(9475)
+      false
+
+  """
+  @spec valid?(integer()) :: boolean()
+  def valid?(0), do: true
+
+  def valid?(number) do
+    digits =
+      to_string(number)
+      |> String.split("", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
+    number ==
+      Enum.reduce(digits, 0, fn digit, acc ->
+        acc + Integer.pow(digit, length(digits))
+      end)
+  end
+end
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
