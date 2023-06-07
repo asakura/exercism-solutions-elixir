@@ -486,6 +486,40 @@ assert Anagram.match("LISTEN", ~w(Silent LISTEN)) == ~w(Silent)
 :passed
 ```
 
+## Armstrong Numbers (List Comprehension)
+
+https://exercism.org/tracks/elixir/exercises/armstrong-numbers
+
+```elixir
+defmodule ArmstrongNumber.ListComprehension do
+  @doc """
+  Checks if a given number is an Armstrong number.
+
+  ## Examples
+
+      iex> ArmstrongNumber.ListComprehension.valid?(9474)
+      true
+
+      iex> ArmstrongNumber.ListComprehension.valid?(9475)
+      false
+
+  """
+  @spec valid?(integer()) :: boolean()
+  def valid?(0), do: true
+
+  def valid?(number) do
+    digits = Integer.digits(number)
+
+    exponent = Enum.count(digits)
+
+    number ==
+      for digit <- digits, reduce: 0 do
+        acc -> acc + Integer.pow(digit, exponent)
+      end
+  end
+end
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
