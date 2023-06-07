@@ -585,3 +585,113 @@ assert ETL.transform(old) == expected
 
 :passed
 ```
+
+## Hamming (TCO)
+
+https://exercism.org/tracks/elixir/exercises/hamming
+
+```elixir
+defmodule Hamming.TCO do
+  @doc """
+  Returns number of differences between two strands of DNA, known as the Hamming Distance.
+
+  ## Examples
+
+    iex> Hamming.TCO.hamming_distance('AAGTCATA', 'TAGCGATC')
+    {:ok, 4}
+
+  """
+  @spec hamming_distance([char()], [char()]) :: {:ok, non_neg_integer()} | {:error, String.t()}
+  def hamming_distance(strand1, strand2) when length(strand1) == length(strand2),
+    do: {:ok, do_hamming_distance(strand1, strand2, 0)}
+
+  def hamming_distance(_starnd1, _strand2), do: {:error, "strands must be of equal length"}
+
+  defp do_hamming_distance([], [], distance), do: distance
+
+  defp do_hamming_distance([gene1 | tail1], [gene2 | tail2], distance) do
+    distance = if gene1 == gene2, do: distance, else: distance + 1
+
+    do_hamming_distance(tail1, tail2, distance)
+  end
+end
+```
+
+## Hamming (Stream.zip/2)
+
+```elixir
+defmodule Hamming.StreamZip do
+  @doc """
+  Returns number of differences between two strands of DNA, known as the Hamming Distance.
+
+  ## Examples
+
+    iex> Hamming.StreamZip.hamming_distance('AAGTCATA', 'TAGCGATC')
+    {:ok, 4}
+
+  """
+  @spec hamming_distance([char()], [char()]) :: {:ok, non_neg_integer()} | {:error, String.t()}
+  def hamming_distance(strand1, strand2) when length(strand1) == length(strand2) do
+    {:ok, Stream.zip(strand1, strand2) |> Enum.count(fn {gene1, gene2} -> gene1 != gene2 end)}
+  end
+
+  def hamming_distance(_starnd1, _strand2), do: {:error, "strands must be of equal length"}
+end
+```
+
+## Hamming: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/hamming/test/hamming_test.exs
+
+```elixir
+for module <- [Hamming.TCO, Hamming.StreamZip] do
+  assert module.hamming_distance('', '') == {:ok, 0}
+  assert module.hamming_distance('A', 'A') == {:ok, 0}
+  assert module.hamming_distance('G', 'T') == {:ok, 1}
+  assert module.hamming_distance('GGACTGAAATCTG', 'GGACTGAAATCTG') == {:ok, 0}
+  assert module.hamming_distance('GGACGGATTCTG', 'AGGACGGATTCT') == {:ok, 9}
+  assert {:error, "strands must be of equal length"} = module.hamming_distance('AATG', 'AAA')
+  assert {:error, "strands must be of equal length"} = module.hamming_distance('ATA', 'AGTG')
+  assert {:error, "strands must be of equal length"} = module.hamming_distance('', 'G')
+  assert {:error, "strands must be of equal length"} = module.hamming_distance('G', '')
+end
+
+:passed
+```
+
+## Hamming: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => {'AAGTCATA', 'TAGCGATC'},\n    \"Bigger\" => {'AAGTCATAAAGTCATAAAGTCATAAAGTCATAAAGTCATAAAGTCATA',\n                 'TAGCGATCTAGCGATCTAGCGATCTAGCGATCTAGCGATCTAGCGATC'}\n  })\n\n  job tco({a, b}) do\n    Hamming.TCO.hamming_distance(a, b)\n  end\n\n  job stream_zip({a, b}) do\n    Hamming.StreamZip.hamming_distance(a, b)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => {'AAGTCATA', 'TAGCGATC'},
+      "Bigger" =>
+        {'AAGTCATAAAGTCATAAAGTCATAAAGTCATAAAGTCATAAAGTCATA',
+         'TAGCGATCTAGCGATCTAGCGATCTAGCGATCTAGCGATCTAGCGATC'}
+    })
+
+    job(tco({a, b})) do
+      Hamming.TCO.hamming_distance(a, b)
+    end
+
+    job(stream_zip({a, b})) do
+      Hamming.StreamZip.hamming_distance(a, b)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
