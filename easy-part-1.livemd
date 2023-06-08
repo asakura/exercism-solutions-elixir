@@ -836,6 +836,40 @@ defmodule CollatzConjecture.StreamIterateFindIndex do
 end
 ```
 
+## Collatz Conjecture (Stream.unfold/2)
+
+```elixir
+defmodule CollatzConjecture.StreamUnfold do
+  import Integer, only: [is_even: 1]
+
+  @doc """
+  calc/1 takes an integer and returns the number of steps required to get the
+  number to 1 when following the rules:
+  - if number is odd, multiply with 3 and add 1
+  - if number is even, divide by 2
+
+  ## Examples
+
+      iex> CollatzConjecture.StreamUnfold.calc(16)
+      4
+
+      iex> CollatzConjecture.StreamUnfold.calc(21)
+      7
+
+  """
+  @spec calc(input :: pos_integer()) :: non_neg_integer()
+  def calc(input) when is_integer(input) and input > 0 do
+    input
+    |> Stream.unfold(fn
+      1 -> nil
+      i when is_even(i) -> {i, div(i, 2)}
+      i -> {i, i * 3 + 1}
+    end)
+    |> Enum.count()
+  end
+end
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
