@@ -753,6 +753,54 @@ end
 :passed
 ```
 
+## Armstrong Numbers: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule ArmstrongNumber.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => 9474,\n    \"Bigger\" => 947494749474\n  })\n\n  job list_comphrehension(input) do\n    ArmstrongNumber.ListComprehension.valid?(input)\n  end\n\n  job list_comphrehension_oie(input) do\n    ArmstrongNumber.ListComprehensionOIE.valid?(input)\n  end\n\n  job enum_reduce(input) do\n    ArmstrongNumber.EnumReduce.valid?(input)\n  end\n\n  job enum_reduce_oie(input) do\n    ArmstrongNumber.EnumReduceOIE.valid?(input)\n  end\n\n  job naive_enum_reduce(input) do\n    ArmstrongNumber.NaiveEnumReduce.valid?(input)\n  end\n\n  job naive_enum_reduce_oie(input) do\n    ArmstrongNumber.NaiveEnumReduceOIE.valid?(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule ArmstrongNumber.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{"Small" => 9474, "Bigger" => 947_494_749_474})
+
+    job(list_comphrehension(input)) do
+      ArmstrongNumber.ListComprehension.valid?(input)
+    end
+
+    job(list_comphrehension_oie(input)) do
+      ArmstrongNumber.ListComprehensionOIE.valid?(input)
+    end
+
+    job(enum_reduce(input)) do
+      ArmstrongNumber.EnumReduce.valid?(input)
+    end
+
+    job(enum_reduce_oie(input)) do
+      ArmstrongNumber.EnumReduceOIE.valid?(input)
+    end
+
+    job(naive_enum_reduce(input)) do
+      ArmstrongNumber.NaiveEnumReduce.valid?(input)
+    end
+
+    job(naive_enum_reduce_oie(input)) do
+      ArmstrongNumber.NaiveEnumReduceOIE.valid?(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
