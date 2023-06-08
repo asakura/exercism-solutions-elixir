@@ -676,6 +676,83 @@ defmodule ArmstrongNumber.NaiveEnumReduce do
 end
 ```
 
+## Armstrong Numbers (Naive, Enum.reduce/3, Optimized integer exponentiation)
+
+```elixir
+defmodule ArmstrongNumber.NaiveEnumReduceOIE do
+  import Bitwise
+
+  @doc """
+  Checks if a given number is an Armstrong number.
+
+  ## Examples
+
+      iex> ArmstrongNumber.NaiveEnumReduceOIE.valid?(9474)
+      true
+
+      iex> ArmstrongNumber.NaiveEnumReduceOIE.valid?(9475)
+      false
+
+  """
+  @spec valid?(integer()) :: boolean()
+  def valid?(0), do: true
+
+  def valid?(number) do
+    digits =
+      to_string(number)
+      |> String.split("", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
+    number ==
+      Enum.reduce(digits, 0, fn digit, acc ->
+        acc + pow(digit, length(digits))
+      end)
+  end
+
+  # Optimized integer exponentiation
+  # https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+  defp pow(base, exponent), do: pow(base, exponent, 1)
+  defp pow(_base, 0, result), do: result
+  defp pow(base, 1, result), do: result * base
+  defp pow(2, exponent, result), do: result <<< exponent
+
+  defp pow(base, exponent, result) when rem(exponent, 2) == 0,
+    do: pow(base * base, exponent >>> 1, result)
+
+  defp pow(base, exponent, result),
+    do: pow(base * base, exponent >>> 1, result * base)
+end
+```
+
+## Armstrong Numbers: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/armstrong-numbers/test/armstrong_number_test.exs
+
+```elixir
+modules = [
+  ArmstrongNumber.ListComprehension,
+  ArmstrongNumber.ListComprehensionOIE,
+  ArmstrongNumber.EnumReduce,
+  ArmstrongNumber.EnumReduceOIE,
+  ArmstrongNumber.NaiveEnumReduce,
+  ArmstrongNumber.NaiveEnumReduceOIE
+]
+
+for module <- modules do
+  assert module.valid?(0)
+  assert module.valid?(5)
+  refute module.valid?(10)
+  assert module.valid?(153)
+  refute module.valid?(100)
+  assert module.valid?(9474)
+  refute module.valid?(9475)
+  assert module.valid?(9_926_315)
+  refute module.valid?(9_926_134)
+end
+
+:passed
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
