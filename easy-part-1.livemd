@@ -1381,3 +1381,29 @@ defmodule NucleotideCount do
 end
 ```
 
+## Nucleotide Count: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/nucleotide-count/test/nucleotide_count_test.exs
+
+```elixir
+assert NucleotideCount.count('', ?A) == 0
+assert NucleotideCount.count('G', ?G) == 1
+assert NucleotideCount.count('CCCCC', ?C) == 5
+assert NucleotideCount.count('GGGGGTAACCCGG', ?T) == 1
+
+expected = %{?A => 0, ?T => 0, ?C => 0, ?G => 0}
+assert NucleotideCount.histogram('') == expected
+
+expected = %{?A => 0, ?T => 0, ?C => 0, ?G => 1}
+assert NucleotideCount.histogram('G') == expected
+
+expected = %{?A => 0, ?T => 0, ?C => 0, ?G => 8}
+assert NucleotideCount.histogram('GGGGGGGG') == expected
+
+s = 'AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC'
+expected = %{?A => 20, ?T => 21, ?C => 12, ?G => 17}
+assert NucleotideCount.histogram(s) == expected
+
+:passed
+```
+
