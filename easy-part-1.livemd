@@ -1031,6 +1031,54 @@ end
 :passed
 ```
 
+## Collatz Conjecture: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule CollatzConjecture.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => 16,\n    \"Bigger\" => 16161616161616\n  })\n\n  job stream_iterate_find_index(input) do\n    CollatzConjecture.StreamIterateFindIndex.calc(input)\n  end\n\n  job stream_unfold(input) do\n    CollatzConjecture.StreamUnfold.calc(input)\n  end\n\n  job stream_iterate_take_while(input) do\n    CollatzConjecture.StreamIterateTakeWhile.calc(input)\n  end\n\n  job recursion(input) do\n    CollatzConjecture.Recursion.calc(input)\n  end\n\n  job tco(input) do\n    CollatzConjecture.TCO.calc(input)\n  end\n\n  job tco_case(input) do\n    CollatzConjecture.TCOCase.calc(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule CollatzConjecture.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{"Small" => 16, "Bigger" => 16_161_616_161_616})
+
+    job(stream_iterate_find_index(input)) do
+      CollatzConjecture.StreamIterateFindIndex.calc(input)
+    end
+
+    job(stream_unfold(input)) do
+      CollatzConjecture.StreamUnfold.calc(input)
+    end
+
+    job(stream_iterate_take_while(input)) do
+      CollatzConjecture.StreamIterateTakeWhile.calc(input)
+    end
+
+    job(recursion(input)) do
+      CollatzConjecture.Recursion.calc(input)
+    end
+
+    job(tco(input)) do
+      CollatzConjecture.TCO.calc(input)
+    end
+
+    job(tco_case(input)) do
+      CollatzConjecture.TCOCase.calc(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
