@@ -1292,3 +1292,35 @@ end
 
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
+
+## Nth Prime
+
+https://exercism.org/tracks/elixir/exercises/nth-prime
+
+```elixir
+defmodule Prime do
+  @doc """
+  Generates the nth prime number.
+
+  ## Examples
+
+      iex> Prime.nth(6)
+      13
+
+  """
+  @spec nth(non_neg_integer) :: non_neg_integer
+  def nth(count) when is_integer(count) and count > 0, do: do_nth(count, 2, [])
+
+  defp do_nth(0, _, primes), do: hd(primes)
+
+  defp do_nth(count, value, primes) do
+    case prime?(value, primes) do
+      true -> do_nth(count - 1, value + 1, [value | primes])
+      false -> do_nth(count, value + 1, primes)
+    end
+  end
+
+  defp prime?(number, primes), do: Enum.all?(primes, &(rem(number, &1) != 0))
+end
+```
+
