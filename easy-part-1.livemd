@@ -1079,6 +1079,10 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Darts
+
+https://exercism.org/tracks/elixir/exercises/darts
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
