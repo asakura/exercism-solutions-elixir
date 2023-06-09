@@ -961,6 +961,41 @@ defmodule CollatzConjecture.TCO do
 end
 ```
 
+## Collatz Conjecture (TCO, Case)
+
+```elixir
+defmodule CollatzConjecture.TCOCase do
+  @doc """
+  calc/1 takes an integer and returns the number of steps required to get the
+  number to 1 when following the rules:
+  - if number is odd, multiply with 3 and add 1
+  - if number is even, divide by 2
+
+  ## Examples
+
+      iex> CollatzConjecture.TCOCase.calc(16)
+      4
+
+      iex> CollatzConjecture.TCOCase.calc(21)
+      7
+
+  """
+  @spec calc(input :: pos_integer()) :: non_neg_integer()
+  def calc(input) when is_integer(input) and input > 0, do: do_calc(input, 0)
+  defp do_calc(1, count), do: count
+
+  defp do_calc(number, count) do
+    number =
+      case rem(number, 2) do
+        0 -> div(number, 2)
+        _ -> number * 3 + 1
+      end
+
+    do_calc(number, count + 1)
+  end
+end
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
