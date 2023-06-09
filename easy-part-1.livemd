@@ -1324,3 +1324,18 @@ defmodule Prime do
 end
 ```
 
+## Nth Prime: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/nth-prime/test/prime_test.exs
+
+```elixir
+assert Prime.nth(1) == 2
+assert Prime.nth(2) == 3
+assert Prime.nth(6) == 13
+assert Prime.nth(100) == 541
+assert Prime.nth(10001) == 104_743
+catch_error(Prime.nth(0))
+
+:passed
+```
+
