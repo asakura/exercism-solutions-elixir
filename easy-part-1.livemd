@@ -996,6 +996,41 @@ defmodule CollatzConjecture.TCOCase do
 end
 ```
 
+## Collatz Conjecture: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/collatz-conjecture/test/collatz_conjecture_test.exs
+
+```elixir
+modules = [
+  CollatzConjecture.StreamIterateFindIndex,
+  CollatzConjecture.StreamUnfold,
+  CollatzConjecture.StreamIterateTakeWhile,
+  CollatzConjecture.Recursion,
+  CollatzConjecture.TCO,
+  CollatzConjecture.TCOCase
+]
+
+for module <- modules do
+  assert module.calc(1) == 0
+  assert module.calc(16) == 4
+  assert module.calc(12) == 9
+  assert module.calc(1_000_000) == 152
+  assert module.calc(21) == 7
+  assert module.calc(7) == 16
+
+  assert_raise FunctionClauseError,
+               fn -> module.calc(0) end
+
+  assert_raise FunctionClauseError,
+               fn -> module.calc(-15) end
+
+  assert_raise FunctionClauseError,
+               fn -> module.calc("fubar") end
+end
+
+:passed
+```
+
 ## ETL
 
 https://exercism.org/tracks/elixir/exercises/etl
