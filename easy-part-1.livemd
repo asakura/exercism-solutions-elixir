@@ -1445,3 +1445,40 @@ defmodule Pangram.ListComprehensionUniq do
 end
 ```
 
+## Pangram (TCO)
+
+```elixir
+defmodule Pangram.TCO do
+  @ascii_alphabet Enum.to_list(?a..?z)
+
+  @doc """
+  Determines if a word or sentence is a pangram.
+  A pangram is a sentence using every letter of the alphabet at least once.
+
+  Returns a boolean.
+
+  ## Examples
+
+    iex> Pangram.TCO.pangram?("the quick brown fox jumps over the lazy dog")
+    true
+
+    iex> Pangram.TCO.pangram?("7h3 qu1ck brown fox jumps ov3r 7h3 lazy dog")
+    false
+
+  """
+  @spec pangram?(String.t()) :: boolean()
+  def pangram?(sentence) do
+    chars =
+      sentence
+      |> String.downcase()
+      |> to_charlist()
+
+    do_pangram(chars, @ascii_alphabet)
+  end
+
+  defp do_pangram(_chars, []), do: true
+  defp do_pangram([], _letters), do: false
+  defp do_pangram([char | tail], letters), do: do_pangram(tail, List.delete(letters, char))
+end
+```
+
