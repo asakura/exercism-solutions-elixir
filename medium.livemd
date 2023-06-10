@@ -1,0 +1,206 @@
+# Exercism Elixir Medium
+
+```elixir
+import ExUnit.Assertions
+
+Mix.install([
+  {:benchee_dsl, "~> 0.5"},
+  {:benchee_markdown, "~> 0.3"}
+])
+```
+
+## Complex Numbers
+
+https://exercism.org/tracks/elixir/exercises/complex-numbers
+
+## Crypto Square
+
+https://exercism.org/tracks/elixir/exercises/crypto-square
+
+## Difference of Squares
+
+https://exercism.org/tracks/elixir/exercises/difference-of-squares
+
+## Diffie-Hellman
+
+https://exercism.org/tracks/elixir/exercises/diffie-hellman
+
+## Dominoes
+
+https://exercism.org/tracks/elixir/exercises/dominoes
+
+## Grep
+
+https://exercism.org/tracks/elixir/exercises/grep
+
+## Killer Sudoku Helper
+
+https://exercism.org/tracks/elixir/exercises/killer-sudoku-helper
+
+## Largest Series Product
+
+https://exercism.org/tracks/elixir/exercises/largest-series-product
+
+## Meetup
+
+https://exercism.org/tracks/elixir/exercises/meetup
+
+## Parallel Letter Frequency
+
+https://exercism.org/tracks/elixir/exercises/parallel-letter-frequency
+
+## Phone Number
+
+https://exercism.org/tracks/elixir/exercises/phone-number
+
+## Rational Numbers
+
+https://exercism.org/tracks/elixir/exercises/rational-numbers
+
+## Simple Linked List
+
+https://exercism.org/tracks/elixir/exercises/simple-linked-list
+
+## Spiral Matrix
+
+https://exercism.org/tracks/elixir/exercises/spiral-matrix
+
+## Tournament
+
+https://exercism.org/tracks/elixir/exercises/tournament
+
+## Affine Cipher
+
+https://exercism.org/tracks/elixir/exercises/affine-cipher
+
+## Bank Account
+
+https://exercism.org/tracks/elixir/exercises/bank-account
+
+## Clock
+
+https://exercism.org/tracks/elixir/exercises/clock
+
+## Custom Set
+
+https://exercism.org/tracks/elixir/exercises/custom-set
+
+## Diamond
+
+https://exercism.org/tracks/elixir/exercises/diamond
+
+## Food Chain
+
+https://exercism.org/tracks/elixir/exercises/food-chain
+
+## Luhn
+
+https://exercism.org/tracks/elixir/exercises/luhn
+
+## Palindrome Products
+
+https://exercism.org/tracks/elixir/exercises/palindrome-products
+
+## Pythagorean Triplet
+
+https://exercism.org/tracks/elixir/exercises/pythagorean-triplet
+
+## Saddle Points
+
+https://exercism.org/tracks/elixir/exercises/saddle-points
+
+## Scale Generator
+
+https://exercism.org/tracks/elixir/exercises/scale-generator
+
+## Sieve
+
+https://exercism.org/tracks/elixir/exercises/sieve
+
+## Square Root
+
+https://exercism.org/tracks/elixir/exercises/square-root
+
+## Transpose
+
+https://exercism.org/tracks/elixir/exercises/transpose
+
+## Yacht
+
+https://exercism.org/tracks/elixir/exercises/yacht
+
+## Knapsack
+
+https://exercism.org/tracks/elixir/exercises/knapsack
+
+## List Ops
+
+https://exercism.org/tracks/elixir/exercises/list-ops
+
+## Markdown
+
+https://exercism.org/tracks/elixir/exercises/markdown
+
+## OCR Numbers
+
+https://exercism.org/tracks/elixir/exercises/ocr-numbers
+
+## Rail Fence Cipher
+
+https://exercism.org/tracks/elixir/exercises/rail-fence-cipher
+
+## Robot Simulator
+
+https://exercism.org/tracks/elixir/exercises/robot-simulator
+
+## Satellite
+
+https://exercism.org/tracks/elixir/exercises/satellite
+
+## State of Tic-Tac-Toe
+
+https://exercism.org/tracks/elixir/exercises/state-of-tic-tac-toe
+
+## Variable Length Quantity
+
+https://exercism.org/tracks/elixir/exercises/variable-length-quantity
+
+## Alphametics
+
+https://exercism.org/tracks/elixir/exercises/alphametics
+
+## Change
+
+https://exercism.org/tracks/elixir/exercises/change
+
+## Connect
+
+https://exercism.org/tracks/elixir/exercises/connect
+
+## Minesweeper
+
+https://exercism.org/tracks/elixir/exercises/minesweeper
+
+## Queen Attack
+
+https://exercism.org/tracks/elixir/exercises/queen-attack
+
+## Rectangles
+
+https://exercism.org/tracks/elixir/exercises/rectangles
+
+## Two Bucket
+
+https://exercism.org/tracks/elixir/exercises/two-bucket
+
+## Word Search
+
+https://exercism.org/tracks/elixir/exercises/word-search
+
+## Wordy
+
+https://exercism.org/tracks/elixir/exercises/wordy
+
+## Allergies
+
+https://exercism.org/tracks/elixir/exercises/allergies
