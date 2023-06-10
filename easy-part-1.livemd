@@ -1611,3 +1611,51 @@ end
 :passed
 ```
 
+## Pangram: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Pangram.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => \"the quick brown fox jumps over the lazy dog\",\n    \"Bigger\" => \"the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog\"\n  })\n\n  job list_comprehension_uniq(input) do\n    Pangram.ListComprehensionUniq.pangram?(input)\n  end\n\n  job tco(input) do\n    Pangram.TCO.pangram?(input)\n  end\n\n  job enum_all(input) do\n    Pangram.EnumAll.pangram?(input)\n  end\n\n  job list_substraction(input) do\n    Pangram.ListSubstraction.pangram?(input)\n  end\n\n  job list_comprehension_reduce(input) do\n    Pangram.ListComprehensionReduce.pangram?(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Pangram.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => "the quick brown fox jumps over the lazy dog",
+      "Bigger" =>
+        "the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog"
+    })
+
+    job(list_comprehension_uniq(input)) do
+      Pangram.ListComprehensionUniq.pangram?(input)
+    end
+
+    job(tco(input)) do
+      Pangram.TCO.pangram?(input)
+    end
+
+    job(enum_all(input)) do
+      Pangram.EnumAll.pangram?(input)
+    end
+
+    job(list_substraction(input)) do
+      Pangram.ListSubstraction.pangram?(input)
+    end
+
+    job(list_comprehension_reduce(input)) do
+      Pangram.ListComprehensionReduce.pangram?(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
