@@ -1,0 +1,58 @@
+# Exercism Elixir Hard
+
+```elixir
+import ExUnit.Assertions
+
+Mix.install([
+  {:benchee_dsl, "~> 0.5"},
+  {:benchee_markdown, "~> 0.3"}
+])
+```
+
+## Book Store
+
+https://exercism.org/tracks/elixir/exercises/book-store
+
+## Bowling
+
+https://exercism.org/tracks/elixir/exercises/bowling
+
+## Circular Buffer
+
+https://exercism.org/tracks/elixir/exercises/circular-buffer
+
+## DOT DSL
+
+https://exercism.org/tracks/elixir/exercises/dot-dsl
+
+## Poker
+
+https://exercism.org/tracks/elixir/exercises/poker
+
+## React
+
+https://exercism.org/tracks/elixir/exercises/react
+
+## SGF Parsing
+
+https://exercism.org/tracks/elixir/exercises/sgf-parsing
+
+## Zipper
+
+https://exercism.org/tracks/elixir/exercises/zipper
+
+## Go Counting
+
+https://exercism.org/tracks/elixir/exercises/go-counting
+
+## POV
+
+https://exercism.org/tracks/elixir/exercises/pov
+
+## Zebra Puzzle
+
+https://exercism.org/tracks/elixir/exercises/zebra-puzzle
+
+## Forth
+
+https://exercism.org/tracks/elixir/exercises/forth
