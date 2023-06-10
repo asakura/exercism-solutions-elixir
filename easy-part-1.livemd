@@ -1575,3 +1575,39 @@ defmodule Pangram.ListComprehensionReduce do
 end
 ```
 
+## Pangram: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/pangram/test/pangram_test.exs
+
+```elixir
+modules = [
+  Pangram.ListComprehensionUniq,
+  Pangram.TCO,
+  Pangram.EnumAll,
+  Pangram.ListSubstraction,
+  Pangram.ListComprehensionReduce
+]
+
+for module <- modules do
+  refute module.pangram?("")
+  assert module.pangram?("abcdefghijklmnopqrstuvwxyz")
+  assert module.pangram?("the quick brown fox jumps over the lazy dog")
+  refute module.pangram?("a quick movement of the enemy will jeopardize five gunboats")
+  refute module.pangram?("the quick brown fish jumps over the lazy dog")
+  refute module.pangram?("five boxing wizards jump quickly at it")
+  assert module.pangram?("the_quick_brown_fox_jumps_over_the_lazy_dog")
+  assert module.pangram?("the 1 quick brown fox jumps over the 2 lazy dogs")
+  refute module.pangram?("7h3 qu1ck brown fox jumps ov3r 7h3 lazy dog")
+  assert module.pangram?("\"Five quacking Zephyrs jolt my wax bed.\"")
+  assert module.pangram?("the quick brown fox jumps over the lazy DOG")
+  refute module.pangram?("abcdefghijklm ABCDEFGHIJKLM")
+  assert module.pangram?("Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.")
+
+  refute module.pangram?(
+           "Широкая электрификация южных губерний даст мощный толчок подъёму сельского хозяйства."
+         )
+end
+
+:passed
+```
+
