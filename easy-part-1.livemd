@@ -1970,3 +1970,42 @@ assert Raindrops.convert(12121) == "12121"
 :passed
 ```
 
+## Resistor Color Duo
+
+https://exercism.org/tracks/elixir/exercises/resistor-color-duo
+
+```elixir
+defmodule ResistorColorDuo do
+  @type color ::
+          :black | :brown | :red | :orange | :yellow | :green | :blue | :violet | :grey | :white
+
+  @spec code(color :: color()) :: non_neg_integer()
+  defp code(:black), do: 0
+  defp code(:brown), do: 1
+  defp code(:red), do: 2
+  defp code(:orange), do: 3
+  defp code(:yellow), do: 4
+  defp code(:green), do: 5
+  defp code(:blue), do: 6
+  defp code(:violet), do: 7
+  defp code(:grey), do: 8
+  defp code(:white), do: 9
+
+  @doc """
+  Calculate a resistance value from two colors.
+
+  ## Examples
+
+      iex> ResistorColorDuo.value([:yellow, :red])
+      42
+
+  """
+  @spec value(colors :: [color()]) :: non_neg_integer()
+  def value(colors) when length(colors) >= 2 do
+    [color1, color2 | _tail] = colors
+
+    code(color1) * 10 + code(color2)
+  end
+end
+```
+
