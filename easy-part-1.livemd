@@ -1904,3 +1904,43 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Raindrops
+
+https://exercism.org/tracks/elixir/exercises/raindrops
+
+```elixir
+defmodule Raindrops do
+  @drops Pling: 3, Plang: 5, Plong: 7
+
+  @doc """
+  Returns a string based on raindrop factors.
+
+  - If the number contains 3 as a prime factor, output 'Pling'.
+  - If the number contains 5 as a prime factor, output 'Plang'.
+  - If the number contains 7 as a prime factor, output 'Plong'.
+  - If the number does not contain 3, 5, or 7 as a prime factor,
+    just pass the number's digits straight through.
+
+  ## Examples
+
+      iex> Raindrops.convert(105)
+      "PlingPlangPlong"
+
+  """
+  @spec convert(pos_integer()) :: String.t()
+  def convert(number) do
+    @drops
+    |> Enum.filter(&factor?(number, elem(&1, 1)))
+    |> Enum.map(&elem(&1, 0))
+    |> join(number)
+  end
+
+  defp factor?(number, factor) do
+    rem(number, factor) == 0
+  end
+
+  defp join([], number), do: to_string(number)
+  defp join(list, _number), do: Enum.join(list, "")
+end
+```
+
