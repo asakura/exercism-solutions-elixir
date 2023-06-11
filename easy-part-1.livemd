@@ -2009,3 +2009,72 @@ defmodule ResistorColorDuo do
 end
 ```
 
+## Resistor Color Duo: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/resistor-color-duo/test/resistor_color_duo_test.exs
+
+```elixir
+colors = [:brown, :black]
+output = ResistorColorDuo.value(colors)
+expected = 10
+assert output == expected
+
+colors = [:blue, :grey]
+output = ResistorColorDuo.value(colors)
+expected = 68
+assert output == expected
+
+colors = [:yellow, :violet]
+output = ResistorColorDuo.value(colors)
+expected = 47
+assert output == expected
+
+colors = [:white, :red]
+output = ResistorColorDuo.value(colors)
+expected = 92
+assert output == expected
+
+colors = [:orange, :orange]
+output = ResistorColorDuo.value(colors)
+expected = 33
+assert output == expected
+
+colors = [:green, :brown, :orange]
+output = ResistorColorDuo.value(colors)
+expected = 51
+assert output == expected
+
+colors = [:black, :brown]
+output = ResistorColorDuo.value(colors)
+expected = 1
+assert output == expected
+
+:passed
+```
+
+## RNA Transcription (TCO)
+
+https://exercism.org/tracks/elixir/exercises/rna-transcription
+
+```elixir
+defmodule RnaTranscription.TCO do
+  @doc """
+  Transcribes a character list representing DNA nucleotides to RNA.
+
+  ## Examples
+
+    iex> RnaTranscription.TCO.to_rna('ACTG')
+    'UGAC'
+
+  """
+  @spec to_rna([char()]) :: [char()]
+  def to_rna(dna), do: do_to_rna(dna, [])
+
+  defp do_to_rna([], acc), do: Enum.reverse(acc)
+  defp do_to_rna([?G | dna], acc), do: do_to_rna(dna, [?C | acc])
+  defp do_to_rna([?C | dna], acc), do: do_to_rna(dna, [?G | acc])
+  defp do_to_rna([?T | dna], acc), do: do_to_rna(dna, [?A | acc])
+  defp do_to_rna([?A | dna], acc), do: do_to_rna(dna, [?U | acc])
+end
+```
+
