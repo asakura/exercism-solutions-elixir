@@ -1869,3 +1869,38 @@ end
 :passed
 ```
 
+## Protein Translation: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule ProteinTranslation.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => \"UUUUUU\",\n    \"Bigger\" => \"UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\"\n  })\n\n  job tco(input) do\n    ProteinTranslation.TCO.of_rna(input)\n  end\n\n  job tco_case(input) do\n     ProteinTranslation.TCOCase.of_rna(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule ProteinTranslation.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => "UUUUUU",
+      "Bigger" => "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+    })
+
+    job(tco(input)) do
+      ProteinTranslation.TCO.of_rna(input)
+    end
+
+    job(tco_case(input)) do
+      ProteinTranslation.TCOCase.of_rna(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
