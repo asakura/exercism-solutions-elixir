@@ -1812,3 +1812,60 @@ defmodule ProteinTranslation.TCOCase do
 end
 ```
 
+## Protein Translation: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/protein-translation/test/protein_translation_test.exs
+
+```elixir
+for module <- [ProteinTranslation.TCO, ProteinTranslation.TCOCase] do
+  assert module.of_codon("AUG") == {:ok, "Methionine"}
+  assert module.of_codon("UUU") == {:ok, "Phenylalanine"}
+  assert module.of_codon("UUC") == {:ok, "Phenylalanine"}
+  assert module.of_codon("UUA") == {:ok, "Leucine"}
+  assert module.of_codon("UUG") == {:ok, "Leucine"}
+  assert module.of_codon("UCU") == {:ok, "Serine"}
+  assert module.of_codon("UCC") == {:ok, "Serine"}
+  assert module.of_codon("UCA") == {:ok, "Serine"}
+  assert module.of_codon("UCG") == {:ok, "Serine"}
+  assert module.of_codon("UAU") == {:ok, "Tyrosine"}
+  assert module.of_codon("UAC") == {:ok, "Tyrosine"}
+  assert module.of_codon("UGU") == {:ok, "Cysteine"}
+  assert module.of_codon("UGC") == {:ok, "Cysteine"}
+  assert module.of_codon("UGG") == {:ok, "Tryptophan"}
+  assert module.of_codon("UAA") == {:ok, "STOP"}
+  assert module.of_codon("UAG") == {:ok, "STOP"}
+  assert module.of_codon("UGA") == {:ok, "STOP"}
+  assert module.of_codon("UG") == {:error, "invalid codon"}
+  assert module.of_codon("UGGG") == {:error, "invalid codon"}
+  assert module.of_codon("AAA") == {:error, "invalid codon"}
+  assert module.of_codon("XYZ") == {:error, "invalid codon"}
+  assert module.of_rna("") == {:ok, []}
+
+  assert module.of_rna("AUGUUUUGG") ==
+           {:ok, ~w(Methionine Phenylalanine Tryptophan)}
+
+  assert module.of_rna("UUUUUU") ==
+           {:ok, ~w(Phenylalanine Phenylalanine)}
+
+  assert module.of_rna("UUAUUG") == {:ok, ~w(Leucine Leucine)}
+  assert module.of_rna("UAGUGG") == {:ok, ~w()}
+  assert module.of_rna("UGGUAG") == {:ok, ~w(Tryptophan)}
+  assert module.of_rna("AUGUUUUAA") == {:ok, ~w(Methionine Phenylalanine)}
+  assert module.of_rna("UGGUAGUGG") == {:ok, ~w(Tryptophan)}
+
+  assert module.of_rna("UGGUGUUAUUAAUGGUUU") ==
+           {:ok, ~w(Tryptophan Cysteine Tyrosine)}
+
+  assert module.of_rna("UG") == {:error, "invalid RNA"}
+  assert module.of_rna("AAA") == {:error, "invalid RNA"}
+  assert module.of_rna("XYZ") == {:error, "invalid RNA"}
+  assert module.of_rna("UUUROT") == {:error, "invalid RNA"}
+  assert module.of_rna("AUGU") == {:error, "invalid RNA"}
+
+  assert module.of_rna("UUCUUCUAAUGGU") ==
+           {:ok, ~w(Phenylalanine Phenylalanine)}
+end
+
+:passed
+```
+
