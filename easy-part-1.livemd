@@ -1944,3 +1944,29 @@ defmodule Raindrops do
 end
 ```
 
+## Raindrops: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/raindrops/test/raindrops_test.exs
+
+```elixir
+assert Raindrops.convert(1) == "1"
+assert Raindrops.convert(3) == "Pling"
+assert Raindrops.convert(5) == "Plang"
+assert Raindrops.convert(7) == "Plong"
+assert Raindrops.convert(6) == "Pling"
+assert Raindrops.convert(8) == "8"
+assert Raindrops.convert(9) == "Pling"
+assert Raindrops.convert(10) == "Plang"
+assert Raindrops.convert(14) == "Plong"
+assert Raindrops.convert(15) == "PlingPlang"
+assert Raindrops.convert(21) == "PlingPlong"
+assert Raindrops.convert(25) == "Plang"
+assert Raindrops.convert(35) == "PlangPlong"
+assert Raindrops.convert(49) == "Plong"
+assert Raindrops.convert(52) == "52"
+assert Raindrops.convert(105) == "PlingPlangPlong"
+assert Raindrops.convert(12121) == "12121"
+
+:passed
+```
+
