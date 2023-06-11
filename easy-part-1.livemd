@@ -1659,3 +1659,82 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Protein Translation (TCO)
+
+https://exercism.org/tracks/elixir/exercises/protein-translation
+
+```elixir
+defmodule ProteinTranslation.TCO do
+  @doc """
+  Given an RNA string, return a list of proteins specified by codons, in order.
+
+  ## Examples
+
+      iex> ProteinTranslation.TCO.of_rna("UUUUUU")
+      {:ok, ~w(Phenylalanine Phenylalanine)}
+
+  """
+  @spec of_rna(String.t()) :: {:ok, list(String.t())} | {:error, String.t()}
+  def of_rna(rna), do: do_of_rna(rna, [])
+
+  defp do_of_rna(<<codon::binary-size(3), rest::binary>>, proteins) do
+    case of_codon(codon) do
+      {:ok, "STOP"} -> do_of_rna(<<>>, proteins)
+      {:ok, protein} -> do_of_rna(rest, proteins ++ [protein])
+      {:error, _reason} -> {:error, "invalid RNA"}
+    end
+  end
+
+  defp do_of_rna(<<>>, proteins), do: {:ok, proteins}
+  defp do_of_rna(_rna, _proteins), do: {:error, "invalid RNA"}
+
+  @codon_to_protein %{
+    "UGU" => "Cysteine",
+    "UGC" => "Cysteine",
+    "UUA" => "Leucine",
+    "UUG" => "Leucine",
+    "AUG" => "Methionine",
+    "UUU" => "Phenylalanine",
+    "UUC" => "Phenylalanine",
+    "UCU" => "Serine",
+    "UCC" => "Serine",
+    "UCA" => "Serine",
+    "UCG" => "Serine",
+    "UGG" => "Tryptophan",
+    "UAU" => "Tyrosine",
+    "UAC" => "Tyrosine",
+    "UAA" => "STOP",
+    "UAG" => "STOP",
+    "UGA" => "STOP"
+  }
+
+  @doc """
+  Given a codon, return the corresponding protein
+
+  UGU -> Cysteine
+  UGC -> Cysteine
+  UUA -> Leucine
+  UUG -> Leucine
+  AUG -> Methionine
+  UUU -> Phenylalanine
+  UUC -> Phenylalanine
+  UCU -> Serine
+  UCC -> Serine
+  UCA -> Serine
+  UCG -> Serine
+  UGG -> Tryptophan
+  UAU -> Tyrosine
+  UAC -> Tyrosine
+  UAA -> STOP
+  UAG -> STOP
+  UGA -> STOP
+  """
+  @spec of_codon(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  for {codon, protein} <- @codon_to_protein do
+    def of_codon(unquote(codon)), do: {:ok, unquote(protein)}
+  end
+
+  def of_codon(_codon), do: {:error, "invalid codon"}
+end
+```
+
