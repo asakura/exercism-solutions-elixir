@@ -2152,3 +2152,30 @@ defmodule RnaTranscription.EnumMapCase do
 end
 ```
 
+## RNA Transcription (List Comprehension)
+
+```elixir
+defmodule RnaTranscription.ListComprehension do
+  @doc """
+  Transcribes a character list representing DNA nucleotides to RNA.
+
+  ## Examples
+
+    iex> RnaTranscription.ListComprehension.to_rna('ACTG')
+    'UGAC'
+
+  """
+  @spec to_rna([char()]) :: [char()]
+  def to_rna(dna) do
+    for nucleotide <- dna, into: [] do
+      transcribe(nucleotide)
+    end
+  end
+
+  defp transcribe(?G), do: ?C
+  defp transcribe(?C), do: ?G
+  defp transcribe(?T), do: ?A
+  defp transcribe(?A), do: ?U
+end
+```
+
