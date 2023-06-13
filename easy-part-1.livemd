@@ -2287,3 +2287,32 @@ defmodule RnaTranscription.ListComprehensionCase do
 end
 ```
 
+## RNA Transcription: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/rna-transcription/test/rna_transcription_test.exs
+
+```elixir
+modules = [
+  RnaTranscription.TCO,
+  RnaTranscription.Recursion,
+  RnaTranscription.EnumMapMultiClause,
+  RnaTranscription.EnumMapCase,
+  RnaTranscription.ListComprehension,
+  RnaTranscription.EnumMap,
+  RnaTranscription.EnumMapLookupDict,
+  RnaTranscription.ListComprehensionLookupDict,
+  RnaTranscription.ListComprehensionCase
+]
+
+for module <- modules do
+  assert module.to_rna('') == ''
+  assert module.to_rna('G') == 'C'
+  assert module.to_rna('C') == 'G'
+  assert module.to_rna('T') == 'A'
+  assert module.to_rna('A') == 'U'
+  assert module.to_rna('ACGTGGTCTTAA') == 'UGCACCAGAAUU'
+end
+
+:passed
+```
+
