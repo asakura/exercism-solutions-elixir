@@ -2179,3 +2179,28 @@ defmodule RnaTranscription.ListComprehension do
 end
 ```
 
+## RNA Transcription (Enum.map/2)
+
+```elixir
+defmodule RnaTranscription.EnumMap do
+  @doc """
+  Transcribes a character list representing DNA nucleotides to RNA.
+
+  ## Examples
+
+    iex> RnaTranscription.EnumMap.to_rna('ACTG')
+    'UGAC'
+
+  """
+  @spec to_rna([char()]) :: [char()]
+  def to_rna(dna) do
+    Enum.map(dna, &transcribe/1)
+  end
+
+  defp transcribe(?G), do: ?C
+  defp transcribe(?C), do: ?G
+  defp transcribe(?T), do: ?A
+  defp transcribe(?A), do: ?U
+end
+```
+
