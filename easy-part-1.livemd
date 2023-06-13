@@ -2260,3 +2260,30 @@ defmodule RnaTranscription.ListComprehensionLookupDict do
 end
 ```
 
+## RNA Transcription (List Comprehension, Case)
+
+```elixir
+defmodule RnaTranscription.ListComprehensionCase do
+  @doc """
+  Transcribes a character list representing DNA nucleotides to RNA.
+
+  ## Examples
+
+    iex> RnaTranscription.ListComprehensionCase.to_rna('ACTG')
+    'UGAC'
+
+  """
+  @spec to_rna([char()]) :: [char()]
+  def to_rna(dna) do
+    for nucleotide <- dna, into: [] do
+      case nucleotide do
+        ?G -> ?C
+        ?C -> ?G
+        ?T -> ?A
+        ?A -> ?U
+      end
+    end
+  end
+end
+```
+
