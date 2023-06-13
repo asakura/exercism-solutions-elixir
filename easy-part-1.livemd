@@ -2316,3 +2316,66 @@ end
 :passed
 ```
 
+## RNA Transcription: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule RnaTranscription.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => 'ACTG',\n    \"Bigger\" => 'ACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTG'\n  })\n\n  job tco(input) do\n    RnaTranscription.TCO.to_rna(input)\n  end\n\n  job recursion(input) do\n    RnaTranscription.Recursion.to_rna(input)\n  end\n\n  job enum_map_multi_clause(input) do\n    RnaTranscription.EnumMapMultiClause.to_rna(input)\n  end\n\n  job enum_map_case(input) do\n    RnaTranscription.EnumMapCase.to_rna(input)\n  end\n\n  job list_comprehension(input) do\n    RnaTranscription.ListComprehension.to_rna(input)\n  end\n\n  job enum_map(input) do\n    RnaTranscription.EnumMap.to_rna(input)\n  end\n\n  job enum_map_lookup_dict(input) do\n    RnaTranscription.EnumMapLookupDict.to_rna(input)\n  end\n\n  job list_comprehension_lookup_dict(input) do\n    RnaTranscription.ListComprehensionLookupDict.to_rna(input)\n  end\n\n  job list_comprehension_case(input) do\n    RnaTranscription.ListComprehensionCase.to_rna(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule RnaTranscription.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => 'ACTG',
+      "Bigger" => 'ACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTGACTG'
+    })
+
+    job(tco(input)) do
+      RnaTranscription.TCO.to_rna(input)
+    end
+
+    job(recursion(input)) do
+      RnaTranscription.Recursion.to_rna(input)
+    end
+
+    job(enum_map_multi_clause(input)) do
+      RnaTranscription.EnumMapMultiClause.to_rna(input)
+    end
+
+    job(enum_map_case(input)) do
+      RnaTranscription.EnumMapCase.to_rna(input)
+    end
+
+    job(list_comprehension(input)) do
+      RnaTranscription.ListComprehension.to_rna(input)
+    end
+
+    job(enum_map(input)) do
+      RnaTranscription.EnumMap.to_rna(input)
+    end
+
+    job(enum_map_lookup_dict(input)) do
+      RnaTranscription.EnumMapLookupDict.to_rna(input)
+    end
+
+    job(list_comprehension_lookup_dict(input)) do
+      RnaTranscription.ListComprehensionLookupDict.to_rna(input)
+    end
+
+    job(list_comprehension_case(input)) do
+      RnaTranscription.ListComprehensionCase.to_rna(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
