@@ -2578,3 +2578,61 @@ defmodule RotationalCipher.ListComprehension do
 end
 ```
 
+## Rotational Cipher: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/rotational-cipher/test/rotational_cipher_test.exs
+
+```elixir
+modules = [
+  RotationalCipher.EnumMap,
+  RotationalCipher.Macro,
+  RotationalCipher.ListComprehension
+]
+
+for module <- modules do
+  plaintext = "a"
+  shift = 1
+  assert module.rotate(plaintext, shift) == "b"
+
+  plaintext = "a"
+  shift = 26
+  assert module.rotate(plaintext, shift) == "a"
+
+  plaintext = "a"
+  shift = 0
+  assert module.rotate(plaintext, shift) == "a"
+
+  plaintext = "m"
+  shift = 13
+  assert module.rotate(plaintext, shift) == "z"
+
+  plaintext = "n"
+  shift = 13
+  assert module.rotate(plaintext, shift) == "a"
+
+  plaintext = "OMG"
+  shift = 5
+  assert module.rotate(plaintext, shift) == "TRL"
+
+  plaintext = "O M G"
+  shift = 5
+  assert module.rotate(plaintext, shift) == "T R L"
+
+  plaintext = "Testing 1 2 3 testing"
+  shift = 4
+  assert module.rotate(plaintext, shift) == "Xiwxmrk 1 2 3 xiwxmrk"
+
+  plaintext = "Let's eat, Grandma!"
+  shift = 21
+  assert module.rotate(plaintext, shift) == "Gzo'n zvo, Bmviyhv!"
+
+  plaintext = "The quick brown fox jumps over the lazy dog."
+  shift = 13
+
+  assert module.rotate(plaintext, shift) ==
+           "Gur dhvpx oebja sbk whzcf bire gur ynml qbt."
+end
+
+:passed
+```
+
