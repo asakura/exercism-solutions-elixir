@@ -2454,3 +2454,36 @@ assert RomanNumerals.numeral(3999) == "MMMCMXCIX"
 :passed
 ```
 
+## Rotational Cipher
+
+https://exercism.org/tracks/elixir/exercises/rotational-cipher
+
+```elixir
+defmodule RotationalCipher.EnumMap do
+  @doc """
+  Given a plaintext and amount to shift by, return a rotated string.
+
+  ## Examples
+
+      iex> RotationalCipher.EnumMap.rotate("Attack at dawn", 13)
+      "Nggnpx ng qnja"
+
+  """
+  @spec rotate(text :: String.t(), shift :: integer) :: String.t()
+  def rotate(text, shift) do
+    text
+    |> to_charlist()
+    |> Enum.map(&translate(&1, shift))
+    |> to_string()
+  end
+
+  defp translate(letter, shift) when letter in ?a..?z,
+    do: rem(letter + shift - ?a, 26) + ?a
+
+  defp translate(letter, shift) when letter in ?A..?Z,
+    do: rem(letter + shift - ?A, 26) + ?A
+
+  defp translate(other_character, _), do: other_character
+end
+```
+
