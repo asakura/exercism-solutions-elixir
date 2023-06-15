@@ -2636,3 +2636,42 @@ end
 :passed
 ```
 
+## Rotational Cipher: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule RotationalCipher.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => \"Attack at dawn\",\n    \"Bigger\" => \"Attack at dawn Attack at dawn Attack at dawn Attack at dawn Attack at dawn Attack at dawn\"\n  })\n\n  job enum_map(input) do\n    RotationalCipher.EnumMap.rotate(input, 13)\n  end\n\n  job macro(input) do\n    RotationalCipher.Macro.rotate(input, 13)\n  end\n\n  job list_comprehension(input) do\n    RotationalCipher.ListComprehension.rotate(input, 13)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule RotationalCipher.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => "Attack at dawn",
+      "Bigger" =>
+        "Attack at dawn Attack at dawn Attack at dawn Attack at dawn Attack at dawn Attack at dawn"
+    })
+
+    job(enum_map(input)) do
+      RotationalCipher.EnumMap.rotate(input, 13)
+    end
+
+    job(macro(input)) do
+      RotationalCipher.Macro.rotate(input, 13)
+    end
+
+    job(list_comprehension(input)) do
+      RotationalCipher.ListComprehension.rotate(input, 13)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
