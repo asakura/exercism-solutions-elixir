@@ -2533,3 +2533,48 @@ defmodule RotationalCipher.Macro do
 end
 ```
 
+## Rotational Cipher (List Comprehension)
+
+```elixir
+defmodule RotationalCipher.ListComprehension do
+  @doc """
+  Given a plaintext and amount to shift by, return a rotated string.
+
+  ## Examples
+
+      iex> RotationalCipher.ListComprehension.rotate("Attack at dawn", 13)
+      "Nggnpx ng qnja"
+
+  """
+  @spec rotate(text :: String.t(), shift :: integer) :: String.t()
+
+  def rotate(text, shift) do
+    for char <- to_charlist(text), into: [] do
+      cond do
+        char >= ?a and char <= ?z ->
+          char = char + shift
+
+          if char > ?z do
+            ?a + (char - ?z) - 1
+          else
+            char
+          end
+
+        char >= ?A and char <= ?Z ->
+          char = char + shift
+
+          if char > ?Z do
+            ?A + (char - ?Z) - 1
+          else
+            char
+          end
+
+        true ->
+          char
+      end
+    end
+    |> to_string()
+  end
+end
+```
+
