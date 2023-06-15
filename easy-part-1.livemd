@@ -2487,3 +2487,49 @@ defmodule RotationalCipher.EnumMap do
 end
 ```
 
+## Rotational Cipher (Macro)
+
+```elixir
+defmodule RotationalCipher.Macro do
+  @alphabet "abcdefghijklmnopqrstuvwxyz"
+  @alphabet_size String.length(@alphabet)
+
+  for shift <- 0..25 do
+    plain = String.split(@alphabet, "", trim: true)
+
+    cipher =
+      @alphabet
+      |> Kernel.<>(@alphabet)
+      |> String.split("", trim: true)
+      |> Enum.drop(shift)
+      |> Enum.take(@alphabet_size)
+
+    for {plain_letter, cipher_letter} <- Enum.zip(plain, cipher) do
+      defp translate(unquote(plain_letter), unquote(shift)),
+        do: unquote(cipher_letter)
+
+      defp translate(unquote(plain_letter |> String.upcase()), unquote(shift)),
+        do: unquote(cipher_letter |> String.upcase())
+    end
+  end
+
+  defp translate(other_character, _), do: other_character
+
+  @doc """
+  Given a plaintext and amount to shift by, return a rotated string.
+
+  ## Examples
+
+      iex> RotationalCipher.Macro.rotate("Attack at dawn", 13)
+      "Nggnpx ng qnja"
+
+  """
+  @spec rotate(text :: String.t(), shift :: integer) :: String.t()
+  def rotate(text, shift) do
+    text
+    |> String.split("", trim: true)
+    |> Enum.map_join(&translate(&1, shift))
+  end
+end
+```
+
