@@ -1718,6 +1718,41 @@ defmodule PigLatin.Binary do
 end
 ```
 
+## Pig Latin (Regex)
+
+```elixir
+defmodule PigLatin.Regex do
+  @regex ~r/^(?:y([aeiou][a-z]+))|((?:xr)?(?:xb)?[aeiouy][a-z]+)|(?:([^aeioyqu]*qu|[^aeiouy]+)([a-z]+))/
+
+  @doc """
+  Given a `phrase`, translate it a word at a time to Pig Latin.
+
+  ## Examples
+
+    iex> PigLatin.translate("fox")
+    "oxfay"
+
+    iex> PigLatin.translate("throat")
+    "oatthray"
+
+  """
+  @spec translate(phrase :: String.t()) :: String.t()
+  def translate(phrase) do
+    phrase
+    |> String.split()
+    |> Enum.map_join(" ", &do_translate/1)
+  end
+
+  defp do_translate(word) do
+    case Regex.run(@regex, word) do
+      [_, m1] -> m1 <> "yay"
+      [_, _, m2] -> m2 <> "ay"
+      [_, _, _, m3, m4] -> IO.iodata_to_binary([m4, m3, "ay"])
+    end
+  end
+end
+```
+
 ## Protein Translation (TCO)
 
 https://exercism.org/tracks/elixir/exercises/protein-translation
