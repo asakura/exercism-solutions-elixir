@@ -9,3 +9,35 @@ Mix.install([
 require Integer
 import ExUnit.Assertions
 ```
+
+## Hello World
+
+https://exercism.org/tracks/elixir/exercises/hello-world
+
+```elixir
+defmodule HelloWorld do
+  @doc """
+  Simply returns "Hello, World!"
+
+  ## Examples
+
+      iex> HelloWorld.hello()
+      "Hello, World!"
+
+  """
+  @spec hello :: String.t()
+  def hello do
+    "Hello, World!"
+  end
+end
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+assert HelloWorld.hello() == "Hello, World!"
+
+:passed
+```
+
+```
