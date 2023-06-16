@@ -325,5 +325,45 @@ defmodule Allergies.EnumFilterMap do
 end
 ```
 
+## Allergies (Enum.zip/2, Enum.reduce/3)
+
+```elixir
+defmodule Allergies.EnumZipReduce do
+  @allergies %{
+    1 => "eggs",
+    2 => "peanuts",
+    4 => "shellfish",
+    8 => "strawberries",
+    16 => "tomatoes",
+    32 => "chocolate",
+    64 => "pollen",
+    128 => "cats"
+  }
+
+  @doc """
+  List the allergies for which the corresponding flag bit is true.
+  """
+  @spec list(non_neg_integer) :: [String.t()]
+  def list(flags) do
+    flags
+    |> Integer.digits(2)
+    |> Enum.reverse()
+    |> Enum.zip(@allergies)
+    |> Enum.reduce([], fn
+      {1, {_, allergy}}, acc -> [allergy | acc]
+      _, acc -> acc
+    end)
+  end
+
+  @doc """
+  Returns whether the corresponding flag bit in 'flags' is set for the item.
+  """
+  @spec allergic_to?(non_neg_integer, String.t()) :: boolean
+  def allergic_to?(flags, item) do
+    item in list(flags)
+  end
+end
+```
+
 
 https://exercism.org/tracks/elixir/exercises/allergies
