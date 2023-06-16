@@ -40,4 +40,93 @@ assert HelloWorld.hello() == "Hello, World!"
 :passed
 ```
 
+## Lasanga
+
+https://exercism.org/tracks/elixir/exercises/lasagna
+
+```elixir
+defmodule Lasagna do
+  @moduledoc """
+  Modules contains some functions to help you cook a brilliant lasagna
+  from you favorite cooking book.
+
+  ## Examples
+
+      iex> Lasagna.expected_minutes_in_oven()
+      40
+
+      iex> Lasagna.remaining_minutes_in_oven(10)
+      30
+
+      iex> Lasagna.preparation_time_in_minutes(2)
+      4
+
+      iex> Lasagna.total_time_in_minutes(2, 10)
+      14
+
+      iex> Lasagna.alarm()
+      "Ding!"
+
+  """
+
+  @type minutes :: non_neg_integer()
+  @type layers :: non_neg_integer()
+  @total_minutes_in_oven 40
+  @minutes_for_layer 2
+
+  @doc "Returns how many minutes the lasagna should be in the oven."
+  @spec expected_minutes_in_oven() :: minutes()
+  def expected_minutes_in_oven(), do: @total_minutes_in_oven
+
+  @doc """
+  Takes the actual minutes the lasagna has been in the oven and returns
+  how many minutes the lasagna still has to remain in the oven.
+  """
+  @spec remaining_minutes_in_oven(minutes()) :: minutes()
+  def remaining_minutes_in_oven(actual_minutes) when actual_minutes >= 0 do
+    expected_minutes_in_oven() - actual_minutes
+  end
+
+  @doc """
+  Takes the number of layers you added to the lasagna as a argument and returns
+  how many minutes you spent preparing the lasagna, assuming each layer takes
+  you 2 minutes to prepare.
+  """
+  @spec preparation_time_in_minutes(minutes()) :: minutes()
+  def preparation_time_in_minutes(layers) when layers > 0 do
+    @minutes_for_layer * layers
+  end
+
+  @doc """
+  Returns how many minutes in total you've worked on cooking the lasagna,
+  which is sum of the preparation time, and the time in minutes the lasagna
+  has spent in the oven at the moment.
+  """
+  @spec total_time_in_minutes(layers(), minutes()) :: minutes()
+  def total_time_in_minutes(layers, actual_minutes)
+      when layers > 0 and actual_minutes >= 0,
+      do: preparation_time_in_minutes(layers) + actual_minutes
+
+  @doc "Returns a message indicating that the lasagna is ready to eat."
+  @spec alarm() :: String.t()
+  def alarm(), do: "Ding!"
+end
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/lasagna/test/lasagna_test.exs
+
+assert Lasagna.expected_minutes_in_oven() === 40
+assert Lasagna.remaining_minutes_in_oven(25) === 15
+assert Lasagna.preparation_time_in_minutes(1) === 2
+assert Lasagna.preparation_time_in_minutes(4) === 8
+assert Lasagna.total_time_in_minutes(1, 30) === 32
+assert Lasagna.total_time_in_minutes(4, 8) === 16
+assert Lasagna.alarm() === "Ding!"
+
+:passed
+```
+
 ```
