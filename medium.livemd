@@ -465,3 +465,42 @@ end
 :passed
 ```
 
+## Allergies: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Allergies.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => 0,\n    \"Bigger\" => 65999\n  })\n\n  job binary_reducing(input) do\n    Allergies.BinaryReducing.list(input)\n  end\n\n  job list_comprehension(input) do\n    Allergies.ListComprehension.list(input)\n  end\n\n  job enum_filter_map(input) do\n    Allergies.EnumFilterMap.list(input)\n  end\n\n  job enum_zip_reduce(input) do\n    Allergies.EnumZipReduce.list(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Allergies.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{"Small" => 0, "Bigger" => 65999})
+
+    job(binary_reducing(input)) do
+      Allergies.BinaryReducing.list(input)
+    end
+
+    job(list_comprehension(input)) do
+      Allergies.ListComprehension.list(input)
+    end
+
+    job(enum_filter_map(input)) do
+      Allergies.EnumFilterMap.list(input)
+    end
+
+    job(enum_zip_reduce(input)) do
+      Allergies.EnumZipReduce.list(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
