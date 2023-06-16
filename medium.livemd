@@ -201,6 +201,51 @@ https://exercism.org/tracks/elixir/exercises/word-search
 
 https://exercism.org/tracks/elixir/exercises/wordy
 
-## Allergies
+## Allergies (Binary Reducing)
+
+https://exercism.org/tracks/elixir/exercises/allergies
+
+```elixir
+defmodule Allergies.BinaryReducing do
+  @doc """
+  List the allergies for which the corresponding flag bit is true.
+  """
+  @spec list(non_neg_integer) :: [String.t()]
+  def list(flags), do: list(<<flags>>, [])
+
+  defp list(<<1::size(1), r::size(7)>>, acc), do: list(<<0::size(1), r::size(7)>>, ["cats" | acc])
+
+  defp list(<<l::size(1), 1::size(1), r::size(6)>>, acc),
+    do: list(<<l::size(1), 0::size(1), r::size(6)>>, ["pollen" | acc])
+
+  defp list(<<l::size(2), 1::size(1), r::size(5)>>, acc),
+    do: list(<<l::size(2), 0::size(1), r::size(5)>>, ["chocolate" | acc])
+
+  defp list(<<l::size(3), 1::size(1), r::size(4)>>, acc),
+    do: list(<<l::size(3), 0::size(1), r::size(4)>>, ["tomatoes" | acc])
+
+  defp list(<<l::size(4), 1::size(1), r::size(3)>>, acc),
+    do: list(<<l::size(4), 0::size(1), r::size(3)>>, ["strawberries" | acc])
+
+  defp list(<<l::size(5), 1::size(1), r::size(2)>>, acc),
+    do: list(<<l::size(5), 0::size(1), r::size(2)>>, ["shellfish" | acc])
+
+  defp list(<<l::size(6), 1::size(1), r::size(1)>>, acc),
+    do: list(<<l::size(6), 0::size(1), r::size(1)>>, ["peanuts" | acc])
+
+  defp list(<<l::size(7), 1::size(1)>>, acc), do: list(<<l::size(7), 0::size(1)>>, ["eggs" | acc])
+
+  defp list(<<0>>, acc), do: acc
+
+  @doc """
+  Returns whether the corresponding flag bit in 'flags' is set for the item.
+  """
+  @spec allergic_to?(non_neg_integer, String.t()) :: boolean
+  def allergic_to?(flags, item) do
+    item in list(flags)
+  end
+end
+```
+
 
 https://exercism.org/tracks/elixir/exercises/allergies
