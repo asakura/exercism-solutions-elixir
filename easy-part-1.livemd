@@ -1659,6 +1659,65 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Pig Latin (Binary Patter Matching)
+
+https://exercism.org/tracks/elixir/exercises/pig-latin
+
+```elixir
+defmodule PigLatin.Binary do
+  @vowels [?a, ?e, ?i, ?o, ?u]
+
+  defguardp is_vowel(c) when c in @vowels
+  defguardp is_consonant(c) when not is_vowel(c)
+
+  @doc """
+  Given a `phrase`, translate it a word at a time to Pig Latin.
+
+  ## Examples
+
+    iex> PigLatin.translate("fox")
+    "oxfay"
+
+    iex> PigLatin.translate("throat")
+    "oatthray"
+
+  """
+  @spec translate(phrase :: String.t()) :: String.t()
+  def translate(phrase) do
+    phrase
+    |> String.split()
+    |> Enum.map_join(" ", &word/1)
+  end
+
+  defp word(<<c::utf8, _rest::binary>> = word) when is_vowel(c),
+    do: <<word::binary, "ay">>
+
+  defp word(<<"qu", rest::binary>>),
+    do: <<rest::binary, "quay">>
+
+  defp word(<<c::utf8, "qu", rest::binary>>) when is_consonant(c),
+    do: <<rest::binary, c::utf8, "quay">>
+
+  defp word(<<xy::utf8, c::utf8, _rest::binary>> = word) when xy in [?x, ?y] and is_consonant(c),
+    do: <<word::binary, "ay">>
+
+  defp word(<<?y::utf8, c::utf8, rest::binary>>) when is_vowel(c),
+    do: <<c::utf8, rest::binary, ?y::utf8, "ay">>
+
+  defp word(word),
+    do: cluster(word, [[] | ""])
+
+  defp cluster(<<c::utf8, rest::binary>>, [_ | c2] = acc) when is_consonant(c) and c2 != ~c"y",
+    do: cluster(rest, [acc | [c]])
+
+  defp cluster(word, [acc | [?y]]),
+    do: <<?y::utf8, word::binary, IO.iodata_to_binary(acc)::binary, "ay">>
+
+  defp cluster(word, acc),
+    do: <<word::binary, IO.iodata_to_binary(acc)::binary, "ay">>
+end
+```
+
 ## Protein Translation (TCO)
 
 https://exercism.org/tracks/elixir/exercises/protein-translation
