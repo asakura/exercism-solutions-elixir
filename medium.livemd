@@ -97,6 +97,42 @@ defmodule PhoneNumber do
 end
 ```
 
+## Phone Number: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/phone-number/test/phone_number_test.exs
+
+```elixir
+assert PhoneNumber.clean("(223) 456-7890") == {:ok, "2234567890"}
+assert PhoneNumber.clean("223.456.7890") == {:ok, "2234567890"}
+assert PhoneNumber.clean("223 456   7890   ") == {:ok, "2234567890"}
+assert PhoneNumber.clean("212555010") == {:error, "incorrect number of digits"}
+assert PhoneNumber.clean("22234567890") == {:error, "11 digits must start with 1"}
+assert PhoneNumber.clean("12234567890") == {:ok, "2234567890"}
+assert PhoneNumber.clean("+1 (223) 456-7890") == {:ok, "2234567890"}
+assert PhoneNumber.clean("321234567890") == {:error, "incorrect number of digits"}
+assert PhoneNumber.clean("523-abc-7890") == {:error, "must contain digits only"}
+assert PhoneNumber.clean("523-@:!-7890") == {:error, "must contain digits only"}
+assert PhoneNumber.clean("(023) 456-7890") == {:error, "area code cannot start with zero"}
+assert PhoneNumber.clean("(123) 456-7890") == {:error, "area code cannot start with one"}
+
+assert PhoneNumber.clean("(223) 056-7890") ==
+         {:error, "exchange code cannot start with zero"}
+
+assert PhoneNumber.clean("(223) 156-7890") ==
+         {:error, "exchange code cannot start with one"}
+
+assert PhoneNumber.clean("1 (023) 456-7890") == {:error, "area code cannot start with zero"}
+assert PhoneNumber.clean("1 (123) 456-7890") == {:error, "area code cannot start with one"}
+
+assert PhoneNumber.clean("1 (223) 056-7890") ==
+         {:error, "exchange code cannot start with zero"}
+
+assert PhoneNumber.clean("1 (223) 156-7890") ==
+         {:error, "exchange code cannot start with one"}
+
+:passed
+```
+
 ## Rational Numbers
 
 https://exercism.org/tracks/elixir/exercises/rational-numbers
