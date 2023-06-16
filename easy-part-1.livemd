@@ -1791,6 +1791,42 @@ end
 :passed
 ```
 
+## Pig Latin: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule PigLatin.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => \"the quick brown fox jumps over the lazy dog\",\n    \"Bigger\" => \"the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog\"\n  })\n\n  job binary_patter_matching(input) do\n    PigLatin.Binary.translate(input)\n  end\n\n  job regex(input) do\n    PigLatin.Regex.translate(input)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule PigLatin.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => "the quick brown fox jumps over the lazy dog",
+      "Bigger" =>
+        "the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog"
+    })
+
+    job(binary_patter_matching(input)) do
+      PigLatin.Binary.translate(input)
+    end
+
+    job(regex(input)) do
+      PigLatin.Regex.translate(input)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
 ## Protein Translation (TCO)
 
 https://exercism.org/tracks/elixir/exercises/protein-translation
