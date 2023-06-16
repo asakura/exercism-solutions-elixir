@@ -1753,6 +1753,44 @@ defmodule PigLatin.Regex do
 end
 ```
 
+## Pig Latin: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/pig-latin/test/pig_latin_test.exs
+
+```elixir
+for module <- [PigLatin.Binary, PigLatin.Regex] do
+  assert module.translate("apple") == "appleay"
+  assert module.translate("ear") == "earay"
+  assert module.translate("igloo") == "iglooay"
+  assert module.translate("object") == "objectay"
+  assert module.translate("under") == "underay"
+  assert module.translate("equal") == "equalay"
+  assert module.translate("pig") == "igpay"
+  assert module.translate("koala") == "oalakay"
+  assert module.translate("xenon") == "enonxay"
+  assert module.translate("qat") == "atqay"
+  assert module.translate("pleasure") == "easureplay"
+  assert module.translate("stringify") == "ingifystray"
+  assert module.translate("zkrrkrkrkrzzzkewk") == "ewkzkrrkrkrkrzzzkay"
+  assert module.translate("chair") == "airchay"
+  assert module.translate("queen") == "eenquay"
+  assert module.translate("square") == "aresquay"
+  assert module.translate("therapy") == "erapythay"
+  assert module.translate("thrush") == "ushthray"
+  assert module.translate("school") == "oolschay"
+  assert module.translate("yttria") == "yttriaay"
+  assert module.translate("yddria") == "yddriaay"
+  assert module.translate("xray") == "xrayay"
+  assert module.translate("xbot") == "xbotay"
+  assert module.translate("yellow") == "ellowyay"
+  assert module.translate("rhythm") == "ythmrhay"
+  assert module.translate("my") == "ymay"
+  assert module.translate("quick fast run") == "ickquay astfay unray"
+end
+
+:passed
+```
+
 ## Protein Translation (TCO)
 
 https://exercism.org/tracks/elixir/exercises/protein-translation
