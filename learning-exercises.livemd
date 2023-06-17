@@ -598,4 +598,69 @@ assert LogLevel.alert_recipient(3, true) == false
 :passed
 ```
 
+## Language List
+
+https://exercism.org/tracks/elixir/exercises/language-list
+
+```elixir
+defmodule LanguageList do
+  @moduledoc """
+
+  ## Examples
+
+      iex> languages = LanguageList.new()
+      ...> |> LanguageList.add("Elixir")
+      ...> |> LanguageList.add("C")
+      ["C", "Elixir"]
+      iex> LanguageList.remove(languages)
+      ["Elixir"]
+      iex> LanguageList.first(languages)
+      "C"
+      iex> LanguageList.count(languages)
+      2
+      iex> LanguageList.functional_list?(languages)
+      true
+
+  """
+
+  @type language_list :: list(String.t())
+
+  @doc "Returns an empty list."
+  @spec new() :: language_list()
+  def new() do
+    []
+  end
+
+  @doc "Prepends `list` with `language`."
+  @spec add(language_list(), String.t()) :: language_list()
+  def add(list, language) do
+    [language | list]
+  end
+
+  @doc "Removes head of `list`."
+  @spec remove(language_list()) :: language_list()
+  def remove(list) do
+    tl(list)
+  end
+
+  @doc "Returns head of `list`."
+  @spec first(language_list()) :: language_list()
+  def first(list) do
+    hd(list)
+  end
+
+  @doc "Returns how many languages are in the list."
+  @spec count(language_list()) :: non_neg_integer()
+  def count(list) do
+    length(list)
+  end
+
+  @doc "Checks the list for being an exciting."
+  @spec functional_list?(language_list()) :: boolean()
+  def functional_list?(list) do
+    "Elixir" in list
+  end
+end
+```
+
 ```
