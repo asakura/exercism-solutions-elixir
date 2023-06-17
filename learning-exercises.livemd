@@ -506,4 +506,56 @@ assert h.(81) === 1
 :passed
 ```
 
+## Log Level
+
+https://exercism.org/tracks/elixir/exercises/log-level
+
+```elixir
+defmodule LogLevel do
+  @moduledoc """
+
+  ## Examples
+
+      iex> LogLevel.to_label(3, false)
+      :warning
+
+      iex> LogLevel.alert_recipient(3, false)
+      false
+
+      iex> LogLevel.alert_recipient(4, false)
+      :ops
+
+  """
+
+  @type log_level :: :trace | :debug | :info | :warning | :error | :fatal | :unknown
+
+  @doc "Returns the logging code label."
+  @spec to_label(non_neg_integer(), boolean()) :: log_level()
+  def to_label(level, legacy?) do
+    cond do
+      level === 0 and not legacy? -> :trace
+      level === 1 -> :debug
+      level === 2 -> :info
+      level === 3 -> :warning
+      level === 4 -> :error
+      level === 5 and not legacy? -> :fatal
+      true -> :unknown
+    end
+  end
+
+  @doc "Determines to whom a alert need to be sent."
+  @spec alert_recipient(non_neg_integer(), boolean()) :: boolean() | atom()
+  def alert_recipient(level, legacy?) do
+    label = to_label(level, legacy?)
+
+    cond do
+      label == :error or label == :fatal -> :ops
+      label == :unknown and not legacy? -> :dev2
+      label == :unknown -> :dev1
+      true -> false
+    end
+  end
+end
+```
+
 ```
