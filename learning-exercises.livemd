@@ -301,4 +301,105 @@ assert FreelancerRates.days_in_budget(480, 60, 20) == 1.2
 :passed
 ```
 
+## Secrets
+
+https://exercism.org/tracks/elixir/exercises/secrets
+
+```elixir
+defmodule Secrets do
+  @moduledoc """
+
+  ## Example
+
+      iex> Secrets.secret_add(1).(1)
+      2
+
+      iex> Secrets.secret_subtract(1).(1)
+      0
+
+      iex> Secrets.secret_multiply(1).(1)
+      1
+
+      iex> Secrets.secret_divide(10).(10)
+      1
+
+      iex> Secrets.secret_and(1).(10)
+      0
+
+      iex> Secrets.secret_xor(1).(10)
+      11
+
+      iex> Secrets.secret_combine(Secrets.secret_add(1), Secrets.secret_subtract(1)).(1)
+      1
+
+  """
+
+  import Bitwise
+
+  @doc """
+  Returns a function which takes one argument and adds to it
+  the argument passed in to `secret_add`.
+  """
+  @spec secret_add(integer()) :: (integer() -> integer())
+  def secret_add(secret) when is_integer(secret) do
+    &(trunc(&1) + secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and subtracts from it
+  the secret passed in to `secret_subtract`.
+  """
+  @spec secret_subtract(integer()) :: (integer() -> integer())
+  def secret_subtract(secret) when is_integer(secret) do
+    &(trunc(&1) - secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and multiplies it
+  by the secret passed in to `secret_multiply`.
+  """
+  @spec secret_multiply(integer()) :: (integer() -> integer())
+  def secret_multiply(secret) when is_integer(secret) do
+    &(trunc(&1) * secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and divides it
+  by the secrect passed in to `secret_divide`.
+  """
+  @spec secret_divide(integer()) :: (integer() -> integer())
+  def secret_divide(secret) when is_integer(secret) and secret != 0 do
+    &div(&1, secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and performs
+  a bitwise AND operation on it and the secret passed in to `secret_and`.
+  """
+  @spec secret_and(integer()) :: (integer() -> integer())
+  def secret_and(secret) when is_integer(secret) do
+    &band(&1, secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and performs
+  a bitwise XOR operation on it and the secret passed in to `secret_xor`.
+  """
+  @spec secret_xor(integer()) :: (integer() -> integer())
+  def secret_xor(secret) when is_integer(secret) do
+    &bxor(&1, secret)
+  end
+
+  @doc """
+  Returns a function which takes one argument and applies to it
+  the two functions passed in to `secret_combine` in order.
+  """
+  @spec secret_combine((integer() -> integer()), (integer() -> integer())) ::
+          (integer() -> integer())
+  def secret_combine(secret_function1, secret_function2) do
+    &(&1 |> secret_function1.() |> secret_function2.())
+  end
+end
+```
+
 ```
