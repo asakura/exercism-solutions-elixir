@@ -769,4 +769,19 @@ defmodule GuessingGame do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/guessing-game/test/guessing_game_test.exs
+assert GuessingGame.compare(7, 7) == "Correct"
+assert GuessingGame.compare(9, 18) == "Too high"
+assert GuessingGame.compare(42, 30) == "Too low"
+assert GuessingGame.compare(64, 63) == "So close"
+assert GuessingGame.compare(52, 53) == "So close"
+assert GuessingGame.compare(15) == "Make a guess"
+assert GuessingGame.compare(16, :no_guess) == "Make a guess"
+
+:passed
+```
+
 ```
