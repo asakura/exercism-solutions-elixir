@@ -663,4 +663,76 @@ defmodule LanguageList do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/language-list/test/language_list_test.exs
+assert LanguageList.new() == []
+
+language = "Elixir"
+list = [language]
+
+assert LanguageList.new() |> LanguageList.add(language) == list
+
+list =
+  LanguageList.new()
+  |> LanguageList.add("Clojure")
+  |> LanguageList.add("Haskell")
+  |> LanguageList.add("Erlang")
+  |> LanguageList.add("F#")
+  |> LanguageList.add("Elixir")
+
+assert list == ["Elixir", "F#", "Erlang", "Haskell", "Clojure"]
+
+list =
+  LanguageList.new()
+  |> LanguageList.add("Elixir")
+  |> LanguageList.remove()
+
+assert list == []
+
+list =
+  LanguageList.new()
+  |> LanguageList.add("F#")
+  |> LanguageList.add("Elixir")
+  |> LanguageList.remove()
+
+assert list == ["F#"]
+
+assert LanguageList.new() |> LanguageList.add("Elixir") |> LanguageList.first() == "Elixir"
+
+first =
+  LanguageList.new()
+  |> LanguageList.add("Elixir")
+  |> LanguageList.add("Prolog")
+  |> LanguageList.add("F#")
+  |> LanguageList.first()
+
+assert first == "F#"
+
+assert LanguageList.new() |> LanguageList.count() == 0
+
+count =
+  LanguageList.new()
+  |> LanguageList.add("Elixir")
+  |> LanguageList.count()
+
+assert count == 1
+
+count =
+  LanguageList.new()
+  |> LanguageList.add("Elixir")
+  |> LanguageList.add("Prolog")
+  |> LanguageList.add("F#")
+  |> LanguageList.count()
+
+assert count == 3
+
+assert LanguageList.functional_list?(["Clojure", "Haskell", "Erlang", "F#", "Elixir"])
+
+refute LanguageList.functional_list?(["Java", "C", "JavaScript"])
+
+:passed
+```
+
 ```
