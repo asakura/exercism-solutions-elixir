@@ -200,4 +200,105 @@ assert Rules.win?(true, true, true)
 :passed
 ```
 
+## Freelancer Rates
+
+https://exercism.org/tracks/elixir/exercises/freelancer-rates
+
+```elixir
+defmodule FreelancerRates do
+  @moduledoc """
+
+  ## Examples
+
+      iex> FreelancerRates.daily_rate(100)
+      800.0
+
+      iex> FreelancerRates.apply_discount(100, 10)
+      90.0
+
+      iex> FreelancerRates.monthly_rate(100, 10)
+      15840
+
+      iex> FreelancerRates.days_in_budget(15840, 100, 10)
+      22.0
+  """
+
+  @type rate :: number()
+  @type discount :: number()
+  @type amount :: number()
+
+  @daily_rate 8.0
+  @monthly_billable_days 22
+
+  defguardp is_positive(number) when number > 0
+  defguardp is_non_neg(number) when number >= 0
+
+  @doc "Returns the daily rate which is 8 times the hourly rate."
+  @spec daily_rate(rate()) :: amount()
+  def daily_rate(hourly_rate) when is_positive(hourly_rate) do
+    @daily_rate * hourly_rate
+  end
+
+  @doc "Calculates the price after a discount."
+  @spec apply_discount(amount(), discount()) :: amount()
+  def apply_discount(before_discount, discount)
+      when is_positive(before_discount) and is_non_neg(discount) do
+    before_discount - discount / 100 * before_discount
+  end
+
+  @doc "Calculates the monthly rate and applies a discount."
+  @spec monthly_rate(rate(), amount()) :: amount()
+  def monthly_rate(hourly_rate, discount)
+      when is_positive(hourly_rate) and is_non_neg(discount) do
+    (@monthly_billable_days * daily_discounted_rate(hourly_rate, discount))
+    |> ceil()
+  end
+
+  @doc """
+  Calculates how many days of work covers based on a budget,
+  a hourly rate, and a discount.
+  """
+  @spec days_in_budget(amount(), rate(), discount()) :: amount()
+  def days_in_budget(budget, hourly_rate, discount)
+      when is_positive(budget) and is_positive(hourly_rate) and is_non_neg(discount) do
+    total = daily_discounted_rate(hourly_rate, discount)
+    Float.floor(budget / total, 1)
+  end
+
+  defp daily_discounted_rate(hourly_rate, discount) do
+    hourly_rate
+    |> daily_rate()
+    |> apply_discount(discount)
+  end
+end
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/freelancer-rates/test/freelancer_rates_test.exs
+
+assert FreelancerRates.daily_rate(50) == 400.0
+assert FreelancerRates.daily_rate(60) === 480.0
+assert FreelancerRates.daily_rate(55.1) == 440.8
+
+assert FreelancerRates.apply_discount(140.0, 10) == 126.0
+assert FreelancerRates.apply_discount(100, 10) == 90.0
+assert_in_delta FreelancerRates.apply_discount(111.11, 13.5), 96.11015, 0.000001
+
+assert FreelancerRates.monthly_rate(62, 0.0) == 10_912
+assert FreelancerRates.monthly_rate(70, 0.0) === 12_320
+assert FreelancerRates.monthly_rate(62.8, 0.0) == 11_053
+assert FreelancerRates.monthly_rate(65.2, 0.0) == 11_476
+assert FreelancerRates.monthly_rate(67, 12.0) == 10_377
+
+assert FreelancerRates.days_in_budget(1_600, 50, 0.0) == 4
+assert FreelancerRates.days_in_budget(520, 65, 0.0) === 1.0
+assert FreelancerRates.days_in_budget(4_410, 55, 0.0) == 10.0
+assert FreelancerRates.days_in_budget(4_480, 55, 0.0) == 10.1
+assert FreelancerRates.days_in_budget(480, 60, 20) == 1.2
+
+:passed
+```
+
 ```
