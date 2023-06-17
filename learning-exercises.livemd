@@ -402,4 +402,108 @@ defmodule Secrets do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/secrets/test/secrets_test.exs
+
+add = Secrets.secret_add(3)
+assert add.(3) === 6
+
+add = Secrets.secret_add(6)
+assert add.(9) === 15
+
+subtract = Secrets.secret_subtract(3)
+assert subtract.(6) === 3
+
+subtract = Secrets.secret_subtract(6)
+assert subtract.(3) === -3
+
+multiply = Secrets.secret_multiply(3)
+assert multiply.(6) === 18
+
+multiply = Secrets.secret_multiply(6)
+assert multiply.(7) === 42
+
+divide = Secrets.secret_divide(3)
+assert divide.(6) === 2
+
+divide = Secrets.secret_divide(6)
+assert divide.(7) === 1
+
+ander = Secrets.secret_and(1)
+assert ander.(2) === 0
+
+ander = Secrets.secret_and(7)
+assert ander.(7) === 7
+
+xorer = Secrets.secret_xor(1)
+assert xorer.(2) === 3
+
+xorer = Secrets.secret_xor(7)
+assert xorer.(7) === 0
+
+f = Secrets.secret_add(10)
+g = Secrets.secret_subtract(5)
+h = Secrets.secret_combine(f, g)
+
+assert h.(5) === 10
+
+f = Secrets.secret_multiply(2)
+g = Secrets.secret_subtract(20)
+h = Secrets.secret_combine(f, g)
+
+assert h.(100) === 180
+
+f = Secrets.secret_divide(10)
+g = Secrets.secret_add(10)
+h = Secrets.secret_combine(f, g)
+
+assert h.(100) === 20
+
+f = Secrets.secret_divide(3)
+g = Secrets.secret_add(5)
+h = Secrets.secret_combine(f, g)
+
+assert h.(32) === 15
+
+f = Secrets.secret_and(3)
+g = Secrets.secret_and(5)
+h = Secrets.secret_combine(f, g)
+
+assert h.(7) === 1
+
+f = Secrets.secret_and(7)
+g = Secrets.secret_and(7)
+h = Secrets.secret_combine(f, g)
+
+assert h.(7) === 7
+
+f = Secrets.secret_xor(1)
+g = Secrets.secret_xor(2)
+h = Secrets.secret_combine(f, g)
+
+assert h.(4) === 7
+
+f = Secrets.secret_xor(7)
+g = Secrets.secret_xor(7)
+h = Secrets.secret_combine(f, g)
+
+assert h.(7) === 7
+
+f = Secrets.secret_add(3)
+g = Secrets.secret_xor(7)
+h = Secrets.secret_combine(f, g)
+
+assert h.(4) === 0
+
+f = Secrets.secret_divide(9)
+g = Secrets.secret_and(7)
+h = Secrets.secret_combine(f, g)
+
+assert h.(81) === 1
+
+:passed
+```
+
 ```
