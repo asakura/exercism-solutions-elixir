@@ -912,8 +912,27 @@ https://exercism.org/tracks/elixir/exercises/high-school-sweetheart
 
 ```elixir
 defmodule HighSchoolSweetheart do
-  @moduledoc """
-  TODO
+  @moduledoc ~S"""
+
+  ## Examples
+
+      iex> HighSchoolSweetheart.pair("Avery Bryant", "Charlie Dixon")
+      \"""
+           ******       ******
+         **      **   **      **
+       **         ** **         **
+      **            *            **
+      **                         **
+      **     A. B.  +  C. D.     **
+       **                       **
+         **                   **
+           **               **
+             **           **
+               **       **
+                 **   **
+                   ***
+                    *
+      \"""
   """
 
   @doc """
