@@ -1006,4 +1006,70 @@ assert HighSchoolSweetheart.pair("Avery Bryant", "Charlie Dixon") ==
 :passed
 ```
 
+## Bird Count
+
+https://exercism.org/tracks/elixir/exercises/bird-count
+
+```elixir
+defmodule BirdCount do
+  @moduledoc """
+  Module provides help to any avid bird watcher that keeps track of
+  how many birds have visited their garden on any given day.
+
+  ## Examples
+
+      iex>
+
+  """
+
+  @type observations :: list(non_neg_integer())
+
+  @busy_day_count 5
+
+  @doc """
+  Returns count of how many birds have visited one's garden today.
+  """
+  @spec today(observations()) :: non_neg_integer()
+  def today([]), do: nil
+  def today([today_count | _]), do: today_count
+
+  @doc """
+  Increments today's bird watch count.
+  """
+  @spec increment_day_count(observations()) :: observations()
+  def increment_day_count([]), do: [1]
+  def increment_day_count([today_count | tail]), do: [today_count + 1 | tail]
+
+  @doc """
+  Checks if there was a day with no visiting birds.
+  """
+  @spec has_day_without_birds?(observations()) :: boolean()
+  def has_day_without_birds?([]), do: false
+  def has_day_without_birds?([0 | _tail]), do: true
+  def has_day_without_birds?([_ | tail]), do: has_day_without_birds?(tail)
+
+  @doc """
+  Calculates the total number of visiting birds.
+  """
+  @spec total(observations()) :: non_neg_integer()
+  def total(list), do: do_total(list, 0)
+
+  defp do_total([], acc), do: acc
+  defp do_total([count | tail], acc), do: do_total(tail, acc + count)
+
+  @doc """
+  Calculates the number of busy days.
+  """
+  @spec busy_days(observations()) :: non_neg_integer()
+  def busy_days(list), do: do_busy_days(list, 0)
+
+  defp do_busy_days([], acc), do: acc
+
+  defp do_busy_days([count | tail], acc) when count >= @busy_day_count,
+    do: do_busy_days(tail, acc + 1)
+
+  defp do_busy_days([_count | tail], acc), do: do_busy_days(tail, acc)
+end
+```
+
 ```
