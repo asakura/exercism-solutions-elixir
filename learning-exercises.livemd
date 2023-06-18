@@ -1033,7 +1033,16 @@ defmodule BirdCount do
 
   ## Examples
 
-      iex>
+      iex> observations = [2, 4, 11, 10, 6, 8]
+      [2, 4, 11, 10, 6, 8]
+      iex> BirdCount.today(observations)
+      2
+      iex> BirdCount.has_day_without_birds?(observations)
+      false
+      iex> BirdCount.total(observations)
+      41
+      iex> BirdCount.busy_days(observations)
+      4
 
   """
 
