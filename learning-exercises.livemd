@@ -784,4 +784,95 @@ assert GuessingGame.compare(16, :no_guess) == "Make a guess"
 :passed
 ```
 
+## Kitchen Calculator
+
+https://exercism.org/tracks/elixir/exercises/kitchen-calculator
+
+```elixir
+defmodule KitchenCalculator do
+  @moduledoc """
+
+  ## Examples
+
+      iex> KitchenCalculator.get_volume({:cup, 2})
+      2
+
+      iex> KitchenCalculator.to_milliliter({:teaspoon, 10})
+      {:milliliter, 50}
+
+      iex> KitchenCalculator.from_milliliter({:milliliter, 50}, :teaspoon)
+      {:teaspoon, 10.0}
+
+      iex> KitchenCalculator.convert({:cup, 2}, :teaspoon)
+      {:teaspoon, 96.0}
+
+  """
+
+  @type unit :: :cup | :fluid_ounce | :teaspoon | :tablespoon | :milliliter
+  @type volume_pair :: {unit(), volume :: number()}
+  @type volume :: non_neg_integer()
+
+  @cup_ratio 240
+  @fluid_once_ratio 30
+  @teaspoon_ratio 5
+  @tablespoon_ratio 15
+
+  defguardp is_positive(volume) when volume > 0
+
+  @doc """
+  Returns the numeric component of a volume-pair tuple.
+  """
+  @spec get_volume(volume_pair()) :: volume()
+  def get_volume({_, volume}), do: volume
+
+  @doc """
+  Converts volume of a given volume-pair tuple to the volume in milliliters.
+  """
+  @spec to_milliliter(volume_pair()) :: volume_pair()
+  def to_milliliter({_unit, volume}) when volume <= 0,
+    do: {:milliliter, 0}
+
+  def to_milliliter({:milliliter, volume}) when is_positive(volume),
+    do: {:milliliter, volume}
+
+  def to_milliliter({:cup, volume}) when is_positive(volume),
+    do: {:milliliter, volume * @cup_ratio}
+
+  def to_milliliter({:fluid_ounce, volume}) when is_positive(volume),
+    do: {:milliliter, volume * @fluid_once_ratio}
+
+  def to_milliliter({:teaspoon, volume}) when is_positive(volume),
+    do: {:milliliter, volume * @teaspoon_ratio}
+
+  def to_milliliter({:tablespoon, volume}) when is_positive(volume),
+    do: {:milliliter, volume * @tablespoon_ratio}
+
+  @doc """
+  Converts volume of a given volume-pair tuple to the volume in the desired unit.
+  """
+  @spec from_milliliter(volume_pair(), unit()) :: volume_pair()
+  def from_milliliter(volume_pair, :milliliter), do: volume_pair
+  def from_milliliter({_unit, volume}, to_unit) when volume <= 0, do: {to_unit, 0}
+
+  def from_milliliter({:milliliter, volume}, :cup) when is_positive(volume),
+    do: {:cup, volume / @cup_ratio}
+
+  def from_milliliter({:milliliter, volume}, :fluid_ounce) when is_positive(volume),
+    do: {:fluid_ounce, volume / @fluid_once_ratio}
+
+  def from_milliliter({:milliliter, volume}, :teaspoon) when is_positive(volume),
+    do: {:teaspoon, volume / @teaspoon_ratio}
+
+  def from_milliliter({:milliliter, volume}, :tablespoon) when is_positive(volume),
+    do: {:tablespoon, volume / @tablespoon_ratio}
+
+  @doc """
+  Converts given a volume-pair tuple to the desired unit.
+  """
+  @spec convert(volume_pair(), unit()) :: volume_pair()
+  def convert(volume_pair, to_unit),
+    do: volume_pair |> to_milliliter() |> from_milliliter(to_unit)
+end
+```
+
 ```
