@@ -1072,4 +1072,32 @@ defmodule BirdCount do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/bird-count/test/bird_count_test.exs
+
+assert BirdCount.today([]) == nil
+assert BirdCount.today([7]) == 7
+assert BirdCount.today([2, 4, 11, 10, 6, 8]) == 2
+assert BirdCount.increment_day_count([]) == [1]
+assert BirdCount.increment_day_count([7]) == [8]
+assert BirdCount.increment_day_count([4, 2, 1, 0, 10]) == [5, 2, 1, 0, 10]
+assert BirdCount.has_day_without_birds?([]) == false
+assert BirdCount.has_day_without_birds?([1]) == false
+assert BirdCount.has_day_without_birds?([6, 7, 10, 2, 5]) == false
+assert BirdCount.has_day_without_birds?([0]) == true
+assert BirdCount.has_day_without_birds?([4, 4, 0, 1]) == true
+assert BirdCount.has_day_without_birds?([0, 0, 3, 0, 5, 6, 0]) == true
+assert BirdCount.total([]) == 0
+assert BirdCount.total([4]) == 4
+assert BirdCount.total([3, 0, 0, 4, 4, 0, 0, 10]) == 21
+assert BirdCount.busy_days([]) == 0
+assert BirdCount.busy_days([1]) == 0
+assert BirdCount.busy_days([0, 5]) == 1
+assert BirdCount.busy_days([0, 6, 10, 4, 4, 5, 0]) == 3
+
+:passed
+```
+
 ```
