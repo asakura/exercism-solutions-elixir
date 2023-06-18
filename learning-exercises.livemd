@@ -32,14 +32,6 @@ defmodule HelloWorld do
 end
 ```
 
-<!-- livebook:{"reevaluate_automatically":true} -->
-
-```elixir
-assert HelloWorld.hello() == "Hello, World!"
-
-:passed
-```
-
 ## Lasanga
 
 https://exercism.org/tracks/elixir/exercises/lasagna
