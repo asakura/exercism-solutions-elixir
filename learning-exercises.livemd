@@ -106,11 +106,13 @@ defmodule Lasagna do
 end
 ```
 
+## Lasagna: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/lasagna/test/lasagna_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/lasagna/test/lasagna_test.exs
-
 assert Lasagna.expected_minutes_in_oven() === 40
 assert Lasagna.remaining_minutes_in_oven(25) === 15
 assert Lasagna.preparation_time_in_minutes(1) === 2
@@ -171,11 +173,13 @@ defmodule Rules do
 end
 ```
 
+## Pacman Rules: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/pacman-rules/test/rules_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/pacman-rules/test/rules_test.exs
-
 assert Rules.eat_ghost?(true, true)
 refute Rules.eat_ghost?(false, true)
 refute Rules.eat_ghost?(true, false)
@@ -269,11 +273,13 @@ defmodule FreelancerRates do
 end
 ```
 
+## Freelancer Rates: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/freelancer-rates/test/freelancer_rates_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/freelancer-rates/test/freelancer_rates_test.exs
-
 assert FreelancerRates.daily_rate(50) == 400.0
 assert FreelancerRates.daily_rate(60) === 480.0
 assert FreelancerRates.daily_rate(55.1) == 440.8
@@ -398,11 +404,13 @@ defmodule Secrets do
 end
 ```
 
+## Secrets: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/secrets/test/secrets_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/secrets/test/secrets_test.exs
-
 add = Secrets.secret_add(3)
 assert add.(3) === 6
 
@@ -554,11 +562,13 @@ defmodule LogLevel do
 end
 ```
 
+## Log Level: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/log-level/test/log_level_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/log-level/test/log_level_test.exs
-
 assert LogLevel.to_label(0, false) == :trace
 assert LogLevel.to_label(0, true) == :unknown
 assert LogLevel.to_label(1, false) == :debug
@@ -659,10 +669,13 @@ defmodule LanguageList do
 end
 ```
 
+## Language List: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/language-list/test/language_list_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/language-list/test/language_list_test.exs
 assert LanguageList.new() == []
 
 language = "Elixir"
@@ -765,10 +778,13 @@ defmodule GuessingGame do
 end
 ```
 
+## Guessing Game: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/guessing-game/test/guessing_game_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/guessing-game/test/guessing_game_test.exs
 assert GuessingGame.compare(7, 7) == "Correct"
 assert GuessingGame.compare(9, 18) == "Too high"
 assert GuessingGame.compare(42, 30) == "Too low"
@@ -871,11 +887,13 @@ defmodule KitchenCalculator do
 end
 ```
 
+## Kitchen Calculator: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/kitchen-calculator/test/kitchen_calculator_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/kitchen-calculator/test/kitchen_calculator_test.exs
-
 assert KitchenCalculator.get_volume({:cup, 1}) == 1
 assert KitchenCalculator.get_volume({:fluid_ounce, 2}) == 2
 assert KitchenCalculator.get_volume({:teaspoon, 3}) == 3
@@ -988,11 +1006,13 @@ defmodule HighSchoolSweetheart do
 end
 ```
 
+## High School Sweetheart: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/high-school-sweetheart/test/high_school_sweetheart_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/high-school-sweetheart/test/high_school_sweetheart_test.exs
-
 assert HighSchoolSweetheart.first_letter("Mary") == "M"
 assert HighSchoolSweetheart.first_letter("john") == "j"
 assert HighSchoolSweetheart.first_letter("\n\t   Sarah   ") == "S"
@@ -1096,11 +1116,13 @@ defmodule BirdCount do
 end
 ```
 
+## Bird Count: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/bird-count/test/bird_count_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/bird-count/test/bird_count_test.exs
-
 assert BirdCount.today([]) == nil
 assert BirdCount.today([7]) == 7
 assert BirdCount.today([2, 4, 11, 10, 6, 8]) == 2
