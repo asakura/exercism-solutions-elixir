@@ -133,10 +133,13 @@ defmodule Rules do
 
       iex> Rules.eat_ghost?(false, true)
       false
+
       iex> Rules.score?(true, false)
       true
+
       iex> Rules.lose?(false, true)
       true
+
       iex> Rules.win?(true, false, false)
       true
 
