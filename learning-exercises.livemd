@@ -973,4 +973,37 @@ defmodule HighSchoolSweetheart do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/high-school-sweetheart/test/high_school_sweetheart_test.exs
+
+assert HighSchoolSweetheart.first_letter("Mary") == "M"
+assert HighSchoolSweetheart.first_letter("john") == "j"
+assert HighSchoolSweetheart.first_letter("\n\t   Sarah   ") == "S"
+assert HighSchoolSweetheart.initial("Betty") == "B."
+assert HighSchoolSweetheart.initial("james") == "J."
+assert HighSchoolSweetheart.initials("Linda Miller") == "L. M."
+
+assert HighSchoolSweetheart.pair("Avery Bryant", "Charlie Dixon") ==
+         """
+              ******       ******
+            **      **   **      **
+          **         ** **         **
+         **            *            **
+         **                         **
+         **     A. B.  +  C. D.     **
+          **                       **
+            **                   **
+              **               **
+                **           **
+                  **       **
+                    **   **
+                      ***
+                       *
+         """
+
+:passed
+```
+
 ```
