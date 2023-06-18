@@ -8,6 +8,7 @@ Mix.install([
 
 require Integer
 import ExUnit.Assertions
+import ExUnit.CaptureIO, only: [capture_io: 1, capture_io: 2]
 ```
 
 ## Hello World
