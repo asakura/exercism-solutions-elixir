@@ -1490,3 +1490,86 @@ assert NameBadge.print(nil, "Stephen Dann", nil) == "Stephen Dann - OWNER"
 :passed
 ```
 
+## Wine Cellar
+
+https://exercism.org/tracks/elixir/exercises/wine-cellar
+
+```elixir
+defmodule WineCellar do
+  @moduledoc """
+  This module contains a collection of functions which simplifies wine selection
+  process allowing customers filter wines by thier preferences.
+
+  ## Examples
+
+      iex> cellar = [
+      ...>     white: {"Chardonnay", 2015, "Italy"},
+      ...>     white: {"Chardonnay", 2014, "France"},
+      ...>     rose: {"Dornfelder", 2018, "Germany"},
+      ...>     red: {"Merlot", 2015, "France"},
+      ...>     white: {"Riesling ", 2017, "Germany"},
+      ...>     white: {"Pinot grigio", 2015, "Germany"},
+      ...>     red: {"Pinot noir", 2016, "France"},
+      ...>     red: {"Pinot noir", 2013, "Italy"}
+      ...> ]
+      iex> WineCellar.filter(cellar, :rose)
+      [{"Dornfelder", 2018, "Germany"}]
+      iex> WineCellar.filter(cellar, :white, year: 2015, country: "Germany")
+      [{"Pinot grigio", 2015, "Germany"}]
+
+  """
+
+  @type wine :: {name :: String.t(), year :: pos_integer(), country :: String.t()}
+  @type cellar :: keyword(wine)
+
+  @doc """
+  Returns a keyword list with wine colors as keys and explanations as values.
+  """
+  @spec explain_colors() :: Keyword.t()
+  def explain_colors do
+    [
+      white: "Fermented without skin contact.",
+      red: "Fermented with skin contact using dark-colored grapes.",
+      rose: "Fermented with some skin contact, but not enough to qualify as a red wine."
+    ]
+  end
+
+  @doc """
+  Takes a keyword list of wines, a color atom and a keyword list of options.
+  Returns a list of wines of a given color, year, and country (if specified).
+  """
+  @spec filter(cellar :: cellar(), color :: atom(), keyword()) :: cellar()
+  def filter(cellar, color, opts \\ [])
+  def filter(cellar, color, []), do: Keyword.get_values(cellar, color)
+
+  def filter(cellar, color, opts) do
+    year = Keyword.get(opts, :year)
+    country = Keyword.get(opts, :country)
+
+    filter(cellar, color)
+    |> then(&if year, do: filter_by_year(&1, year), else: &1)
+    |> then(&if country, do: filter_by_country(&1, country), else: &1)
+  end
+
+  # The functions below do not need to be modified.
+
+  defp filter_by_year(wines, year)
+  defp filter_by_year([], _year), do: []
+
+  defp filter_by_year([{_name, year, _country} = wine | tail], year),
+    do: [wine | filter_by_year(tail, year)]
+
+  defp filter_by_year([{_name, _year, _country} | tail], year),
+    do: filter_by_year(tail, year)
+
+  defp filter_by_country(wines, country)
+  defp filter_by_country([], _country), do: []
+
+  defp filter_by_country([{_name, _year, country} = wine | tail], country),
+    do: [wine | filter_by_country(tail, country)]
+
+  defp filter_by_country([{_name, _year, _country} | tail], country),
+    do: filter_by_country(tail, country)
+end
+```
+
