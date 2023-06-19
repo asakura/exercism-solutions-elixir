@@ -1954,3 +1954,79 @@ defmodule LibraryFees do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/library-fees/test/library_fees_test.exs
+
+result = LibraryFees.datetime_from_string("2021-01-01T12:00:00Z")
+assert result.__struct__ == NaiveDateTime
+
+result = LibraryFees.datetime_from_string("2019-12-24T13:15:45Z")
+assert result == ~N[2019-12-24 13:15:45Z]
+
+assert LibraryFees.before_noon?(~N[2020-06-06 11:59:59Z]) == true
+assert LibraryFees.before_noon?(~N[2021-01-03 12:01:01Z]) == false
+assert LibraryFees.before_noon?(~N[2018-11-17 12:00:00Z]) == false
+
+result = LibraryFees.return_date(~N[2020-02-14 11:59:59Z])
+assert result == ~D[2020-03-13]
+
+result = LibraryFees.return_date(~N[2021-01-03 12:01:01Z])
+assert result == ~D[2021-02-01]
+
+result = LibraryFees.return_date(~N[2018-12-01 12:00:00Z])
+assert result == ~D[2018-12-30]
+
+result = LibraryFees.days_late(~D[2021-02-01], ~N[2021-02-01 12:00:00Z])
+assert result == 0
+
+result = LibraryFees.days_late(~D[2019-03-11], ~N[2019-03-11 12:00:00Z])
+assert result == 0
+
+result = LibraryFees.days_late(~D[2020-12-03], ~N[2020-11-29 16:00:00Z])
+assert result == 0
+
+result = LibraryFees.days_late(~D[2020-06-12], ~N[2020-06-21 16:00:00Z])
+assert result == 9
+
+result = LibraryFees.days_late(~D[2020-06-12], ~N[2020-06-12 23:59:59Z])
+assert result == 0
+
+result = LibraryFees.days_late(~D[2020-06-12], ~N[2020-06-13 00:00:00Z])
+assert result == 1
+
+assert LibraryFees.monday?(~N[2021-02-01 14:01:00Z]) == true
+assert LibraryFees.monday?(~N[2020-03-16 09:23:52Z]) == true
+assert LibraryFees.monday?(~N[2019-04-22 15:44:03Z]) == true
+assert LibraryFees.monday?(~N[2021-02-02 15:07:00Z]) == false
+assert LibraryFees.monday?(~N[2020-03-14 08:54:51Z]) == false
+assert LibraryFees.monday?(~N[2019-04-28 11:37:12Z]) == false
+
+result = LibraryFees.calculate_late_fee("2018-11-01T09:00:00Z", "2018-11-13T14:12:00Z", 123)
+assert result == 0
+
+result = LibraryFees.calculate_late_fee("2018-11-01T09:00:00Z", "2018-11-29T14:12:00Z", 123)
+assert result == 0
+
+result = LibraryFees.calculate_late_fee("2018-11-01T09:00:00Z", "2018-11-30T14:12:00Z", 320)
+assert result == 320
+
+result = LibraryFees.calculate_late_fee("2019-05-01T16:12:00Z", "2019-05-17T14:32:45Z", 400)
+assert result == 0
+
+result = LibraryFees.calculate_late_fee("2019-05-01T16:12:00Z", "2019-05-30T14:32:45Z", 313)
+assert result == 0
+
+result = LibraryFees.calculate_late_fee("2019-05-01T16:12:00Z", "2019-05-31T14:32:45Z", 234)
+assert result == 234
+
+result = LibraryFees.calculate_late_fee("2021-01-01T08:00:00Z", "2021-02-13T08:00:00Z", 111)
+assert result == 111 * 15
+
+result = LibraryFees.calculate_late_fee("2021-01-01T08:00:00Z", "2021-02-15T08:00:00Z", 111)
+assert result == trunc(111 * 17 * 0.5)
+
+:passed
+```
+
