@@ -1772,3 +1772,70 @@ assert DNA.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>) == 
 :passed
 ```
 
+## DNA Encoding (TCO)
+
+```elixir
+defmodule DNA.TCO do
+  @moduledoc """
+
+  ## Examples
+
+      iex> DNA.TCO.encode('A')
+      <<0b0001::4>>
+
+      iex> DNA.TCO.encode('TGCA ')
+      <<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>
+
+      iex> DNA.TCO.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>)
+      'TGCA '
+
+  """
+
+  @type code_point :: ?A | ?C | ?G | ?T
+  @type encoded_code :: non_neg_integer()
+
+  @doc """
+  Encoded nucleic acid code point to binary value.
+  """
+
+  @spec encode_nucleotide(code_point :: code_point()) :: encoded_code()
+  def encode_nucleotide(?\s), do: 0b0000
+  def encode_nucleotide(?A), do: 0b0001
+  def encode_nucleotide(?C), do: 0b0010
+  def encode_nucleotide(?G), do: 0b0100
+  def encode_nucleotide(?T), do: 0b1000
+
+  @doc """
+  Decodes binary encoded nucleic acid to a code point.
+  """
+  @spec decode_nucleotide(encoded_code :: encoded_code()) :: code_point()
+  def decode_nucleotide(0b0000), do: ?\s
+  def decode_nucleotide(0b0001), do: ?A
+  def decode_nucleotide(0b0010), do: ?C
+  def decode_nucleotide(0b0100), do: ?G
+  def decode_nucleotide(0b1000), do: ?T
+
+  @doc """
+  Encode a DNA charlist.
+  """
+  @spec encode(dna :: charlist()) :: bitstring()
+  def encode(dna), do: do_encode(dna, <<>>)
+
+  defp do_encode([code_point | tail], acc),
+    do: do_encode(tail, <<acc::bitstring, encode_nucleotide(code_point)::size(4)>>)
+
+  defp do_encode([], acc), do: acc
+
+  @doc """
+  Decode a DNA bitstring.
+  """
+  @spec decode(dna :: bitstring()) :: charlist()
+  def decode(dna), do: do_decode(dna, []) |> Enum.reverse()
+
+  defp do_decode(<<code::size(4), tail::bitstring>>, acc),
+    do: do_decode(tail, [decode_nucleotide(code) | acc])
+
+  defp do_decode(<<>>, acc), do: acc
+end
+```
+
