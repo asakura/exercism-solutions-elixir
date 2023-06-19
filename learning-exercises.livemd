@@ -1446,3 +1446,29 @@ defmodule DateParser do
 end
 ```
 
+## Name Badge
+
+https://exercism.org/tracks/elixir/exercises/name-badge
+
+```elixir
+defmodule NameBadge do
+  @doc """
+  Prints a badge for an employee.
+
+  ## Examples
+
+      iex> NameBadge.print(3, "Marie", "Sales")
+      "[3] - Marie - SALES"
+
+  """
+  @spec print(id :: pos_integer() | nil, name :: String.t(), department :: String.t() | nil) ::
+          String.t()
+  def print(id, name, department) do
+    department = if department == nil, do: "OWNER", else: department
+    prefix = if id == nil, do: "", else: "[#{id}] - "
+
+    prefix <> "#{name} - #{String.upcase(department)}"
+  end
+end
+```
+
