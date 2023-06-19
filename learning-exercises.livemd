@@ -1872,3 +1872,85 @@ assert DNA.TCO.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>)
 :passed
 ```
 
+## Library Fees
+
+https://exercism.org/tracks/elixir/exercises/library-fees
+
+```elixir
+defmodule LibraryFees do
+  @moduledoc """
+
+  ## Examples
+
+      iex> LibraryFees.calculate_late_fee("2018-11-01T09:00:00Z", "2018-11-30T14:12:00Z", 320)
+      320
+
+      iex> LibraryFees.calculate_late_fee("2019-05-01T16:12:00Z", "2019-05-30T14:32:45Z", 313)
+      0
+
+  """
+
+  @doc """
+  Parses the stored datetime strings.
+  """
+  @spec datetime_from_string(string :: String.t()) :: NaiveDateTime.t()
+  def datetime_from_string(string), do: NaiveDateTime.from_iso8601!(string)
+
+  @doc """
+  Determines if a book was checked out before noon.
+  """
+  @spec before_noon?(datetime :: NaiveDateTime.t()) :: boolean()
+  def before_noon?(datetime), do: datetime.hour < 12
+
+  @doc """
+  Calculates the return date.
+  """
+  @spec return_date(checkout_datetime :: NaiveDateTime.t()) :: Date.t()
+  def return_date(checkout_datetime) do
+    days =
+      case before_noon?(checkout_datetime) do
+        true -> 28
+        false -> 29
+      end
+
+    checkout_datetime
+    |> NaiveDateTime.to_date()
+    |> Date.add(days)
+  end
+
+  @doc """
+  Determine how late the return of the book was.
+  """
+  @spec days_late(planned_return_date :: Date.t(), actual_return_datetime :: NaiveDateTime.t()) ::
+          non_neg_integer()
+  def days_late(planned_return_date, actual_return_datetime),
+    do: Date.diff(actual_return_datetime, planned_return_date) |> max(0)
+
+  @doc """
+  Determines if the book was returned on a Monday.
+  """
+  @spec monday?(datetime :: NaiveDateTime.t()) :: boolean()
+  def monday?(datetime), do: datetime |> NaiveDateTime.to_date() |> Date.day_of_week() == 1
+
+  @doc """
+  Calculates the late fee.
+  """
+  @spec calculate_late_fee(
+          checkout :: String.t(),
+          return :: String.t(),
+          rate :: non_neg_integer()
+        ) :: non_neg_integer()
+  def calculate_late_fee(checkout, return, rate) do
+    checkout = datetime_from_string(checkout)
+    actual_return = datetime_from_string(return)
+    planned_return = return_date(checkout)
+    fee = rate * days_late(planned_return, actual_return)
+
+    case monday?(actual_return) do
+      true -> floor(fee * 0.5)
+      false -> fee
+    end
+  end
+end
+```
+
