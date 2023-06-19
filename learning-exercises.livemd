@@ -1234,3 +1234,46 @@ defmodule Form do
 end
 ```
 
+## German Sysadmin
+
+https://exercism.org/tracks/elixir/exercises/german-sysadmin
+
+```elixir
+defmodule Username do
+  @moduledoc """
+
+  ## Examples
+
+      iex> Username.sanitize('krüger')
+      'krueger'
+
+  """
+
+  defguardp is_lowercase_latin(letter) when letter >= ?a and letter <= ?z
+
+  @doc """
+  Sanitises usernames by removing everything but lowercase letters, underscores,
+  and German characters which are being replaced by latin sustitutions.
+  """
+  @spec sanitize(charlist()) :: charlist()
+  def sanitize(username), do: do_sanitize(username)
+
+  defp do_sanitize([letter | tail]) do
+    letter =
+      case letter do
+        ?ä -> 'ae'
+        ?ö -> 'oe'
+        ?ü -> 'ue'
+        ?ß -> 'ss'
+        ?_ -> '_'
+        letter when is_lowercase_latin(letter) -> [letter]
+        _ -> ''
+      end
+
+    letter ++ do_sanitize(tail)
+  end
+
+  defp do_sanitize([]), do: ''
+end
+```
+
