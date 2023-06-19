@@ -1740,3 +1740,35 @@ defmodule DNA do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
+assert DNA.encode_nucleotide(?\s) == 0b0000
+assert DNA.encode_nucleotide(?A) == 0b0001
+assert DNA.encode_nucleotide(?C) == 0b0010
+assert DNA.encode_nucleotide(?G) == 0b0100
+assert DNA.encode_nucleotide(?T) == 0b1000
+assert DNA.decode_nucleotide(0b0000) == ?\s
+assert DNA.decode_nucleotide(0b0001) == ?A
+assert DNA.decode_nucleotide(0b0010) == ?C
+assert DNA.decode_nucleotide(0b0100) == ?G
+assert DNA.decode_nucleotide(0b1000) == ?T
+assert DNA.encode(' ') == <<0b0000::4>>
+assert DNA.encode('A') == <<0b0001::4>>
+assert DNA.encode('C') == <<0b0010::4>>
+assert DNA.encode('G') == <<0b0100::4>>
+assert DNA.encode('T') == <<0b1000::4>>
+assert DNA.encode(' ACGT') == <<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>
+assert DNA.encode('TGCA ') == <<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>
+assert DNA.decode(<<0b0000::4>>) == ' '
+assert DNA.decode(<<0b0001::4>>) == 'A'
+assert DNA.decode(<<0b0010::4>>) == 'C'
+assert DNA.decode(<<0b0100::4>>) == 'G'
+assert DNA.decode(<<0b1000::4>>) == 'T'
+assert DNA.decode(<<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>) == ' ACGT'
+assert DNA.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>) == 'TGCA '
+
+:passed
+```
+
