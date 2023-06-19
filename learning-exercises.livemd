@@ -1472,3 +1472,21 @@ defmodule NameBadge do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/name-badge/test/name_badge_test.exs
+
+assert NameBadge.print(455, "Mary M. Brown", "MARKETING") ==
+         "[455] - Mary M. Brown - MARKETING"
+
+assert NameBadge.print(89, "Jack McGregor", "Procurement") ==
+         "[89] - Jack McGregor - PROCUREMENT"
+
+assert NameBadge.print(nil, "Barbara White", "Security") == "Barbara White - SECURITY"
+assert NameBadge.print(1, "Anna Johnson", nil) == "[1] - Anna Johnson - OWNER"
+assert NameBadge.print(nil, "Stephen Dann", nil) == "Stephen Dann - OWNER"
+
+:passed
+```
+
