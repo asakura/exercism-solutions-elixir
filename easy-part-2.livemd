@@ -181,3 +181,24 @@ defmodule SecretHandshake do
 end
 ```
 
+## Secret Handshake: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/secret-handshake/test/secret_handshake_test.exs
+
+```elixir
+assert SecretHandshake.commands(1) == ["wink"]
+assert SecretHandshake.commands(2) == ["double blink"]
+assert SecretHandshake.commands(4) == ["close your eyes"]
+assert SecretHandshake.commands(8) == ["jump"]
+assert SecretHandshake.commands(3) == ["wink", "double blink"]
+assert SecretHandshake.commands(19) == ["double blink", "wink"]
+assert SecretHandshake.commands(24) == ["jump"]
+assert SecretHandshake.commands(16) == []
+assert SecretHandshake.commands(15) == ["wink", "double blink", "close your eyes", "jump"]
+assert SecretHandshake.commands(31) == ["jump", "close your eyes", "double blink", "wink"]
+assert SecretHandshake.commands(0) == []
+assert SecretHandshake.commands(32) == []
+
+:passed
+```
+
