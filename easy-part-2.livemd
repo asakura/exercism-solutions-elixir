@@ -118,3 +118,23 @@ defmodule Scrabble do
 end
 ```
 
+## Scrabble Score: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/scrabble-score/test/scrabble_test.exs
+
+```elixir
+assert Scrabble.score("") == 0
+assert Scrabble.score(" \t\n") == 0
+assert Scrabble.score("A") == 1
+assert Scrabble.score("f") == 4
+assert Scrabble.score("at") == 2
+assert Scrabble.score("zoo") == 12
+assert Scrabble.score("street") == 6
+assert Scrabble.score("quirky") == 22
+assert Scrabble.score("OxyphenButazone") == 41
+assert Scrabble.score("pinata") == 8
+assert Scrabble.score("abcdefghijklmnopqrstuvwxyz") == 87
+
+:passed
+```
+
