@@ -2030,3 +2030,60 @@ assert result == trunc(111 * 17 * 0.5)
 :passed
 ```
 
+## Basketball Website
+
+https://exercism.org/tracks/elixir/exercises/basketball-website
+
+```elixir
+defmodule BasketballWebsite do
+  @moduledoc """
+
+  ## Examples
+
+      iex> team_data = %{
+      ...>     "coach" => %{},
+      ...>     "team_name" => "Hoop Masters",
+      ...>     "players" => %{
+      ...>         "99" => %{
+      ...>             "first_name" => "Amalee",
+      ...>             "last_name" => "Tynemouth",
+      ...>             "email" => "atynemouth0@yellowpages.com",
+      ...>             "statistics" => %{}
+      ...>         },
+      ...>         "98" => %{
+      ...>             "first_name" => "Tiffie",
+      ...>             "last_name" => "Derle",
+      ...>             "email" => "tderle1@vimeo.com",
+      ...>             "statistics" => %{}
+      ...>         }
+      ...>     }
+      ...> }
+      iex> BasketballWebsite.extract_from_path(team_data, "players.99.first_name")
+      "Amalee"
+      iex> BasketballWebsite.extract_from_path(team_data, "players.98.last_name")
+      "Derle"
+
+  """
+
+  @doc """
+  Uses the Access module to traverse the structures according to the given path.
+  """
+  @spec extract_from_path(Access.t(), String.t()) :: term()
+  def extract_from_path(data, path), do: do_extract_from_path(keys(path), data)
+
+  defp do_extract_from_path(_path, nil), do: nil
+  defp do_extract_from_path([], data), do: data
+
+  defp do_extract_from_path([key | tail], data),
+    do: do_extract_from_path(tail, data[key])
+
+  @doc """
+  Uses the Access module to traverse the structures according to the given path.
+  """
+  @spec get_in_path(Access.t(), String.t()) :: term()
+  def get_in_path(data, path), do: get_in(data, keys(path))
+
+  defp keys(path), do: String.split(path, ".")
+end
+```
+
