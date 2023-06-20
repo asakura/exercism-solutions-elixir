@@ -10,3 +10,46 @@ require Integer
 import ExUnit.Assertions
 ```
 
+## Run-Length Encoding
+
+https://exercism.org/tracks/elixir/exercises/run-length-encoding
+
+```elixir
+defmodule RunLengthEncoder do
+  @doc """
+  Generates a string where consecutive elements are represented as a data value and count.
+  For this example, assume all input are strings, that are all uppercase letters.
+  It should also be able to reconstruct the data into its original form.
+
+  ## Examples
+
+      iex> RunLengthEncoder.encode("AABBBCCCC")
+      "2A3B4C"
+
+      iex> RunLengthEncoder.decode("2A3B4C")
+      "AABBBCCCC"
+
+  """
+  @spec encode(String.t()) :: String.t()
+  def encode(string) do
+    string
+    |> String.codepoints()
+    |> Enum.chunk_by(& &1)
+    |> Enum.map_join(fn
+      [char] -> char
+      chars -> "#{length(chars)}#{hd(chars)}"
+    end)
+  end
+
+  @spec decode(String.t()) :: String.t()
+  def decode(string) do
+    ~r/(\d*)(.)/
+    |> Regex.scan(string)
+    |> Enum.map_join(fn
+      [_run, "", char] -> char
+      [_run, num, char] -> String.duplicate(char, String.to_integer(num))
+    end)
+  end
+end
+```
+
