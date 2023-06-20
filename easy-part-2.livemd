@@ -53,3 +53,33 @@ defmodule RunLengthEncoder do
 end
 ```
 
+## Run-Length Encoding: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/run-length-encoding/test/run_length_encoder_test.exs
+
+```elixir
+assert RunLengthEncoder.encode("") === ""
+assert RunLengthEncoder.encode("XYZ") === "XYZ"
+assert RunLengthEncoder.encode("AABBBCCCC") == "2A3B4C"
+
+assert RunLengthEncoder.encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB") ===
+         "12WB12W3B24WB"
+
+assert RunLengthEncoder.encode("  hsqq qww  ") === "2 hs2q q2w2 "
+assert RunLengthEncoder.encode("aabbbcccc") === "2a3b4c"
+assert RunLengthEncoder.decode("") === ""
+assert RunLengthEncoder.decode("XYZ") === "XYZ"
+assert RunLengthEncoder.decode("2A3B4C") == "AABBBCCCC"
+
+assert RunLengthEncoder.decode("12WB12W3B24WB") ===
+         "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"
+
+assert RunLengthEncoder.decode("2 hs2q q2w2 ") === "  hsqq qww  "
+assert RunLengthEncoder.decode("2a3b4c") === "aabbbcccc"
+original = "zzz ZZ  zZ"
+encoded = RunLengthEncoder.encode(original)
+assert RunLengthEncoder.decode(encoded) === original
+
+:passed
+```
+
