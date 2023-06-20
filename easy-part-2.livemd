@@ -83,3 +83,38 @@ assert RunLengthEncoder.decode(encoded) === original
 :passed
 ```
 
+## Scrabble Score
+
+https://exercism.org/tracks/elixir/exercises/scrabble-score
+
+```elixir
+defmodule Scrabble do
+  @doc """
+  Calculate the scrabble score for the word.
+
+  ## Examples
+
+      iex> Scrabble.score("Elixir")
+      13
+
+  """
+  @spec score(String.t()) :: non_neg_integer
+  def score(word) do
+    for letter <- String.upcase(word) |> to_charlist(), reduce: 0 do
+      acc ->
+        acc +
+          cond do
+            letter in ~c[AEIOULNRST] -> 1
+            letter in ~c[DG] -> 2
+            letter in ~c[BCMP] -> 3
+            letter in ~c[FHVWY] -> 4
+            letter in ~c[K] -> 5
+            letter in ~c[JX] -> 8
+            letter in ~c[QZ] -> 10
+            true -> 0
+          end
+    end
+  end
+end
+```
+
