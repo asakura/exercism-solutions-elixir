@@ -2365,3 +2365,77 @@ assert BasketballWebsite.get_in_path(team_data, "support_personnel.physiotherapy
 :passed
 ```
 
+## File Sniffer
+
+https://exercism.org/tracks/elixir/exercises/file-sniffer
+
+```elixir
+defmodule FileSniffer do
+  @moduledoc """
+
+  ## Examples
+
+      iex> FileSniffer.type_from_extension("png")
+      "image/png"
+
+      iex> FileSniffer.type_from_binary(<<0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0xFF>>)
+      "image/png"
+
+      iex> FileSniffer.verify(<<0x42, 0x4D>>, "bmp")
+      {:ok, "image/bmp"}
+
+  """
+
+  @elf_signature <<0x7F, 0x45, 0x4C, 0x46>>
+  @bmp_signature <<0x42, 0x4D>>
+  @png_signature <<0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A>>
+  @jpg_signature <<0xFF, 0xD8, 0xFF>>
+  @gif_signature <<0x47, 0x49, 0x46>>
+
+  @mime_application_octet_stream "application/octet-stream"
+  @mime_image_bmp "image/bmp"
+  @mime_image_png "image/png"
+  @mime_image_jpg "image/jpg"
+  @mime_image_gif "image/gif"
+
+  @doc """
+  Takes a file extension (string) and returns the media type.
+  """
+  @spec type_from_extension(extension :: String.t()) :: String.t()
+  def type_from_extension("exe"), do: @mime_application_octet_stream
+  def type_from_extension("bmp"), do: @mime_image_bmp
+  def type_from_extension("png"), do: @mime_image_png
+  def type_from_extension("jpg"), do: @mime_image_jpg
+  def type_from_extension("gif"), do: @mime_image_gif
+  def type_from_extension(_), do: nil
+
+  @doc """
+  Takes a file (binary) and returns the media type.
+  """
+  @spec type_from_binary(file_binary :: binary()) :: String.t()
+  def type_from_binary(<<@elf_signature, _tail::binary>>), do: @mime_application_octet_stream
+  def type_from_binary(<<@bmp_signature, _tail::binary>>), do: @mime_image_bmp
+  def type_from_binary(<<@png_signature, _tail::binary>>), do: @mime_image_png
+  def type_from_binary(<<@jpg_signature, _tail::binary>>), do: @mime_image_jpg
+  def type_from_binary(<<@gif_signature, _tail::binary>>), do: @mime_image_gif
+  def type_from_binary(_), do: nil
+
+  @doc """
+  Takes a file (binary) and extension (string) and return an `:ok` if media types are the same,
+  otherwise returns `:error` tuple.
+  """
+  @spec verify(file_binary :: binary(), extension :: String.t()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def verify(file_binary, extension) do
+    type_ext = type_from_extension(extension)
+    type_bin = type_from_binary(file_binary)
+
+    if type_ext == type_bin and (not is_nil(type_ext) or not is_nil(type_bin)) do
+      {:ok, type_ext}
+    else
+      {:error, "Warning, file format and file extension do not match."}
+    end
+  end
+end
+```
+
