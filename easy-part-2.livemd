@@ -202,3 +202,36 @@ assert SecretHandshake.commands(32) == []
 :passed
 ```
 
+## Series (String.split/3 and drop first)
+
+https://exercism.org/tracks/elixir/exercises/series
+
+```elixir
+defmodule StringSeries.SplitDrop do
+  @doc """
+  Given a string `s` and a positive integer `size`, return all substrings
+  of that size. If `size` is greater than the length of `s`, or less than 1,
+  return an empty list.
+  """
+  @spec slices(s :: String.t(), size :: integer) :: list(String.t())
+  def slices(s, size) when size > 0 do
+    numbers = String.split(s, "", trim: true)
+    do_slices(numbers, size, [])
+  end
+
+  def slices(_s, _size), do: []
+
+  defp do_slices([], _size, acc), do: Enum.reverse(acc)
+
+  defp do_slices([_ | rest] = numbers, size, acc) do
+    slice = Enum.take(numbers, size) |> Enum.join("")
+
+    if String.length(slice) == size do
+      do_slices(rest, size, [slice | acc])
+    else
+      do_slices([], size, acc)
+    end
+  end
+end
+```
+
