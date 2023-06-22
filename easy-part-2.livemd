@@ -328,3 +328,27 @@ defmodule StringSeries.CharlistChunk do
 end
 ```
 
+## Series (Enum.map/2 and String.slice/3)
+
+```elixir
+defmodule StringSeries.MapSlice do
+  @doc """
+  Given a string `s` and a positive integer `size`, return all substrings
+  of that size. If `size` is greater than the length of `s`, or less than 1,
+  return an empty list.
+  """
+  @spec slices(s :: String.t(), size :: integer) :: list(String.t())
+  def slices(s, size) when size > 0 do
+    upper_boundary = String.length(s) - size
+    do_slices(s, size, upper_boundary)
+  end
+
+  def slices(_s, _size), do: []
+
+  defp do_slices(_s, _size, upper_boundary) when upper_boundary < 0, do: []
+
+  defp do_slices(s, size, upper_boundary),
+    do: Enum.map(0..upper_boundary, &String.slice(s, &1, size))
+end
+```
+
