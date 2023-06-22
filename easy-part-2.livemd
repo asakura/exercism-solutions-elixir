@@ -399,3 +399,51 @@ end
 :passed
 ```
 
+## Series: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Benchmark.Series do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => {\"1234\", 3},\n    \"Bigger\" => {\"12345678901234567890\", 3}\n  })\n\n  job split_drop({s, size}) do\n    StringSeries.SplitDrop.slices(s, size)\n  end\n\n  job graphemes_drop({s, size}) do\n    StringSeries.GraphemesDrop.slices(s, size)\n  end\n\n  job graphemes_chunk({s, size}) do\n    StringSeries.GraphemesChunk.slices(s, size)\n  end\n\n  job codepoints_chunk({s, size}) do\n    StringSeries.CodepointsChunk.slices(s, size)\n  end\n\n  job charlist_chunk({s, size}) do\n    StringSeries.CharlistChunk.slices(s, size)\n  end\n\n  job map_slice({s, size}) do\n    StringSeries.MapSlice.slices(s, size)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Benchmark.Series do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{"Small" => {"1234", 3}, "Bigger" => {"12345678901234567890", 3}})
+
+    job(split_drop({s, size})) do
+      StringSeries.SplitDrop.slices(s, size)
+    end
+
+    job(graphemes_drop({s, size})) do
+      StringSeries.GraphemesDrop.slices(s, size)
+    end
+
+    job(graphemes_chunk({s, size})) do
+      StringSeries.GraphemesChunk.slices(s, size)
+    end
+
+    job(codepoints_chunk({s, size})) do
+      StringSeries.CodepointsChunk.slices(s, size)
+    end
+
+    job(charlist_chunk({s, size})) do
+      StringSeries.CharlistChunk.slices(s, size)
+    end
+
+    job(map_slice({s, size})) do
+      StringSeries.MapSlice.slices(s, size)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
