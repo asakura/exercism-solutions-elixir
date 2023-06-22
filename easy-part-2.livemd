@@ -235,3 +235,33 @@ defmodule StringSeries.SplitDrop do
 end
 ```
 
+## Series (String.graphemes/1 and drop first)
+
+```elixir
+defmodule StringSeries.GraphemesDrop do
+  @doc """
+  Given a string `s` and a positive integer `size`, return all substrings
+  of that size. If `size` is greater than the length of `s`, or less than 1,
+  return an empty list.
+  """
+  @spec slices(s :: String.t(), size :: integer) :: list(String.t())
+  def slices(s, size) when size > 0 do
+    do_slices(String.graphemes(s), size, [])
+  end
+
+  def slices(_s, _size), do: []
+
+  defp do_slices([], _size, acc), do: Enum.reverse(acc)
+
+  defp do_slices([_ | rest] = numbers, size, acc) do
+    slice = Enum.take(numbers, size) |> Enum.join("")
+
+    if String.length(slice) == size do
+      do_slices(rest, size, [slice | acc])
+    else
+      do_slices([], size, acc)
+    end
+  end
+end
+```
+
