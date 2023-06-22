@@ -352,3 +352,50 @@ defmodule StringSeries.MapSlice do
 end
 ```
 
+## Series: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/series/test/string_series_test.exs
+
+```elixir
+modules = [
+  StringSeries.SplitDrop,
+  StringSeries.GraphemesDrop,
+  StringSeries.GraphemesChunk,
+  StringSeries.CodepointsChunk,
+  StringSeries.CharlistChunk,
+  StringSeries.MapSlice
+]
+
+for module <- modules do
+  assert module.slices("1", 1) == ["1"]
+  assert module.slices("12", 1) == ["1", "2"]
+  assert module.slices("01234", 1) == ["0", "1", "2", "3", "4"]
+  assert module.slices("35", 2) == ["35"]
+  assert module.slices("9142", 2) == ["91", "14", "42"]
+  assert module.slices("01234", 2) == ["01", "12", "23", "34"]
+  assert module.slices("01234", 3) == ["012", "123", "234"]
+  assert module.slices("01234", 4) == ["0123", "1234"]
+  assert module.slices("777777", 3) == ["777", "777", "777", "777"]
+
+  assert module.slices("918493904243", 5) == [
+           "91849",
+           "18493",
+           "84939",
+           "49390",
+           "93904",
+           "39042",
+           "90424",
+           "04243"
+         ]
+
+  assert module.slices("01234", 5) == ["01234"]
+  assert module.slices("José", 1) == ["J", "o", "s", "é"]
+  assert module.slices("José", 2) == ["Jo", "os", "sé"]
+  assert module.slices("01234", 6) == []
+  assert module.slices("01234", -1) == []
+  assert module.slices("01234", 0) == []
+end
+
+:passed
+```
+
