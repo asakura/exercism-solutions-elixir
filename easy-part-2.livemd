@@ -447,3 +447,57 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Space Age
+
+https://exercism.org/tracks/elixir/exercises/space-age
+
+```elixir
+defmodule SpaceAge do
+  @moduledoc """
+  Provides a function to convert how old someone would be on other planet.
+
+  ## Examples
+
+      iex> SpaceAge.age_on(:mars, 30)
+      {:ok, 5.054416463435008e-7}
+
+      iex> SpaceAge.age_on(:venus, 30)
+      {:ok, 1.5452647406473634e-6}
+
+  """
+
+  @type planet ::
+          :mercury
+          | :venus
+          | :earth
+          | :mars
+          | :jupiter
+          | :saturn
+          | :uranus
+          | :neptune
+
+  @seconds_in_earth_year 31_557_600
+  @planets %{
+    earth: @seconds_in_earth_year,
+    mercury: @seconds_in_earth_year * 0.2408467,
+    venus: @seconds_in_earth_year * 0.61519726,
+    mars: @seconds_in_earth_year * 1.8808158,
+    jupiter: @seconds_in_earth_year * 11.862615,
+    saturn: @seconds_in_earth_year * 29.447498,
+    uranus: @seconds_in_earth_year * 84.016846,
+    neptune: @seconds_in_earth_year * 164.79132
+  }
+
+  @doc """
+  Return the number of years a person that has lived for 'seconds' seconds is
+  aged on 'planet'.
+  """
+  @spec age_on(planet(), pos_integer()) :: {:ok, float()} | {:error, String.t()}
+  for {planet, divider} <- @planets do
+    def age_on(unquote(planet), seconds), do: {:ok, seconds / unquote(divider)}
+  end
+
+  def age_on(_planet, _seconds), do: {:error, "not a planet"}
+end
+```
+
