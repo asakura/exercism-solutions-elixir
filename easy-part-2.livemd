@@ -647,3 +647,59 @@ defmodule Strain.Straigth do
 end
 ```
 
+## Strain: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/strain/test/strain_test.exs
+
+```elixir
+for module <- [Strain.Expressed, Strain.Straigth] do
+  assert module.keep([], fn _ -> true end) == []
+  assert module.keep([1, 2, 3], fn e -> e < 10 end) == [1, 2, 3]
+  assert module.keep([1, 2, 3], &Integer.is_odd/1) == [1, 3]
+  assert module.keep([1, 2, 3, 4, 5], &Integer.is_even/1) == [2, 4]
+
+  words = ~w(apple zebra banana zombies cherimoya zelot)
+  assert module.keep(words, &String.starts_with?(&1, "z")) == ~w(zebra zombies zelot)
+
+  rows = [
+    [1, 2, 3],
+    [5, 5, 5],
+    [5, 1, 2],
+    [2, 1, 2],
+    [1, 5, 2],
+    [2, 2, 1],
+    [1, 2, 5]
+  ]
+
+  assert module.keep(rows, fn row -> 5 in row end) == [
+           [5, 5, 5],
+           [5, 1, 2],
+           [1, 5, 2],
+           [1, 2, 5]
+         ]
+
+  assert module.discard([], fn _ -> true end) == []
+
+  assert module.discard([1, 2, 3], fn e -> e > 10 end) == [1, 2, 3]
+  assert module.discard([1, 2, 3], &Integer.is_odd/1) == [2]
+  assert module.discard([1, 2, 3, 4, 5], &Integer.is_even/1) == [1, 3, 5]
+
+  words = ~w(apple zebra banana zombies cherimoya zelot)
+  assert module.discard(words, &String.starts_with?(&1, "z")) == ~w(apple banana cherimoya)
+
+  rows = [
+    [1, 2, 3],
+    [5, 5, 5],
+    [5, 1, 2],
+    [2, 1, 2],
+    [1, 5, 2],
+    [2, 2, 1],
+    [1, 2, 5]
+  ]
+
+  assert module.discard(rows, fn row -> 5 in row end) == [[1, 2, 3], [2, 1, 2], [2, 2, 1]]
+end
+
+:passed
+```
+
