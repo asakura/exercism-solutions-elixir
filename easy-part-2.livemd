@@ -703,3 +703,68 @@ end
 :passed
 ```
 
+## Strain: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Strain.Benchmark do\n  use BencheeDsl.Benchmark\n\n  import Integer, only: [is_even: 1]\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => [1, 2, 3, 4],\n    \"Bigger\" => [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]\n  })\n\n  job expressed(input) do\n    Strain.Expressed.keep(input, &is_even/1)\n  end\n\n  job straigth(input) do\n    Strain.Straigth.keep(input, &is_even/1)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Strain.Benchmark do
+    use BencheeDsl.Benchmark
+    import Integer, only: [is_even: 1]
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => [1, 2, 3, 4],
+      "Bigger" => [
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        4
+      ]
+    })
+
+    job(expressed(input)) do
+      Strain.Expressed.keep(input, &is_even/1)
+    end
+
+    job(straigth(input)) do
+      Strain.Straigth.keep(input, &is_even/1)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
