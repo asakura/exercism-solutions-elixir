@@ -558,3 +558,46 @@ assert SpaceAge.age_on(:sun, input) == {:error, "not a planet"}
 :passed
 ```
 
+## Strain (Expressed)
+
+https://exercism.org/tracks/elixir/exercises/strain
+
+```elixir
+defmodule Strain.Expressed do
+  @doc """
+  Given a `list` of items and a function `fun`, return the list of items where
+  `fun` returns true.
+
+  ## Examples
+
+      iex> Strain.Expressed.keep([1, 2], & &1 > 1)
+      [2]
+
+  """
+  @spec keep(list :: list(any()), fun :: (any() -> boolean())) :: list(any)
+  def keep(list, fun), do: do_filter(list, fun, [])
+
+  @doc """
+  Given a `list` of items and a function `fun`, return the list of items where
+  `fun` returns false.
+
+  ## Examples
+
+      iex> Strain.Expressed.discard([1, 2], & &1 > 1)
+      [1]
+
+  """
+  @spec discard(list :: list(any), fun :: (any -> boolean)) :: list(any)
+  def discard(list, fun), do: do_filter(list, &(not fun.(&1)), [])
+
+  defp do_filter([], _fun, acc), do: Enum.reverse(acc)
+
+  defp do_filter([item | tail], fun, acc) do
+    case fun.(item) do
+      true -> do_filter(tail, fun, [item | acc])
+      false -> do_filter(tail, fun, acc)
+    end
+  end
+end
+```
+
