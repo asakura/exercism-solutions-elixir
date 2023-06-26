@@ -931,3 +931,40 @@ end
 :passed
 ```
 
+## Sublist: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Sublist.Benchmark do\n  use BencheeDsl.Benchmark\n\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => {[1, 2, 3, 4, 5], [1, 2, 3, 4, 5]},\n    \"Bigger\" => {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5],\n                 [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]},\n  })\n\n  job native_comparator({a, b}) do\n    Sublist.compare(a, b)\n  end\n\n  job comparator({a, b}) do\n    Sublist.Comparator.compare(a, b)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Sublist.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{
+      "Small" => {[1, 2, 3, 4, 5], [1, 2, 3, 4, 5]},
+      "Bigger" =>
+        {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5],
+         [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]}
+    })
+
+    job(native_comparator({a, b})) do
+      Sublist.compare(a, b)
+    end
+
+    job(comparator({a, b})) do
+      Sublist.Comparator.compare(a, b)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
