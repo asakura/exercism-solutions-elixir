@@ -768,3 +768,62 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Sublist
+
+https://exercism.org/tracks/elixir/exercises/sublist
+
+```elixir
+defmodule Sublist do
+  @doc """
+  Returns whether the first list is a sublist or a superlist of the second list
+  and if not whether it is equal or unequal to the second list.
+
+  ## Examples
+
+      iex> Sublist.compare([1, 2, 3], [1, 2])
+      :superlist
+
+      iex> Sublist.compare([2, 3], [1, 2, 3, 4])
+      :sublist
+
+  """
+  def compare([], []), do: :equal
+
+  def compare(a, b) do
+    case {length(a), length(b)} do
+      {_, 0} ->
+        :superlist
+
+      {0, _} ->
+        :sublist
+
+      {x, x} ->
+        if a == b, do: :equal, else: :unequal
+
+      {x, y} when x < y ->
+        sublist?(a, b)
+
+      {x, y} when x > y ->
+        case sublist?(b, a) do
+          :sublist -> :superlist
+          res -> res
+        end
+    end
+  end
+
+  defp sublist?([x | a_rest] = a, [x | b_rest]) do
+    case try_sublist(a_rest, b_rest) do
+      :sublist -> :sublist
+      :unequal -> sublist?(a, b_rest)
+    end
+  end
+
+  defp sublist?([_ | _] = a, [_ | b]), do: sublist?(a, b)
+  defp sublist?(_, _), do: :unequal
+
+  defp try_sublist([x | a], [x | b]), do: try_sublist(a, b)
+  defp try_sublist([], _), do: :sublist
+  defp try_sublist(_, _), do: :unequal
+end
+```
+
