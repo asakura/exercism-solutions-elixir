@@ -1042,3 +1042,37 @@ defmodule SumOfMultiples.ListCompUniq2 do
 end
 ```
 
+## Sum of Multiples: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/sum-of-multiples/test/sum_of_multiples_test.exs
+
+```elixir
+modules = [
+  SumOfMultiples.MapSetNoMult,
+  SumOfMultiples.RemDiv,
+  SumOfMultiples.ListCompUniq,
+  SumOfMultiples.ListCompUniq2
+]
+
+for module <- modules do
+  assert module.to(1, [3, 5]) == 0
+  assert module.to(4, [3, 5]) == 3
+  assert module.to(7, [3]) == 9
+  assert module.to(10, [3, 5]) == 23
+  assert module.to(100, [3, 5]) == 2318
+  assert module.to(1000, [3, 5]) == 233_168
+  assert module.to(20, [7, 13, 17]) == 51
+  assert module.to(15, [4, 6]) == 30
+  assert module.to(150, [5, 6, 8]) == 4419
+  assert module.to(51, [5, 25]) == 275
+  assert module.to(10000, [43, 47]) == 2_203_160
+  assert module.to(100, [1]) == 4950
+  assert module.to(10000, []) == 0
+  assert module.to(1, [0]) == 0
+  assert module.to(4, [3, 0]) == 3
+  assert module.to(10000, [2, 3, 5, 7, 11]) == 39_614_537
+end
+
+:passed
+```
+
