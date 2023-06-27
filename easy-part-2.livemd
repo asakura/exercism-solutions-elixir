@@ -1076,3 +1076,43 @@ end
 :passed
 ```
 
+## Sum of Multiples: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Benchmark.SumOfMultiples do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  inputs(%{\n    \"Small\" => {20, [3, 5]},\n    \"Bigger\" => {10000, [2, 3, 5, 7, 11]}\n  })\n\n  job map_set_no_mult({limit, factors}) do\n    SumOfMultiples.MapSetNoMult.to(limit, factors)\n  end\n  \n  job rem_div({limit, factors}) do\n    SumOfMultiples.RemDiv.to(limit, factors)\n  end\n  \n  job list_comp_uniq({limit, factors}) do\n    SumOfMultiples.ListCompUniq.to(limit, factors)\n  end\n\n  job list_comp_uniq2({limit, factors}) do\n    SumOfMultiples.ListCompUniq2.to(limit, factors)\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Benchmark.SumOfMultiples do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    inputs(%{"Small" => {20, [3, 5]}, "Bigger" => {10000, [2, 3, 5, 7, 11]}})
+
+    job(map_set_no_mult({limit, factors})) do
+      SumOfMultiples.MapSetNoMult.to(limit, factors)
+    end
+
+    job(rem_div({limit, factors})) do
+      SumOfMultiples.RemDiv.to(limit, factors)
+    end
+
+    job(list_comp_uniq({limit, factors})) do
+      SumOfMultiples.ListCompUniq.to(limit, factors)
+    end
+
+    job(list_comp_uniq2({limit, factors})) do
+      SumOfMultiples.ListCompUniq2.to(limit, factors)
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
