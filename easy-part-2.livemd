@@ -1233,3 +1233,47 @@ defmodule Atbash do
 end
 ```
 
+## Atbash Cipher: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/atbash-cipher/test/atbash_test.exs
+
+```elixir
+assert Atbash.encode("yes") == "bvh"
+assert Atbash.encode("no") == "ml"
+assert Atbash.encode("OMG") == "lnt"
+assert Atbash.encode("O M G") == "lnt"
+assert Atbash.encode("mindblowingly") == "nrmwy oldrm tob"
+assert Atbash.encode("Testing, 1 2 3, testing.") == "gvhgr mt123 gvhgr mt"
+assert Atbash.encode("Truth is fiction.") == "gifgs rhurx grlm"
+
+plaintext = "The quick brown fox jumps over the lazy dog."
+cipher = "gsvjf rxpyi ldmul cqfnk hlevi gsvoz abwlt"
+assert Atbash.encode(plaintext) == cipher
+
+cipher = "vcvix rhn"
+plaintext = "exercism"
+assert Atbash.decode(cipher) == plaintext
+
+cipher = "zmlyh gzxov rhlug vmzhg vkkrm thglm v"
+plaintext = "anobstacleisoftenasteppingstone"
+assert Atbash.decode(cipher) == plaintext
+
+cipher = "gvhgr mt123 gvhgr mt"
+plaintext = "testing123testing"
+assert Atbash.decode(cipher) == plaintext
+
+cipher = "gsvjf rxpyi ldmul cqfnk hlevi gsvoz abwlt"
+plaintext = "thequickbrownfoxjumpsoverthelazydog"
+assert Atbash.decode(cipher) == plaintext
+
+cipher = "vc vix    r hn"
+plaintext = "exercism"
+assert Atbash.decode(cipher) == plaintext
+
+cipher = "zmlyhgzxovrhlugvmzhgvkkrmthglmv"
+plaintext = "anobstacleisoftenasteppingstone"
+assert Atbash.decode(cipher) == plaintext
+
+:passed
+```
+
