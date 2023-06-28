@@ -1116,3 +1116,39 @@ end
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Triangle
+
+https://exercism.org/tracks/elixir/exercises/triangle
+
+```elixir
+defmodule Triangle do
+  @type kind :: :equilateral | :isosceles | :scalene
+
+  @doc """
+  Return the kind of triangle of a triangle with 'a', 'b' and 'c' as lengths.
+
+  ## Examples
+
+      iex> Triangle.kind(10, 10, 10)
+      {:ok, :equilateral}
+
+  """
+  @spec kind(number(), number(), number()) :: {:ok, kind()} | {:error, String.t()}
+  def kind(a, b, c), do: apply(&do_kind/3, Enum.sort([a, b, c]))
+
+  defguardp is_positive(a) when a > 0
+  defguardp is_triangle(a, b, c) when a + b >= c
+
+  defp do_kind(a, _, _) when not is_positive(a), do: {:error, "all side lengths must be positive"}
+
+  defp do_kind(a, b, c) when not is_triangle(a, b, c),
+    do: {:error, "side lengths violate triangle inequality"}
+
+  defp do_kind(a, a, a), do: {:ok, :equilateral}
+  defp do_kind(a, a, _), do: {:ok, :isosceles}
+  defp do_kind(a, _, a), do: {:ok, :isosceles}
+  defp do_kind(_, a, a), do: {:ok, :isosceles}
+  defp do_kind(_, _, _), do: {:ok, :scalene}
+end
+```
+
