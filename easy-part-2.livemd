@@ -1437,3 +1437,67 @@ assert Gigasecond.from({{2015, 1, 24}, {23, 59, 59}}) == {{2046, 10, 3}, {1, 46,
 :passed
 ```
 
+## Grade School
+
+https://exercism.org/tracks/elixir/exercises/grade-school
+
+```elixir
+defmodule School do
+  @moduledoc """
+  Simulate students in a school.
+
+  Each student is in a grade.
+  """
+
+  @type school :: any()
+
+  @doc """
+  Create a new, empty school.
+  """
+  @spec new() :: school
+  def new() do
+    %{}
+  end
+
+  @doc """
+  Add a student to a particular grade in school.
+  """
+  @spec add(school, String.t(), integer) :: {:ok | :error, school}
+  def add(school, name, grade) do
+    case Map.fetch(school, name) do
+      {:ok, _} -> {:error, school}
+      _ -> {:ok, Map.update(school, name, [grade], fn existing -> [grade | existing] end)}
+    end
+  end
+
+  @doc """
+  Return the names of the students in a particular grade, sorted alphabetically.
+  """
+  @spec grade(school, integer) :: [String.t()]
+  def grade(school, grade) do
+    Map.to_list(school)
+    |> Enum.reduce([], fn {name, grades}, acc ->
+      for ^grade <- grades, reduce: acc do
+        acc -> [name | acc]
+      end
+    end)
+    |> Enum.sort()
+  end
+
+  @doc """
+  Return the names of all the students in the school sorted by grade and name.
+  """
+  @spec roster(school) :: [String.t()]
+  def roster(school) do
+    Map.to_list(school)
+    |> Enum.reduce([], fn {name, grades}, acc ->
+      for grade <- grades, reduce: acc do
+        acc -> [{grade, name} | acc]
+      end
+    end)
+    |> Enum.sort_by(& &1)
+    |> Enum.map(&elem(&1, 1))
+  end
+end
+```
+
