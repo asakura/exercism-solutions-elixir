@@ -1364,3 +1364,43 @@ assert BinarySearch.search({1, 2}, 0) == :not_found
 :passed
 ```
 
+## Bob
+
+https://exercism.org/tracks/elixir/exercises/bob
+
+```elixir
+defmodule Bob do
+  @doc """
+  Bob is a lackadaisical teenager. In conversation, his responses are very limited.
+
+  ## Examples
+
+      iex> Bob.hey("")
+      "Fine. Be that way!"
+
+      iex> Bob.hey("SLOW DOWN!")
+      "Whoa, chill out!"
+
+  """
+  @spec hey(String.t()) :: String.t()
+  def hey(input) do
+    input = String.trim(input)
+
+    cond do
+      silence?(input) -> "Fine. Be that way!"
+      not letters?(input) and question?(input) -> "Sure."
+      shout?(input) and question?(input) -> "Calm down, I know what I'm doing!"
+      not letters?(input) -> "Whatever."
+      shout?(input) -> "Whoa, chill out!"
+      question?(input) -> "Sure."
+      true -> "Whatever."
+    end
+  end
+
+  defp silence?(input), do: input == ""
+  defp shout?(input), do: String.upcase(input) == input
+  defp question?(input), do: String.ends_with?(input, "?")
+  defp letters?(input), do: input =~ ~r/\p{L}/
+end
+```
+
