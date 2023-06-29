@@ -1501,3 +1501,101 @@ defmodule School do
 end
 ```
 
+## Grade School: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/practice/grade-school/test/school_test.exs
+
+```elixir
+defmodule School.Utils do
+  def make_school_with_students(students) do
+    {results, school} =
+      Enum.reduce(students, {[], School.new()}, fn {student, grade}, {results, school} ->
+        {result, school} = School.add(school, student, grade)
+        {[result | results], school}
+      end)
+
+    {Enum.reverse(results), school}
+  end
+end
+
+assert School.roster(School.new()) == []
+
+{result, school} = School.add(School.new(), "Aimee", 2)
+
+assert result == :ok
+assert School.roster(school) == ["Aimee"]
+
+students = [{"Blair", 2}, {"James", 2}, {"Paul", 2}]
+{results, school} = School.Utils.make_school_with_students(students)
+
+assert results == [:ok, :ok, :ok]
+assert School.roster(school) == ["Blair", "James", "Paul"]
+
+students = [{"Blair", 2}, {"James", 2}, {"James", 2}, {"Paul", 2}]
+{results, school} = School.Utils.make_school_with_students(students)
+
+assert results == [:ok, :ok, :error, :ok]
+assert School.roster(school) == ["Blair", "James", "Paul"]
+
+students = [{"Chelsea", 3}, {"Logan", 7}]
+{results, school} = School.Utils.make_school_with_students(students)
+
+assert results == [:ok, :ok]
+assert School.roster(school) == ["Chelsea", "Logan"]
+
+students = [{"Blair", 2}, {"James", 2}, {"James", 3}, {"Paul", 3}]
+{results, school} = School.Utils.make_school_with_students(students)
+
+assert results == [:ok, :ok, :error, :ok]
+assert School.roster(school) == ["Blair", "James", "Paul"]
+
+students = [{"Jim", 3}, {"Peter", 2}, {"Anna", 1}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.roster(school) == ["Anna", "Peter", "Jim"]
+
+students = [{"Peter", 2}, {"Zoe", 2}, {"Alex", 2}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.roster(school) == ["Alex", "Peter", "Zoe"]
+
+students = [
+  {"Peter", 2},
+  {"Anna", 1},
+  {"Barb", 1},
+  {"Zoe", 2},
+  {"Alex", 2},
+  {"Jim", 3},
+  {"Charlie", 1}
+]
+
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.roster(school) == ["Anna", "Barb", "Charlie", "Alex", "Peter", "Zoe", "Jim"]
+
+assert School.grade(School.new(), 1) == []
+
+students = [{"Peter", 2}, {"Zoe", 2}, {"Alex", 2}, {"Jim", 3}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.grade(school, 1) == []
+
+students = [{"Blair", 2}, {"James", 2}, {"James", 2}, {"Paul", 2}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.roster(school) == ["Blair", "James", "Paul"]
+
+students = [{"Blair", 2}, {"James", 2}, {"James", 3}, {"Paul", 3}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.grade(school, 2) == ["Blair", "James"]
+assert School.grade(school, 3) == ["Paul"]
+
+students = [{"Franklin", 5}, {"Bradley", 5}, {"Jeff", 1}]
+{_results, school} = School.Utils.make_school_with_students(students)
+
+assert School.grade(school, 5) == ["Bradley", "Franklin"]
+
+:passed
+```
+
