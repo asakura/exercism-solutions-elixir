@@ -1807,3 +1807,33 @@ assert IsbnVerifier.isbn?("0-9752298-0-X")
 BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
 ```
 
+## Isogram (Enum.reject/2, Enum.frequencies/1)
+
+https://exercism.org/tracks/elixir/exercises/isogram
+
+```elixir
+defmodule Isogram.EnumFuncs do
+  @doc """
+  Determines if a word or sentence is an isogram.
+
+  ## Examples
+
+      iex> Isogram.EnumFuncs.isogram?("PUBVEXINGFJORD-SCHMALTZY")
+      true
+
+  """
+  @spec isogram?(String.t()) :: boolean
+  def isogram?(""), do: true
+
+  def isogram?(sentence) do
+    sentence
+    |> String.downcase()
+    |> String.codepoints()
+    |> Enum.reject(&(&1 == " " or &1 == "-"))
+    |> Enum.frequencies()
+    |> Map.values()
+    |> Enum.all?(&(&1 == 1))
+  end
+end
+```
+
