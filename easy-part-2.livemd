@@ -1691,3 +1691,49 @@ defmodule IsbnVerifier.EnumFuncs do
 end
 ```
 
+## ISBN Verifier (Regex.scan/2)
+
+```elixir
+defmodule IsbnVerifier.RegexScan do
+  @regex ~r/^(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d|X)$/
+
+  @doc """
+  Checks if a string is a valid ISBN-10 identifier
+
+  ## Examples
+
+      iex> IsbnVerifier.RegexScan.isbn?("3-598-21507-X")
+      true
+
+      iex> IsbnVerifier.RegexScan.isbn?("3-598-2K507-0")
+      false
+
+  """
+  @spec isbn?(String.t()) :: boolean
+  def isbn?(isbn) do
+    case Regex.scan(@regex, isbn) do
+      [[_, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10]] ->
+        Integer.mod(
+          to_int(d1) * 10 +
+            to_int(d2) * 9 +
+            to_int(d3) * 8 +
+            to_int(d4) * 7 +
+            to_int(d5) * 6 +
+            to_int(d6) * 5 +
+            to_int(d7) * 4 +
+            to_int(d8) * 3 +
+            to_int(d9) * 2 +
+            to_int(d10),
+          11
+        ) == 0
+
+      _ ->
+        false
+    end
+  end
+
+  defp to_int("X"), do: 10
+  defp to_int(num), do: String.to_integer(num)
+end
+```
+
