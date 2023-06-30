@@ -1867,3 +1867,33 @@ defmodule Isogram.ListSubstraction do
 end
 ```
 
+## Isogram: Benchmark
+
+<!-- livebook:{"attrs":{"source":"defmodule Isogram.Benchmark do\n  use BencheeDsl.Benchmark\n\n  config(warmup: 1, time: 3, memory_time: 1, reduction_time: 1, pre_check: true, print: [configuration: false])\n\n  job enum_funcs do\n    Isogram.EnumFuncs.isogram?(\"PUBVEXINGFJORD-SCHMALTZY\")\n  end\n\n  job list_substraction do\n    Isogram.ListSubstraction.isogram?(\"PUBVEXINGFJORD-SCHMALTZY\")\n  end\nend"},"chunks":null,"kind":"Elixir.BencheeDsl.SmartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+{:module, name, _binary, _bindings} =
+  defmodule Isogram.Benchmark do
+    use BencheeDsl.Benchmark
+
+    config(
+      warmup: 1,
+      time: 3,
+      memory_time: 1,
+      reduction_time: 1,
+      pre_check: true,
+      print: [configuration: false]
+    )
+
+    job(enum_funcs) do
+      Isogram.EnumFuncs.isogram?("PUBVEXINGFJORD-SCHMALTZY")
+    end
+
+    job(list_substraction) do
+      Isogram.ListSubstraction.isogram?("PUBVEXINGFJORD-SCHMALTZY")
+    end
+  end
+
+BencheeDsl.Livebook.benchee_config() |> name.run() |> BencheeDsl.Livebook.render()
+```
+
