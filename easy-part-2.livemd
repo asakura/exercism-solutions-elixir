@@ -1837,3 +1837,33 @@ defmodule Isogram.EnumFuncs do
 end
 ```
 
+## Isogram (List Substraction)
+
+```elixir
+defmodule Isogram.ListSubstraction do
+  @ascii_alphabet Enum.to_list(?a..?z)
+
+  @doc """
+  Determines if a word or sentence is an isogram.
+
+  ## Examples
+
+      iex> Isogram.ListSubstraction.isogram?("PUBVEXINGFJORD-SCHMALTZY")
+      true
+
+  """
+  @spec isogram?(String.t()) :: boolean
+  def isogram?(""), do: true
+
+  def isogram?(sentence) do
+    sentence =
+      ~r/[\ \-]/
+      |> Regex.replace(sentence, "")
+      |> String.downcase()
+      |> to_charlist()
+
+    Enum.empty?(sentence -- @ascii_alphabet)
+  end
+end
+```
+
