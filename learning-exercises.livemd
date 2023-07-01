@@ -1215,6 +1215,133 @@ defmodule HighScore do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/high-score/test/high_score_test.exs
+
+assert HighScore.new() == %{}
+
+scores = HighScore.new()
+assert HighScore.add_player(scores, "José Valim") == %{"José Valim" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.add_player("Chris McCord")
+
+assert scores == %{"Chris McCord" => 0, "José Valim" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim", 486_373)
+
+assert scores == %{"José Valim" => 486_373}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim", 486_373)
+  |> HighScore.add_player("Dave Thomas", 2_374)
+
+assert scores == %{"José Valim" => 486_373, "Dave Thomas" => 2_374}
+
+scores =
+  HighScore.new()
+  |> HighScore.remove_player("José Valim")
+
+assert scores == %{}
+
+map =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.remove_player("José Valim")
+
+assert map == %{}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.add_player("Chris McCord")
+  |> HighScore.remove_player("José Valim")
+
+assert scores == %{"Chris McCord" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.add_player("Chris McCord")
+  |> HighScore.remove_player("Chris McCord")
+
+assert scores == %{"José Valim" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.reset_score("José Valim")
+
+assert scores == %{"José Valim" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim", 486_373)
+  |> HighScore.reset_score("José Valim")
+
+assert scores == %{"José Valim" => 0}
+
+scores =
+  HighScore.new()
+  |> HighScore.update_score("José Valim", 486_373)
+
+assert scores == %{"José Valim" => 486_373}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.update_score("José Valim", 486_373)
+
+assert scores == %{"José Valim" => 486_373}
+
+scores =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.update_score("José Valim", 1)
+  |> HighScore.update_score("José Valim", 486_373)
+
+assert scores == %{"José Valim" => 486_374}
+
+scores_by_player =
+  HighScore.new()
+  |> HighScore.get_players()
+
+assert scores_by_player == []
+
+players =
+  HighScore.new()
+  |> HighScore.add_player("José Valim")
+  |> HighScore.update_score("José Valim", 486_373)
+  |> HighScore.get_players()
+
+assert players == ["José Valim"]
+
+players =
+  HighScore.new()
+  |> HighScore.add_player("José Valim", 486_373)
+  |> HighScore.add_player("Dave Thomas", 2_374)
+  |> HighScore.add_player("Chris McCord", 0)
+  |> HighScore.add_player("Saša Jurić", 762)
+  |> HighScore.get_players()
+  |> Enum.sort()
+
+assert players == [
+         "Chris McCord",
+         "Dave Thomas",
+         "José Valim",
+         "Saša Jurić"
+       ]
+
+:passed
+```
+
+## City Office
 
 https://exercism.org/tracks/elixir/exercises/city-office
 
