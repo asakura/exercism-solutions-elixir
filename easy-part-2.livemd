@@ -1928,3 +1928,80 @@ defmodule Year do
 end
 ```
 
+## Matrix
+
+https://exercism.org/tracks/elixir/exercises/matrix
+
+```elixir
+defmodule Matrix do
+  @type t :: %__MODULE__{
+          rows: nil | [[integer(), ...], ...],
+          columns: nil | [[integer(), ...], ...]
+        }
+
+  defstruct rows: nil, columns: nil
+
+  @doc """
+  Convert an `input` string, with rows separated by newlines and values
+  separated by single spaces, into a `Matrix` struct.
+  """
+  @spec from_string(input :: String.t()) :: t
+  def from_string(input) do
+    rows =
+      input
+      |> String.split("\n")
+      |> Enum.map(fn line ->
+        line
+        |> String.split()
+        |> Enum.map(&String.to_integer/1)
+      end)
+
+    columns =
+      rows
+      |> Enum.zip_with(& &1)
+
+    %__MODULE__{rows: rows, columns: columns}
+  end
+
+  @doc """
+  Write the `matrix` out as a string, with rows separated by newlines and
+  values separated by single spaces.
+  """
+  @spec to_string(matrix :: t) :: String.t()
+  def to_string(%__MODULE__{rows: nil}), do: ""
+  def to_string(%__MODULE__{rows: rows}), do: Enum.map_join(rows, "\n", &Enum.join(&1, " "))
+
+  @doc """
+  Given a `matrix`, return its rows as a list of lists of integers.
+  """
+  @spec rows(matrix :: t) :: [[integer, ...], ...]
+  def rows(%__MODULE__{rows: nil}), do: []
+  def rows(%__MODULE__{rows: rows}), do: rows
+
+  @doc """
+  Given a `matrix` and `index`, return the row at `index`.
+  """
+  @spec row(matrix :: t, index :: integer) :: [integer, ...]
+  def row(%__MODULE__{rows: rows}, index) when index > 0 and index <= length(rows),
+    do: Enum.at(rows, index - 1)
+
+  def row(_matrix, index), do: raise("index #{inspect(index)} is out of bounds")
+
+  @doc """
+  Given a `matrix`, return its columns as a list of lists of integers.
+  """
+  @spec columns(matrix :: t) :: [[integer, ...], ...]
+  def columns(%__MODULE__{columns: nil}), do: []
+  def columns(%__MODULE__{columns: columns}), do: columns
+
+  @doc """
+  Given a `matrix` and `index`, return the column at `index`.
+  """
+  @spec column(matrix :: t, index :: integer) :: [integer, ...]
+  def column(%__MODULE__{columns: columns}, index) when index > 0 and index <= length(columns),
+    do: Enum.at(columns, index - 1)
+
+  def column(_matrix, index), do: raise("index #{inspect(index)} is out of bounds")
+end
+```
+
