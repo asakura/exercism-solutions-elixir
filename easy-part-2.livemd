@@ -2005,3 +2005,52 @@ defmodule Matrix do
 end
 ```
 
+## Resistor Color Trio
+
+https://exercism.org/tracks/elixir/exercises/resistor-color-trio
+
+```elixir
+defmodule ResistorColorTrio do
+  @type color ::
+          :black | :brown | :red | :orange | :yellow | :green | :blue | :violet | :grey | :white
+
+  @spec code(color :: color()) :: non_neg_integer()
+  defp code(:black), do: 0
+  defp code(:brown), do: 1
+  defp code(:red), do: 2
+  defp code(:orange), do: 3
+  defp code(:yellow), do: 4
+  defp code(:green), do: 5
+  defp code(:blue), do: 6
+  defp code(:violet), do: 7
+  defp code(:grey), do: 8
+  defp code(:white), do: 9
+
+  @spec value(colors :: [color()]) :: non_neg_integer()
+  defp value(colors) when length(colors) >= 3 do
+    [color1, color2, exp_color | _tail] = colors
+
+    (code(color1) * 10 + code(color2)) * max(Integer.pow(10, code(exp_color)), 1)
+  end
+
+  @doc """
+  Calculate the resistance value in ohm or kiloohm from resistor colors.
+
+  ## Examples
+
+      iex> ResistorColorTrio.label([:yellow, :red, :black])
+      {42, :ohms}
+
+  """
+  @spec label(colors :: [color()]) :: {pos_integer(), :ohms | :kiloohms | :megaohms | :gigaohms}
+  def label(colors) when length(colors) >= 3 do
+    case value(colors) do
+      value when value >= 1_000_000_000 -> {div(value, 1_000_000_000), :gigaohms}
+      value when value >= 1_000_000 -> {div(value, 1_000_000), :megaohms}
+      value when value >= 1000 -> {div(value, 1000), :kiloohms}
+      value -> {value, :ohms}
+    end
+  end
+end
+```
+
