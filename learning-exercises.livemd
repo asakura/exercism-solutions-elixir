@@ -1146,7 +1146,75 @@ assert BirdCount.busy_days([0, 6, 10, 4, 4, 5, 0]) == 3
 :passed
 ```
 
-```## City Office
+## High Score
+
+https://exercism.org/tracks/elixir/exercises/high-score
+
+```elixir
+defmodule HighScore do
+  @moduledoc """
+
+  ## Examples
+
+      iex> scores = HighScore.new()
+      iex> scores = HighScore.add_player(scores, "José Valim")
+      iex> scores = HighScore.add_player(scores, "Chris McCord")
+      %{"Chris McCord" => 0, "José Valim" => 0}
+      iex> scores = HighScore.add_player(scores, "Dave Thomas", 2_374)
+      %{"Chris McCord" => 0, "José Valim" => 0, "Dave Thomas" => 2_374}
+      iex> HighScore.remove_player(scores, "José Valim")
+      %{"Chris McCord" => 0, "Dave Thomas" => 2_374}
+
+  """
+
+  @type player_name :: String.t()
+  @type score :: non_neg_integer()
+  @type score_map :: %{player_name() => score()}
+
+  @initial_score 0
+
+  @doc """
+  Returns a new high score map.
+  """
+  @spec new() :: score_map()
+  def new(), do: %{}
+
+  @doc """
+  Adds a players to the high score map.
+  """
+  @spec add_player(score_map(), player_name(), score()) :: score_map()
+  def add_player(scores, name, score \\ @initial_score)
+
+  def add_player(scores, name, score) when is_integer(score) and score >= 0,
+    do: Map.put_new(scores, name, score)
+
+  @doc """
+  Removes a player from the high score map.
+  """
+  @spec remove_player(score_map(), player_name()) :: score_map()
+  def remove_player(scores, name), do: Map.delete(scores, name)
+
+  @doc """
+  Resets a player's score to #{@initial_score} in the high score map.
+  """
+  @spec reset_score(score_map(), player_name()) :: score_map()
+  def reset_score(scores, name), do: Map.put(scores, name, @initial_score)
+
+  @doc """
+  Updates a player's score.
+  """
+  @spec update_score(score_map(), player_name(), score()) :: score_map()
+  def update_score(scores, name, score) when is_integer(score) and score >= 0,
+    do: Map.update(scores, name, score, &(score + &1))
+
+  @doc """
+  Returns a list of players.
+  """
+  @spec get_players(score_map()) :: list(player_name())
+  def get_players(scores), do: Map.keys(scores)
+end
+```
+
 
 https://exercism.org/tracks/elixir/exercises/city-office
 
