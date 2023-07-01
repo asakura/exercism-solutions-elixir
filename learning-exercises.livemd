@@ -1217,11 +1217,13 @@ defmodule HighScore do
 end
 ```
 
+## High Score: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/high-score/test/high_score_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/high-score/test/high_score_test.exs
-
 assert HighScore.new() == %{}
 
 scores = HighScore.new()
@@ -1474,10 +1476,13 @@ defmodule Username do
 end
 ```
 
+## German Sysadmin: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/german-sysadmin/test/username_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/german-sysadmin/test/username_test.exs
 
 assert Username.sanitize('') == ''
 assert Username.sanitize('anne') == 'anne'
@@ -1669,11 +1674,13 @@ defmodule NameBadge do
 end
 ```
 
+## Name Badge: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/name-badge/test/name_badge_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/name-badge/test/name_badge_test.exs
-
 assert NameBadge.print(455, "Mary M. Brown", "MARKETING") ==
          "[455] - Mary M. Brown - MARKETING"
 
@@ -1770,10 +1777,13 @@ defmodule WineCellar do
 end
 ```
 
+## Wine Cellar: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/wine-cellar/test/wine_cellar_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/wine-cellar/test/wine_cellar_test.exs
 import ExUnit.Assertions
 
 assert WineCellar.explain_colors() == [
@@ -1937,10 +1947,13 @@ defmodule DNA do
 end
 ```
 
+## DNA Encoding: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
 assert DNA.encode_nucleotide(?\s) == 0b0000
 assert DNA.encode_nucleotide(?A) == 0b0001
 assert DNA.encode_nucleotide(?C) == 0b0010
@@ -2036,11 +2049,13 @@ defmodule DNA.TCO do
 end
 ```
 
+## DNA Encoding (TCO): Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
-
 assert DNA.TCO.encode_nucleotide(?\s) == 0b0000
 assert DNA.TCO.encode_nucleotide(?A) == 0b0001
 assert DNA.TCO.encode_nucleotide(?C) == 0b0010
@@ -2151,11 +2166,13 @@ defmodule LibraryFees do
 end
 ```
 
+## Library Fees: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/library-fees/test/library_fees_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/library-fees/test/library_fees_test.exs
-
 result = LibraryFees.datetime_from_string("2021-01-01T12:00:00Z")
 assert result.__struct__ == NaiveDateTime
 
@@ -2284,11 +2301,13 @@ defmodule BasketballWebsite do
 end
 ```
 
+## Basketball Website: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/basketball-website/test/basketball_website_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/basketball-website/test/basketball_website_test.exs
-
 team_data = %{
   "coach" => %{},
   "team_name" => "Hoop Masters",
@@ -2636,11 +2655,13 @@ defmodule FileSniffer do
 end
 ```
 
+## File Sniffer: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/file-sniffer/test/file_sniffer_test.exs
+
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-# https://github.com/exercism/elixir/blob/main/exercises/concept/file-sniffer/test/file_sniffer_test.exs
-
 exe_file = <<0x7F, 0x45, 0x4C, 0x46, 0xFF, 0xFF, 0xFF>>
 bmp_file = <<0x42, 0x4D, 0xFF, 0xFF, 0xFF>>
 png_file = <<0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0xFF, 0xFF, 0xFF>>
@@ -2691,4 +2712,3 @@ assert FileSniffer.verify(png_file, "exe") ==
 
 :passed
 ```
-
