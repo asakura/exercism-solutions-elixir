@@ -46,6 +46,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/resistor-color/test/resistor_color_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 assert ResistorColor.code(:black) == 0
 assert ResistorColor.code(:brown) == 1
@@ -88,6 +90,8 @@ end
 ## Two Fer: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/two-fer/test/two_fer_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 assert TwoFer.two_fer() == "One for you, one for me."
@@ -140,6 +144,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/accumulate/test/accumulate_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 assert Accumulate.accumulate([], fn n -> n * n end) == []
 assert Accumulate.accumulate([1, 2, 3], fn n -> n * n end) == [1, 4, 9]
@@ -188,6 +194,8 @@ end
 ## Acronym: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/acronym/test/acronym_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 assert Acronym.abbreviate("Portable Networks Graphic") === "PNG"
@@ -339,6 +347,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/all-your-base/test/all_your_base_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 for module <- [AllYourBase.TCO, AllYourBase.EnumFuncs] do
   assert module.convert([1], 2, 10) == {:ok, [1]}
@@ -437,6 +447,8 @@ end
 ## Anagram: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/anagram/test/anagram_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 assert Anagram.match("diaper", ~w(hello world zombies pants)) == []
@@ -728,6 +740,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/armstrong-numbers/test/armstrong_number_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 modules = [
   ArmstrongNumber.ListComprehension,
@@ -1000,6 +1014,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/collatz-conjecture/test/collatz_conjecture_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 modules = [
   CollatzConjecture.StreamIterateFindIndex,
@@ -1116,6 +1132,8 @@ end
 ## ETL: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/etl/test/etl_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 old = %{1 => ["A"]}
@@ -1240,6 +1258,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/hamming/test/hamming_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 for module <- [Hamming.TCO, Hamming.StreamZip] do
   assert module.hamming_distance('', '') == {:ok, 0}
@@ -1328,6 +1348,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/nth-prime/test/prime_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 assert Prime.nth(1) == 2
 assert Prime.nth(2) == 3
@@ -1384,6 +1406,8 @@ end
 ## Nucleotide Count: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/nucleotide-count/test/nucleotide_count_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 assert NucleotideCount.count('', ?A) == 0
@@ -1579,6 +1603,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/pangram/test/pangram_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 modules = [
   Pangram.ListComprehensionUniq,
@@ -1756,6 +1782,8 @@ end
 ## Pig Latin: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/pig-latin/test/pig_latin_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 for module <- [PigLatin.Binary, PigLatin.Regex] do
@@ -1984,6 +2012,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/protein-translation/test/protein_translation_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 for module <- [ProteinTranslation.TCO, ProteinTranslation.TCOCase] do
   assert module.of_codon("AUG") == {:ok, "Methionine"}
@@ -2116,6 +2146,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/raindrops/test/raindrops_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 assert Raindrops.convert(1) == "1"
 assert Raindrops.convert(3) == "Pling"
@@ -2180,6 +2212,8 @@ end
 ## Resistor Color Duo: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/resistor-color-duo/test/resistor_color_duo_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 colors = [:brown, :black]
@@ -2459,6 +2493,8 @@ end
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/rna-transcription/test/rna_transcription_test.exs
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
 ```elixir
 modules = [
   RnaTranscription.TCO,
@@ -2591,6 +2627,8 @@ end
 ## Roman Numerals: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/roman-numerals/test/roman_numerals_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 assert RomanNumerals.numeral(1) == "I"
@@ -2749,6 +2787,8 @@ end
 ## Rotational Cipher: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/practice/rotational-cipher/test/rotational_cipher_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
 modules = [
