@@ -1483,7 +1483,6 @@ https://github.com/exercism/elixir/blob/main/exercises/concept/german-sysadmin/t
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-
 assert Username.sanitize('') == ''
 assert Username.sanitize('anne') == 'anne'
 lowercase_latin_letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -1646,6 +1645,193 @@ defmodule DateParser do
   @spec match_day_month_name_date() :: Regex.t()
   def match_day_month_name_date(), do: ~r/^#{capture_day_month_name_date()}$/
 end
+```
+
+## Date Parser: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/date-parser/test/date_parser_test.exs
+
+```elixir
+assert match?(%Regex{}, DateParser.match_numeric_date())
+
+assert DateParser.match_numeric_date() |> Regex.match?("01/02/1970")
+
+assert %{"year" => "1970", "month" => "02", "day" => "01"} =
+         DateParser.match_numeric_date()
+         |> Regex.named_captures("01/02/1970")
+
+refute DateParser.match_numeric_date() |> Regex.match?("The day was 01/02/1970")
+
+refute DateParser.match_numeric_date() |> Regex.match?("01/02/1970 was the day")
+
+assert match?(%Regex{}, DateParser.match_month_name_date())
+
+assert DateParser.match_month_name_date() |> Regex.match?("January 1, 1970")
+
+assert %{"year" => "1970", "month_name" => "January", "day" => "1"} =
+         DateParser.match_month_name_date()
+         |> Regex.named_captures("January 1, 1970")
+
+refute DateParser.match_month_name_date() |> Regex.match?("The day was January 1, 1970")
+
+refute DateParser.match_month_name_date() |> Regex.match?("January 1, 1970 was the day")
+
+assert match?(%Regex{}, DateParser.match_day_month_name_date())
+
+assert DateParser.match_day_month_name_date() |> Regex.match?("Thursday, January 1, 1970")
+
+assert %{
+         "year" => "1970",
+         "month_name" => "January",
+         "day" => "1",
+         "day_name" => "Thursday"
+       } =
+         DateParser.match_day_month_name_date()
+         |> Regex.named_captures("Thursday, January 1, 1970")
+
+refute DateParser.match_day_month_name_date()
+       |> Regex.match?("The day way Thursday, January 1, 1970")
+
+refute DateParser.match_day_month_name_date()
+       |> Regex.match?("Thursday, January 1, 1970 was the day")
+
+:passed
+```
+
+## RPG Character Set
+
+https://exercism.org/tracks/elixir/exercises/rpg-character-sheet
+
+```elixir
+defmodule RPG.CharacterSheet do
+  @moduledoc """
+
+  ## Examples
+
+      iex> RPG.CharacterSheet.welcome()
+      :ok
+
+  """
+
+  @spec welcome() :: :ok
+  def welcome() do
+    IO.puts("Welcome! Let's fill out your character sheet together.")
+  end
+
+  @spec ask_name() :: String.t()
+  def ask_name() do
+    name = IO.gets("What is your character's name?\n")
+    String.trim(name)
+  end
+
+  @spec ask_class() :: String.t()
+  def ask_class() do
+    class = IO.gets("What is your character's class?\n")
+    String.trim(class)
+  end
+
+  @spec ask_level() :: integer()
+  def ask_level() do
+    level = IO.gets("What is your character's level?\n")
+    {level, _} = Integer.parse(level)
+    level
+  end
+
+  @spec run() :: map()
+  def run() do
+    welcome()
+
+    name = ask_name()
+    class = ask_class()
+    level = ask_level()
+
+    %{name: name, class: class, level: level}
+    |> IO.inspect(label: "Your character")
+  end
+end
+```
+
+## RPG Character Set: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/rpg-character-sheet/test/rpg/character_sheet_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+io =
+  capture_io(fn ->
+    assert RPG.CharacterSheet.welcome() == :ok
+  end)
+
+assert io == "Welcome! Let's fill out your character sheet together.\n"
+
+io =
+  capture_io("\n", fn ->
+    RPG.CharacterSheet.ask_name()
+  end)
+
+assert io == "What is your character's name?\n"
+
+capture_io("Maxwell The Great\n", fn ->
+  assert RPG.CharacterSheet.ask_name() == "Maxwell The Great"
+end)
+
+io =
+  capture_io("\n", fn ->
+    RPG.CharacterSheet.ask_class()
+  end)
+
+assert io == "What is your character's class?\n"
+
+capture_io("rogue\n", fn ->
+  assert RPG.CharacterSheet.ask_class() == "rogue"
+end)
+
+io =
+  capture_io("1\n", fn ->
+    RPG.CharacterSheet.ask_level()
+  end)
+
+assert io == "What is your character's level?\n"
+
+capture_io("3\n", fn ->
+  assert RPG.CharacterSheet.ask_level() == 3
+end)
+
+io =
+  capture_io("Susan The Fearless\nfighter\n6\n", fn ->
+    RPG.CharacterSheet.run()
+  end)
+
+assert io =~ """
+       Welcome! Let's fill out your character sheet together.
+       What is your character's name?
+       What is your character's class?
+       What is your character's level?
+       """
+
+capture_io("The Stranger\nrogue\n2\n", fn ->
+  assert RPG.CharacterSheet.run() == %{
+           name: "The Stranger",
+           class: "rogue",
+           level: 2
+         }
+end)
+
+io =
+  capture_io("Anne\nhealer\n4\n", fn ->
+    RPG.CharacterSheet.run()
+  end)
+
+assert io =~
+         "\nYour character: " <>
+           inspect(%{
+             name: "Anne",
+             class: "healer",
+             level: 4
+           })
+
+:passed
 ```
 
 ## Name Badge
