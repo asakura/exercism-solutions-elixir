@@ -1880,6 +1880,52 @@ assert NameBadge.print(nil, "Stephen Dann", nil) == "Stephen Dann - OWNER"
 :passed
 ```
 
+## Take-A-Number
+
+https://exercism.org/tracks/elixir/exercises/take-a-number
+
+```elixir
+defmodule TakeANumber do
+  @moduledoc """
+
+  ## Examples
+
+      iex> pid = TakeANumber.start()
+      iex> send(pid, {:take_a_number, self()})
+      iex> send(pid, {:report_state, self()})
+
+  """
+
+  @initial_state 0
+
+  @doc """
+  Starts a process with a Take-A-Number machine running in it.
+  """
+  @spec start() :: pid()
+  def start() do
+    spawn(fn -> loop(@initial_state) end)
+  end
+
+  defp loop(state) do
+    receive do
+      {:report_state, sender} ->
+        send(sender, state)
+        loop(state)
+
+      {:take_a_number, sender} ->
+        state = state + 1
+        send(sender, state)
+        loop(state)
+
+      :stop ->
+        nil
+
+      _ ->
+        loop(state)
+    end
+  end
+end
+```
 ## Wine Cellar
 
 https://exercism.org/tracks/elixir/exercises/wine-cellar
