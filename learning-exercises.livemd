@@ -2194,6 +2194,77 @@ assert WineCellar.filter(cellar, :red, country: "France", year: 2015) == [
 :passed
 ```
 
+## Paint By Number
+
+https://exercism.org/tracks/elixir/exercises/paint-by-number
+
+```elixir
+defmodule PaintByNumber do
+  @moduledoc """
+
+  ## Examples
+
+      iex> PaintByNumber.palette_bit_size(50)
+      6
+
+      iex> PaintByNumber.get_first_pixel(<<1::2, 0::2, 0::2, 2::2>>, 3)
+      1
+
+  """
+
+  @spec palette_bit_size(pos_integer()) :: pos_integer()
+  def palette_bit_size(color_count) do
+    do_palette_bit_size(1, color_count)
+  end
+
+  defp do_palette_bit_size(n, color_count) do
+    case Integer.pow(2, n) < color_count do
+      true -> do_palette_bit_size(n + 1, color_count)
+      false -> n
+    end
+  end
+
+  @spec empty_picture() :: bitstring()
+  def empty_picture() do
+    <<>>
+  end
+
+  @spec test_picture() :: bitstring()
+  def test_picture() do
+    <<0b0::2, 0b1::2, 0b10::2, 0b11::2>>
+  end
+
+  @spec prepend_pixel(bitstring(), pos_integer(), pos_integer()) :: bitstring()
+  def prepend_pixel(picture, color_count, pixel_color_index) do
+    palette = palette_bit_size(color_count)
+    <<pixel_color_index::size(palette), picture::bitstring>>
+  end
+
+  @spec get_first_pixel(bitstring(), pos_integer()) :: pos_integer()
+  def get_first_pixel(<<>>, _color_count), do: nil
+
+  def get_first_pixel(picture, color_count) do
+    palette = palette_bit_size(color_count)
+    <<first_pixel::size(palette), _rest::bitstring>> = picture
+    first_pixel
+  end
+
+  @spec drop_first_pixel(bitstring(), pos_integer()) :: bitstring()
+  def drop_first_pixel(<<>>, _color_count), do: <<>>
+
+  def drop_first_pixel(picture, color_count) do
+    palette = palette_bit_size(color_count)
+    <<_first_pixel::size(palette), rest::bitstring>> = picture
+    rest
+  end
+
+  @spec concat_pictures(bitstring(), bitstring()) :: bitstring()
+  def concat_pictures(picture1, picture2) do
+    <<picture1::bitstring, picture2::bitstring>>
+  end
+end
+```
+
 ## DNA Encoding
 
 https://exercism.org/tracks/elixir/exercises/dna-encoding
