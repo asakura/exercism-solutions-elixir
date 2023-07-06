@@ -2428,41 +2428,6 @@ defmodule DNA do
 end
 ```
 
-## DNA Encoding: Tests
-
-https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
-
-<!-- livebook:{"reevaluate_automatically":true} -->
-
-```elixir
-assert DNA.encode_nucleotide(?\s) == 0b0000
-assert DNA.encode_nucleotide(?A) == 0b0001
-assert DNA.encode_nucleotide(?C) == 0b0010
-assert DNA.encode_nucleotide(?G) == 0b0100
-assert DNA.encode_nucleotide(?T) == 0b1000
-assert DNA.decode_nucleotide(0b0000) == ?\s
-assert DNA.decode_nucleotide(0b0001) == ?A
-assert DNA.decode_nucleotide(0b0010) == ?C
-assert DNA.decode_nucleotide(0b0100) == ?G
-assert DNA.decode_nucleotide(0b1000) == ?T
-assert DNA.encode(' ') == <<0b0000::4>>
-assert DNA.encode('A') == <<0b0001::4>>
-assert DNA.encode('C') == <<0b0010::4>>
-assert DNA.encode('G') == <<0b0100::4>>
-assert DNA.encode('T') == <<0b1000::4>>
-assert DNA.encode(' ACGT') == <<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>
-assert DNA.encode('TGCA ') == <<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>
-assert DNA.decode(<<0b0000::4>>) == ' '
-assert DNA.decode(<<0b0001::4>>) == 'A'
-assert DNA.decode(<<0b0010::4>>) == 'C'
-assert DNA.decode(<<0b0100::4>>) == 'G'
-assert DNA.decode(<<0b1000::4>>) == 'T'
-assert DNA.decode(<<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>) == ' ACGT'
-assert DNA.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>) == 'TGCA '
-
-:passed
-```
-
 ## DNA Encoding (TCO)
 
 ```elixir
@@ -2530,37 +2495,39 @@ defmodule DNA.TCO do
 end
 ```
 
-## DNA Encoding (TCO): Tests
+## DNA Encoding: Tests
 
 https://github.com/exercism/elixir/blob/main/exercises/concept/dna-encoding/test/dna_test.exs
 
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-assert DNA.TCO.encode_nucleotide(?\s) == 0b0000
-assert DNA.TCO.encode_nucleotide(?A) == 0b0001
-assert DNA.TCO.encode_nucleotide(?C) == 0b0010
-assert DNA.TCO.encode_nucleotide(?G) == 0b0100
-assert DNA.TCO.encode_nucleotide(?T) == 0b1000
-assert DNA.TCO.decode_nucleotide(0b0000) == ?\s
-assert DNA.TCO.decode_nucleotide(0b0001) == ?A
-assert DNA.TCO.decode_nucleotide(0b0010) == ?C
-assert DNA.TCO.decode_nucleotide(0b0100) == ?G
-assert DNA.TCO.decode_nucleotide(0b1000) == ?T
-assert DNA.TCO.encode(' ') == <<0b0000::4>>
-assert DNA.TCO.encode('A') == <<0b0001::4>>
-assert DNA.TCO.encode('C') == <<0b0010::4>>
-assert DNA.TCO.encode('G') == <<0b0100::4>>
-assert DNA.TCO.encode('T') == <<0b1000::4>>
-assert DNA.TCO.encode(' ACGT') == <<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>
-assert DNA.TCO.encode('TGCA ') == <<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>
-assert DNA.TCO.decode(<<0b0000::4>>) == ' '
-assert DNA.TCO.decode(<<0b0001::4>>) == 'A'
-assert DNA.TCO.decode(<<0b0010::4>>) == 'C'
-assert DNA.TCO.decode(<<0b0100::4>>) == 'G'
-assert DNA.TCO.decode(<<0b1000::4>>) == 'T'
-assert DNA.TCO.decode(<<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>) == ' ACGT'
-assert DNA.TCO.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>) == 'TGCA '
+for module <- [DNA, DNA.TCO] do
+  assert module.encode_nucleotide(?\s) == 0b0000
+  assert module.encode_nucleotide(?A) == 0b0001
+  assert module.encode_nucleotide(?C) == 0b0010
+  assert module.encode_nucleotide(?G) == 0b0100
+  assert module.encode_nucleotide(?T) == 0b1000
+  assert module.decode_nucleotide(0b0000) == ?\s
+  assert module.decode_nucleotide(0b0001) == ?A
+  assert module.decode_nucleotide(0b0010) == ?C
+  assert module.decode_nucleotide(0b0100) == ?G
+  assert module.decode_nucleotide(0b1000) == ?T
+  assert module.encode(' ') == <<0b0000::4>>
+  assert module.encode('A') == <<0b0001::4>>
+  assert module.encode('C') == <<0b0010::4>>
+  assert module.encode('G') == <<0b0100::4>>
+  assert module.encode('T') == <<0b1000::4>>
+  assert module.encode(' ACGT') == <<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>
+  assert module.encode('TGCA ') == <<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>
+  assert module.decode(<<0b0000::4>>) == ' '
+  assert module.decode(<<0b0001::4>>) == 'A'
+  assert module.decode(<<0b0010::4>>) == 'C'
+  assert module.decode(<<0b0100::4>>) == 'G'
+  assert module.decode(<<0b1000::4>>) == 'T'
+  assert module.decode(<<0b0000::4, 0b0001::4, 0b0010::4, 0b0100::4, 0b1000::4>>) == ' ACGT'
+  assert module.decode(<<0b1000::4, 0b0100::4, 0b0010::4, 0b0001::4, 0b0000::4>>) == 'TGCA '
+end
 
 :passed
 ```
