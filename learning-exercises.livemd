@@ -3029,6 +3029,100 @@ assert BasketballWebsite.get_in_path(team_data, "support_personnel.physiotherapy
 :passed
 ```
 
+## Boutique Inventory
+
+https://exercism.org/tracks/elixir/exercises/boutique-inventory
+
+```elixir
+defmodule BoutiqueInventory do
+  @moduledoc """
+
+  ## Examples
+
+      iex> BoutiqueInventory.sort_by_price([
+      ...>   %{price: 65, name: "Maxi Yellow Summer Dress", quantity_by_size: %{}},
+      ...>   %{price: 60, name: "Cream Linen Pants", quantity_by_size: %{}},
+      ...>   %{price: 33, name: "Straw Hat", quantity_by_size: %{}},
+      ...>   %{price: 60, name: "Brown Linen Pants", quantity_by_size: %{}}
+      ...> ])
+      [
+        %{price: 33, name: "Straw Hat", quantity_by_size: %{}},
+        %{price: 60, name: "Cream Linen Pants", quantity_by_size: %{}},
+        %{price: 60, name: "Brown Linen Pants", quantity_by_size: %{}},
+        %{price: 65, name: "Maxi Yellow Summer Dress", quantity_by_size: %{}}
+      ]
+
+      iex> BoutiqueInventory.with_missing_price([
+      ...>   %{name: "Red Flowery Top", price: 50, quantity_by_size: %{}},
+      ...>   %{name: "Purple Flowery Top", price: nil, quantity_by_size: %{}},
+      ...>   %{name: "Bamboo Socks Avocado", price: 10, quantity_by_size: %{}},
+      ...>   %{name: "Bamboo Socks Palm Trees", price: 10, quantity_by_size: %{}},
+      ...>   %{name: "Bamboo Socks Kittens", price: nil, quantity_by_size: %{}}
+      ...> ])
+      [
+        %{name: "Purple Flowery Top", price: nil, quantity_by_size: %{}},
+        %{name: "Bamboo Socks Kittens", price: nil, quantity_by_size: %{}}
+      ]
+
+  """
+
+  @type item :: %{
+          price: non_neg_integer() | nil,
+          name: String.t(),
+          quantity_by_size: map()
+        }
+
+  @type inventory :: list(item())
+
+  @doc """
+  Sorts items in the inventory by price.
+  """
+  @spec sort_by_price(inventory :: inventory()) :: inventory()
+  def sort_by_price(inventory), do: Enum.sort_by(inventory, & &1.price, :asc)
+
+  @doc """
+  Findsall items in the inventory with missing prices.
+  """
+  @spec with_missing_price(inventory :: inventory()) :: inventory()
+  def with_missing_price(inventory), do: Enum.filter(inventory, &is_nil(&1.price))
+
+  @doc """
+  Replace the old word with a new one across all invetory names.
+  """
+  @spec update_names(inventory :: inventory(), String.t(), String.t()) :: inventory()
+  def update_names(inventory, old_name, new_name) do
+    Enum.map(inventory, fn item ->
+      cond do
+        String.contains?(item.name, old_name) ->
+          %{item | name: String.replace(item.name, old_name, new_name)}
+
+        true ->
+          item
+      end
+    end)
+  end
+
+  @doc """
+  Increments the item's quantity of each size by the count.
+  """
+  @spec increase_quantity(item(), pos_integer()) :: item()
+  def increase_quantity(item, count) do
+    quantity_by_size =
+      item.quantity_by_size
+      |> Enum.into(%{}, fn {size, quantity} -> {size, quantity + count} end)
+
+    %{item | quantity_by_size: quantity_by_size}
+  end
+
+  @doc """
+  Calculates the item's total quantity of all sizes.
+  """
+  @spec total_quantity(item()) :: non_neg_integer()
+  def total_quantity(item),
+    do: Enum.reduce(item.quantity_by_size, 0, fn {_size, quantity}, total -> total + quantity end)
+end
+```
+
 ## File Sniffer
 
 https://exercism.org/tracks/elixir/exercises/file-sniffer
