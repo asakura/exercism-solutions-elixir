@@ -3425,3 +3425,163 @@ defmodule Newsletter do
 end
 ```
 
+## Newsletter: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/newsletter/test/newsletter_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+temp_file_path = "temp.txt"
+emails_file_path = "emails.txt"
+empty_file_path = "empty.txt"
+
+File.write!(temp_file_path, "")
+
+File.write!(
+  emails_file_path,
+  "alice@example.com\nbob@example.com\ncharlie@example.com\ndave@example.com"
+)
+
+File.write!(empty_file_path, "")
+
+assert Newsletter.read_emails(emails_file_path) == [
+         "alice@example.com",
+         "bob@example.com",
+         "charlie@example.com",
+         "dave@example.com"
+       ]
+
+assert Newsletter.read_emails(empty_file_path) == []
+
+file = Newsletter.open_log(temp_file_path)
+assert is_pid(file)
+File.close(file)
+
+file = Newsletter.open_log(temp_file_path)
+assert IO.write(file, "hello") == :ok
+assert File.read!(temp_file_path) == "hello"
+File.close(file)
+
+file = File.open!(temp_file_path, [:write])
+assert Newsletter.log_sent_email(file, "janice@example.com") == :ok
+File.close(file)
+
+file = File.open!(temp_file_path, [:write])
+Newsletter.log_sent_email(file, "joe@example.com")
+assert File.read!(temp_file_path) == "joe@example.com\n"
+File.close(file)
+
+file = File.open!(temp_file_path, [:write])
+Newsletter.log_sent_email(file, "joe@example.com")
+Newsletter.log_sent_email(file, "kathrine@example.com")
+Newsletter.log_sent_email(file, "lina@example.com")
+
+assert File.read!(temp_file_path) ==
+         "joe@example.com\nkathrine@example.com\nlina@example.com\n"
+
+File.close(file)
+
+file = File.open!(temp_file_path, [:write])
+assert Newsletter.close_log(file) == :ok
+
+file = File.open!(temp_file_path, [:read])
+assert Newsletter.close_log(file) == :ok
+assert IO.read(file, :all) == {:error, :terminated}
+
+send_fun = fn _ -> :ok end
+
+assert Newsletter.send_newsletter(
+         "emails.txt",
+         temp_file_path,
+         send_fun
+       ) == :ok
+
+send_fun = fn email -> send(self(), {:send, email}) && :ok end
+
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+
+assert_received {:send, "alice@example.com"}
+assert_received {:send, "bob@example.com"}
+assert_received {:send, "charlie@example.com"}
+assert_received {:send, "dave@example.com"}
+
+send_fun = fn _ -> :ok end
+
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+
+assert File.read!(temp_file_path) ==
+         """
+         alice@example.com
+         bob@example.com
+         charlie@example.com
+         dave@example.com
+         """
+
+send_fun = fn
+  "bob@example.com" -> :error
+  "charlie@example.com" -> :error
+  _ -> :ok
+end
+
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+
+assert File.read!(temp_file_path) == """
+       alice@example.com
+       dave@example.com
+       """
+
+send_fun = fn _ -> :ok end
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+
+assert File.read!(temp_file_path) ==
+         """
+         alice@example.com
+         bob@example.com
+         charlie@example.com
+         dave@example.com
+         """
+
+send_fun = fn email ->
+  case email do
+    "alice@example.com" ->
+      :ok
+
+    "bob@example.com" ->
+      assert File.read!(temp_file_path) == """
+             alice@example.com
+             """
+
+      :ok
+
+    "charlie@example.com" ->
+      assert File.read!(temp_file_path) == """
+             alice@example.com
+             bob@example.com
+             """
+
+      :error
+
+    "dave@example.com" ->
+      assert File.read!(temp_file_path) == """
+             alice@example.com
+             bob@example.com
+             """
+
+      :ok
+  end
+end
+
+Newsletter.send_newsletter("emails.txt", temp_file_path, send_fun)
+
+assert File.read!(temp_file_path) ==
+         """
+         alice@example.com
+         bob@example.com
+         dave@example.com
+         """
+
+:passed
+```
+
