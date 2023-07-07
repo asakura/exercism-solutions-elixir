@@ -3365,3 +3365,63 @@ assert FileSniffer.verify(png_file, "exe") ==
 
 :passed
 ```
+
+## Newsletter
+
+https://exercism.org/tracks/elixir/exercises/newsletter
+
+```elixir
+defmodule Newsletter do
+  @doc """
+  Reads email addresses from a file.
+  """
+  @spec read_emails(path :: Path.t()) :: list(String.t())
+  def read_emails(path) do
+    path
+    |> File.read!()
+    |> String.split("\n")
+    |> Enum.map(&String.trim/1)
+    |> Enum.filter(&(&1 != ""))
+  end
+
+  @doc """
+  Opens a log file for writing.
+  """
+  @spec open_log(pah :: Path.t()) :: File.io_device()
+  def open_log(path), do: File.open!(path, [:write])
+
+  @doc """
+  Logs a sent email.
+  """
+  @spec log_sent_email(pid :: File.io_device(), email :: String.t()) :: :ok
+  def log_sent_email(pid, email) do
+    IO.puts(pid, email)
+  end
+
+  @doc """
+  Closes the log file.
+  """
+  @spec close_log(pid :: File.io_device()) :: :ok
+  def close_log(pid), do: File.close(pid)
+
+  @doc """
+  Sends the newsletter and writes sent email address to the log file.
+  """
+  @spec send_newsletter(emails_path :: Path.t(), log_path :: Path.t(), (String.t() -> :ok)) :: :ok
+  def send_newsletter(emails_path, log_path, send_fun) do
+    log_pid = open_log(log_path)
+
+    emails_path
+    |> read_emails()
+    |> Enum.each(fn email ->
+      case send_fun.(email) do
+        :ok -> log_sent_email(log_pid, email)
+        _ -> nil
+      end
+    end)
+
+    close_log(log_pid)
+  end
+end
+```
+
