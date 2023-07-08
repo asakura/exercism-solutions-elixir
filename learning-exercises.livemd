@@ -3726,3 +3726,126 @@ defmodule FakeRemoteControlCar do
 end
 ```
 
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+# https://github.com/exercism/elixir/blob/main/exercises/concept/remote-control-car/test/remote_control_car_test.exs
+
+assert_raise ArgumentError, fn ->
+  quote do
+    %RemoteControlCar{}
+  end
+  |> Code.eval_quoted()
+end
+
+car = RemoteControlCar.new()
+
+assert car.__struct__ == RemoteControlCar
+assert car.battery_percentage == 100
+assert car.distance_driven_in_meters == 0
+assert car.nickname == "none"
+
+nickname = "Red"
+car = RemoteControlCar.new(nickname)
+
+assert car.__struct__ == RemoteControlCar
+assert car.battery_percentage == 100
+assert car.distance_driven_in_meters == 0
+assert car.nickname == nickname
+
+fake_car = %{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.display_distance(fake_car)
+end)
+
+fake_car = %FakeRemoteControlCar{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.display_distance(fake_car)
+end)
+
+car = RemoteControlCar.new()
+
+assert RemoteControlCar.display_distance(car) == "0 meters"
+
+car = RemoteControlCar.new()
+car = %{car | distance_driven_in_meters: 20}
+
+assert RemoteControlCar.display_distance(car) == "20 meters"
+
+fake_car = %{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.display_battery(fake_car)
+end)
+
+fake_car = %FakeRemoteControlCar{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.display_battery(fake_car)
+end)
+
+car = RemoteControlCar.new()
+
+assert RemoteControlCar.display_battery(car) == "Battery at 100%"
+
+car = RemoteControlCar.new()
+car = %{car | battery_percentage: 0}
+
+assert RemoteControlCar.display_battery(car) == "Battery empty"
+
+fake_car = %{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.drive(fake_car)
+end)
+
+fake_car = %FakeRemoteControlCar{
+  battery_percentage: 100,
+  distance_driven_in_meters: 0,
+  nickname: "Fake"
+}
+
+assert_raise(FunctionClauseError, fn ->
+  RemoteControlCar.drive(fake_car)
+end)
+
+car = RemoteControlCar.new() |> RemoteControlCar.drive()
+
+assert car.__struct__ == RemoteControlCar
+assert car.battery_percentage == 99
+assert car.distance_driven_in_meters == 20
+
+car =
+  RemoteControlCar.new()
+  |> Map.put(:battery_percentage, 0)
+  |> RemoteControlCar.drive()
+
+assert car.__struct__ == RemoteControlCar
+assert car.battery_percentage == 0
+assert car.distance_driven_in_meters == 0
+
+:passed
+```
+
