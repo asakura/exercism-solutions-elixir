@@ -3636,3 +3636,18 @@ defmodule Chessboard do
 end
 ```
 
+## Chessboard: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/chessboard/test/chessboard_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+assert Chessboard.rank_range() == 1..8
+assert Chessboard.file_range() == ?A..?H
+assert Chessboard.ranks() == [1, 2, 3, 4, 5, 6, 7, 8]
+assert Chessboard.files() == ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+:passed
+```
+
