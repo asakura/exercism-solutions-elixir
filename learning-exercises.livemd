@@ -3651,3 +3651,78 @@ assert Chessboard.files() == ["A", "B", "C", "D", "E", "F", "G", "H"]
 :passed
 ```
 
+## Remote Controll Car
+
+https://exercism.org/tracks/elixir/exercises/remote-control-car
+
+```elixir
+defmodule RemoteControlCar do
+  @moduledoc """
+
+  ## Examples
+
+      iex> RemoteControlCar.new("Red")
+      %RemoteControlCar{nickname: "Red", battery_percentage: 100, distance_driven_in_meters: 0}
+
+  """
+
+  @type t :: %__MODULE__{
+          battery_percentage: non_neg_integer(),
+          distance_driven_in_meters: non_neg_integer(),
+          nickname: String.t()
+        }
+
+  @enforce_keys [:battery_percentage, :distance_driven_in_meters, :nickname]
+  defstruct @enforce_keys
+
+  @doc """
+  Creates a brand-new remote controlled car with a nickname.
+  """
+  @spec new(String.t()) :: t()
+  def new(nickname \\ "none"),
+    do: %__MODULE__{
+      battery_percentage: 100,
+      distance_driven_in_meters: 0,
+      nickname: nickname
+    }
+
+  @doc """
+  Returns the distance as displayed on the LED display.
+  """
+  @spec display_distance(t()) :: non_neg_integer()
+  def display_distance(%__MODULE__{distance_driven_in_meters: distance}),
+    do: "#{distance} meters"
+
+  @doc """
+  Returns the battery percentage as displayed on the LED display.
+  """
+  @spec display_battery(t()) :: non_neg_integer()
+  def display_battery(%__MODULE__{battery_percentage: 0}),
+    do: "Battery empty"
+
+  def display_battery(%__MODULE__{battery_percentage: battery}),
+    do: "Battery at #{battery}%"
+
+  @doc """
+  Updates the number of meters driven by 20 and drains 1% of the battery.
+  """
+  @spec drive(t()) :: t()
+  def drive(%__MODULE__{battery_percentage: 0} = remote_car), do: remote_car
+
+  def drive(%__MODULE__{} = remote_car),
+    do: %{
+      remote_car
+      | battery_percentage: remote_car.battery_percentage - 1,
+        distance_driven_in_meters: remote_car.distance_driven_in_meters + 20
+    }
+end
+```
+
+```elixir
+defmodule FakeRemoteControlCar do
+  defstruct battery_percentage: 100,
+            distance_driven_in_meters: 0,
+            nickname: nil
+end
+```
+
