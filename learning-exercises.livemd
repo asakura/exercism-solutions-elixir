@@ -3849,3 +3849,55 @@ assert car.distance_driven_in_meters == 0
 :passed
 ```
 
+## Boutique Suggestions
+
+https://exercism.org/tracks/elixir/exercises/boutique-suggestions
+
+```elixir
+defmodule BoutiqueSuggestions do
+  @moduledoc """
+
+  ## Examples
+
+      iex> top = %{
+      ...>  item_name: "Long Sleeve T-shirt",
+      ...>  price: 19.95,
+      ...>  color: "Deep Red",
+      ...>  base_color: "red"
+      ...> }
+      iex> bottom = %{
+      ...>  item_name: "Wonderwall Pants",
+      ...>  price: 48.97,
+      ...>  color: "French Navy",
+      ...>  base_color: "blue"
+      ...> }
+      iex> BoutiqueSuggestions.get_combinations([top], [bottom])
+      [{top, bottom}]
+
+  """
+
+  @type item :: %{
+          item_name: String.t(),
+          base_color: String.t(),
+          price: pos_integer()
+        }
+
+  @doc """
+  Takes a list of tops, a list of bottoms, and keyword list of options then
+  produces cartesian product and filter out clashing outfits based on matching
+  color. Filters outs a combination if its price exceed the maximum price.
+  """
+  @spec get_combinations(list(item()), list(item()), keyword()) :: list(item())
+  def get_combinations(tops, bottoms, options \\ []) do
+    maximum_price = Keyword.get(options, :maximum_price, 100.0)
+
+    for top <- tops,
+        bottom <- bottoms,
+        top.base_color != bottom.base_color,
+        top.price + bottom.price <= maximum_price do
+      {top, bottom}
+    end
+  end
+end
+```
+
