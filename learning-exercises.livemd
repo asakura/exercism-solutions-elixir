@@ -4085,3 +4085,77 @@ assert BoutiqueSuggestions.get_combinations(tops, bottoms) == expected
 :passed
 ```
 
+## Community Graden
+
+https://exercism.org/tracks/elixir/exercises/community-garden
+
+```elixir
+defmodule Plot do
+  @type t :: %__MODULE__{
+          plot_id: non_neg_integer(),
+          registered_to: String.t()
+        }
+
+  @enforce_keys [:plot_id, :registered_to]
+  defstruct [:plot_id, :registered_to]
+end
+
+defmodule CommunityGarden do
+  @moduledoc """
+
+  ## Examples
+
+      iex> {:ok, pid} = CommunityGarden.start()
+      iex> plot = CommunityGarden.register(pid, "Johnny Appleseed")
+      %Plot{plot_id: 1, registered_to: "Johnny Appleseed"}
+      iex> CommunityGarden.list_registrations(pid)
+      [plot]
+
+  """
+
+  @doc """
+  Starts an agents process which holds the garden registry state.
+  """
+  @spec start(opts :: GenServer.options()) :: Agent.on_start()
+  def start(opts \\ []), do: Agent.start_link(fn -> {0, opts} end)
+
+  @doc """
+  Lists the registrations in the local garden.
+  """
+  @spec list_registrations(pid :: pid()) :: [Plot.t()]
+  def list_registrations(pid), do: Agent.get(pid, fn {_last_id, plots} -> plots end)
+
+  @doc """
+  Registers plots to a person.
+  """
+  @spec register(pid :: pid(), register_to :: String.t()) :: Plot.t()
+  def register(pid, register_to) do
+    Agent.get_and_update(pid, fn {last_id, plots} ->
+      plot = %Plot{plot_id: last_id + 1, registered_to: register_to}
+      {plot, {last_id + 1, [plot | plots]}}
+    end)
+  end
+
+  @doc """
+  Release plots from the community garden.
+  """
+  @spec release(pid :: pid(), plot_id :: non_neg_integer()) :: :ok
+  def release(pid, plot_id) do
+    Agent.update(pid, fn {last_id, plots} ->
+      {last_id, Enum.filter(plots, fn plot -> plot.plot_id != plot_id end)}
+    end)
+  end
+
+  @doc """
+  Gets a registered plot from the community garden registry.
+  """
+  @spec get_registration(pid :: pid(), plot_id :: non_neg_integer()) ::
+          Plot.t() | {:not_found, String.t()}
+  def get_registration(pid, plot_id) do
+    Agent.get(pid, fn {_last_id, plots} ->
+      Enum.find(plots, {:not_found, "plot is unregistered"}, &(&1.plot_id == plot_id))
+    end)
+  end
+end
+```
+
