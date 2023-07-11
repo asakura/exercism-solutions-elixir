@@ -4284,3 +4284,77 @@ defmodule NewItem do
 end
 ```
 
+## Bread And Potions: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/bread-and-potions/test/rpg_test.exs
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+alias RPG.{Edible, Character, LoafOfBread, ManaPotion, Poison, EmptyBottle}
+
+assert Edible.__protocol__(:functions) == [eat: 2]
+
+assert_raise Protocol.UndefinedError, fn ->
+  Edible.eat(%NewItem{}, %Character{})
+end
+
+character = %Character{health: 50}
+{_byproduct, %Character{} = character} = Edible.eat(%LoafOfBread{}, character)
+assert character.health == 55
+
+character = %Character{}
+{byproduct, %Character{}} = Edible.eat(%LoafOfBread{}, character)
+assert byproduct == nil
+
+character = %Character{mana: 77}
+{_byproduct, %Character{} = character} = Edible.eat(%LoafOfBread{}, character)
+assert character.mana == 77
+
+character = %Character{mana: 10}
+{_byproduct, %Character{} = character} = Edible.eat(%ManaPotion{strength: 6}, character)
+assert character.mana == 16
+{_byproduct, %Character{} = character} = Edible.eat(%ManaPotion{strength: 9}, character)
+assert character.mana == 25
+
+character = %Character{}
+{byproduct, %Character{}} = Edible.eat(%ManaPotion{}, character)
+assert byproduct == %EmptyBottle{}
+
+character = %Character{health: 4}
+{_byproduct, %Character{} = character} = Edible.eat(%ManaPotion{strength: 6}, character)
+assert character.health == 4
+
+character = %Character{health: 120}
+{_byproduct, %Character{} = character} = Edible.eat(%Poison{}, character)
+assert character.health == 0
+
+character = %Character{}
+{byproduct, %Character{}} = Edible.eat(%Poison{}, character)
+assert byproduct == %EmptyBottle{}
+
+character = %Character{mana: 99}
+{_byproduct, %Character{} = character} = Edible.eat(%Poison{}, character)
+assert character.mana == 99
+
+items = [
+  %LoafOfBread{},
+  %ManaPotion{strength: 10},
+  %ManaPotion{strength: 2},
+  %LoafOfBread{}
+]
+
+character = %Character{health: 100, mana: 100}
+
+character =
+  Enum.reduce(items, character, fn item, character ->
+    {_, character} = Edible.eat(item, character)
+    character
+  end)
+
+assert character.health == 110
+assert character.mana == 112
+
+:passed
+```
+
