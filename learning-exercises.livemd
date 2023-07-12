@@ -4389,3 +4389,78 @@ defmodule CaptainsLog do
 end
 ```
 
+## Captain's Log: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/captains-log/test/captains_log_test.exs
+
+```elixir
+planetary_classes = ["D", "H", "J", "K", "L", "M", "N", "R", "T", "Y"]
+
+Enum.each(0..100, fn _ ->
+  assert CaptainsLog.random_planet_class() in planetary_classes
+end)
+
+never_returned_planetary_classes =
+  Enum.reduce_while(0..1000, planetary_classes, fn _, remaining_planetary_classes ->
+    if remaining_planetary_classes == [] do
+      {:halt, remaining_planetary_classes}
+    else
+      {:cont, remaining_planetary_classes -- [CaptainsLog.random_planet_class()]}
+    end
+  end)
+
+assert never_returned_planetary_classes == []
+
+assert String.starts_with?(CaptainsLog.random_ship_registry_number(), "NCC-")
+
+Enum.each(0..100, fn _ ->
+  random_ship_registry_number = CaptainsLog.random_ship_registry_number()
+  just_the_number = String.replace(random_ship_registry_number, "NCC-", "")
+
+  case Integer.parse(just_the_number) do
+    {integer, ""} ->
+      assert integer >= 1000
+      assert integer <= 9999
+
+    _ ->
+      flunk("Expected #{just_the_number} to be an integer")
+  end
+end)
+
+assert is_float(CaptainsLog.random_stardate())
+
+Enum.each(0..100, fn _ ->
+  assert CaptainsLog.random_stardate() >= 41_000.0
+end)
+
+Enum.each(0..100, fn _ ->
+  assert CaptainsLog.random_stardate() < 42_000.0
+end)
+
+decimal_parts =
+  Enum.map(0..10, fn _ ->
+    random_stardate = CaptainsLog.random_stardate()
+    Float.ceil(random_stardate) - random_stardate
+  end)
+
+assert Enum.count(Enum.uniq(decimal_parts)) > 3
+
+decimal_parts =
+  Enum.map(0..10, fn _ ->
+    random_stardate = CaptainsLog.random_stardate()
+    Float.ceil(random_stardate * 10) - random_stardate * 10
+  end)
+
+assert Enum.count(Enum.uniq(decimal_parts)) > 3
+
+assert is_bitstring(CaptainsLog.format_stardate(41010.7))
+
+assert CaptainsLog.format_stardate(41543.3) == "41543.3"
+
+assert CaptainsLog.format_stardate(41032.4512) == "41032.5"
+
+assert_raise ArgumentError, fn -> CaptainsLog.format_stardate(41411) end
+
+:passed
+```
+
