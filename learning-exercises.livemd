@@ -4563,3 +4563,36 @@ defmodule RPNCalculator do
 end
 ```
 
+## RPN Calculator: Tests
+
+https://github.com/exercism/elixir/blob/main/exercises/concept/rpn-calculator/test/rpn_calculator_test.exs
+
+```elixir
+assert RPNCalculator.calculate!([], fn _ -> :ok end) == :ok
+
+assert RPNCalculator.calculate!([], fn _ -> "ok" end) == "ok"
+
+assert_raise(RuntimeError, fn ->
+  RPNCalculator.calculate!([], fn _ -> raise "test error" end)
+end)
+
+assert RPNCalculator.calculate([], fn _ -> "operation completed" end) ==
+         {:ok, "operation completed"}
+
+assert RPNCalculator.calculate([], fn _ -> :success end) ==
+         {:ok, :success}
+
+assert RPNCalculator.calculate([], fn _ -> raise "test error" end) == :error
+
+assert RPNCalculator.calculate_verbose([], fn _ -> "operation completed" end) ==
+         {:ok, "operation completed"}
+
+assert RPNCalculator.calculate_verbose([], fn _ -> :success end) ==
+         {:ok, :success}
+
+assert RPNCalculator.calculate_verbose([], fn _ -> raise ArgumentError, "test error" end) ==
+         {:error, "test error"}
+
+:passed
+```
+
