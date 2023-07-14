@@ -4596,3 +4596,42 @@ assert RPNCalculator.calculate_verbose([], fn _ -> raise ArgumentError, "test er
 :passed
 ```
 
+## Stack Underflow
+
+https://exercism.org/tracks/elixir/exercises/stack-underflow
+
+```elixir
+defmodule RPNCalculator.Exception do
+  defmodule DivisionByZeroError do
+    @moduledoc "Dividing a number by zero produces an undefined result."
+    defexception message: "division by zero occurred"
+  end
+
+  defmodule StackUnderflowError do
+    @moduledoc "When there are not enough numbers on the stack, this exception is raised."
+    defexception message: "stack underflow occurred"
+
+    @impl true
+    def exception(value) do
+      case value do
+        [] ->
+          %__MODULE__{}
+
+        _ ->
+          %__MODULE__{message: "stack underflow occurred, context: " <> value}
+      end
+    end
+  end
+
+  @doc """
+  Divides two numbers from the stack.
+  - Raises `StackUnderflowError` when the stack does not contain enough numbers.
+  - Raises `DivisionByZeroError` when the divisior is 0.
+  """
+  @spec divide(list()) :: no_return() | number()
+  def divide(stack) when length(stack) <= 1, do: raise(StackUnderflowError, "when dividing")
+  def divide([0 | _tail]), do: raise(DivisionByZeroError)
+  def divide([divisor, y | _tail]), do: y / divisor
+end
+```
+
