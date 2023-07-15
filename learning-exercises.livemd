@@ -4635,3 +4635,71 @@ defmodule RPNCalculator.Exception do
 end
 ```
 
+## RPN Calculator Inspection
+
+https://exercism.org/tracks/elixir/exercises/rpn-calculator-inspection
+
+```elixir
+defmodule RPNCalculatorInspection do
+  @type calculator :: (any() -> any())
+  @type calculator_task :: %{input: String.t(), pid: pid()}
+
+  @doc """
+  Starts a reliability check for a single input. Takes two arguments, a calculator function,
+  and an input for the calculator. Returns a map that contains the input and the PID of the
+  spawned process.
+  """
+  @spec start_reliability_check(calculator :: calculator(), input :: String.t()) ::
+          calculator_task()
+  def start_reliability_check(calculator, input) do
+    pid = spawn_link(fn -> calculator.(input) end)
+    %{input: input, pid: pid}
+  end
+
+  @doc """
+  Interperts the results of a reliability check.
+  """
+  @spec await_reliability_check_result(task :: calculator_task(), map()) :: map()
+  def await_reliability_check_result(%{pid: pid, input: input}, results) do
+    receive do
+      {:EXIT, ^pid, :normal} -> Map.put(results, input, :ok)
+      {:EXIT, ^pid, _reason} -> Map.put(results, input, :error)
+    after
+      100 -> Map.put(results, input, :timeout)
+    end
+  end
+
+  @doc """
+  Runs a concurrent reliability check for many inputs.
+  """
+  @spec reliability_check(calculator :: calculator(), list(String.t())) :: map()
+  def reliability_check(calculator, inputs) do
+    previous_trap = Process.flag(:trap_exit, true)
+
+    tasks =
+      for input <- inputs, into: [] do
+        start_reliability_check(calculator, input)
+      end
+
+    results =
+      for task <- tasks, reduce: %{} do
+        results -> await_reliability_check_result(task, results)
+      end
+
+    Process.flag(:trap_exit, previous_trap)
+
+    results
+  end
+
+  @doc """
+  Run a concurrent correctness check for many inputs.
+  """
+  @spec correctness_check(calculator :: calculator(), list(String.t())) :: list()
+  def correctness_check(calculator, inputs) do
+    inputs
+    |> Enum.map(&Task.async(fn -> calculator.(&1) end))
+    |> Enum.map(&Task.await(&1, 100))
+  end
+end
+```
+
