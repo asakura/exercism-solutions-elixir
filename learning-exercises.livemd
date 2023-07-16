@@ -4737,3 +4737,35 @@ defmodule LucasNumbers do
 end
 ```
 
+## Lucas Numbers (Stream.unfold/2)
+
+```elixir
+defmodule LucasNumbers.StreamUnfold do
+  @moduledoc """
+  Lucas numbers are an infinite sequence of numbers which build progressively
+  which hold a strong correlation to the golden ratio (φ or ϕ)
+
+  E.g.: 2, 1, 3, 4, 7, 11, 18, 29, ...
+
+  ## Examples
+
+      iex> LucasNumbers.StreamUnfold.generate(3)
+      [2, 1, 3]
+
+  """
+  @spec generate(count :: pos_integer()) :: [pos_integer()]
+  def generate(count) when is_integer(count) and count >= 1 do
+    1
+    |> Stream.unfold(fn
+      1 -> {2, 2}
+      2 -> {1, {2, 1}}
+      {a, b} -> {a + b, {b, a + b}}
+    end)
+    |> Enum.take(count)
+  end
+
+  def generate(_),
+    do: raise(ArgumentError, "count must be specified as an integer >= 1")
+end
+```
+
