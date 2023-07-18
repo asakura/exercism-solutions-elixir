@@ -5032,3 +5032,67 @@ assert NewPassport.get_new_passport(~N[2021-10-12 14:30:00], ~D[1964-09-14], :re
 :passed
 ```
 
+## Top Secret
+
+https://exercism.org/tracks/elixir/exercises/top-secret
+
+```elixir
+defmodule TopSecret do
+  defguardp is_func_definition(func) when func in [:def, :defp]
+
+  @doc """
+  Takes a string with Elixir code and return its AST.
+  """
+  @spec to_ast(string :: String.t()) :: Macro.t()
+  def to_ast(string) do
+    {:ok, ast} = Code.string_to_quoted(string)
+    ast
+  end
+
+  @doc """
+  Takes an AST node and an accumulator for the secret message (a list).
+  If the operation in the AST node is defining a function then puts first
+  `n` characters from the name to the accumulator, where `n` is the arity.
+  Returns unchanged AST node and the accumulator. If the AST node doesn't contain
+  function definition then returns unchaged accumulator.
+  """
+  @spec decode_secret_message_part(ast :: Macro.t(), acc :: list(String.t())) ::
+          {Macro.t(), list(String.t())}
+  def decode_secret_message_part({op, _meta, args} = ast, acc)
+      when is_func_definition(op) do
+    {name, args} = get_function_name_and_args(args)
+
+    message_part =
+      name
+      |> to_string()
+      |> String.slice(0, length(args))
+
+    {ast, [message_part | acc]}
+  end
+
+  def decode_secret_message_part(ast, acc), do: {ast, acc}
+
+  defp get_function_name_and_args([{:when, _meta, args} | _]),
+    do: get_function_name_and_args(args)
+
+  defp get_function_name_and_args([{name, _meta, args} | _]) when is_list(args),
+    do: {name, args}
+
+  defp get_function_name_and_args([{name, _meta, args} | _]) when is_atom(args),
+    do: {name, []}
+
+  @doc """
+  Takes a string with Elixir code and returns the secret message as a string decoed from all
+  function definitions found in the code.
+  """
+  @spec decode_secret_message(string :: String.t()) :: String.t()
+  def decode_secret_message(string) do
+    {_ast, message} = Macro.prewalk(to_ast(string), [], &decode_secret_message_part/2)
+
+    message
+    |> Enum.reverse()
+    |> Enum.join()
+  end
+end
+```
+
