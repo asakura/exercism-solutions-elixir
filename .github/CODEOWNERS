@@ -1,0 +1,15 @@
+# Single maintainer. GitHub never requests review from a PR's own author, so
+# this routes bot PRs (dependabot, renovate, github-actions) to the
+# maintainer without adding noise to their own PRs. Do not enable "Require
+# review from Code Owners": the maintainer cannot approve their own PRs.
+#
+# Last matching pattern wins, so keep the catch-all first.
+
+# Default owner for everything.
+*                       @asakura
+
+# CI and security configuration.
+/.github/               @asakura
+
+# Livebook exercise solutions.
+*.livemd                @asakura
